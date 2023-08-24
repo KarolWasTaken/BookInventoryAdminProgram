@@ -15,81 +15,98 @@
             </Grid.ColumnDefinitions>
 
             <GroupBox Grid.Column="0" Header="Notiflication Panel"
-                          adonisExtensions:LayerExtension.Layer="3">
-                <StackPanel>
-                    <TextBlock Text="Popular Genres" FontFamily="{StaticResource Poppins}"
-                               Foreground="White" FontWeight="Medium"
-                               TextAlignment="Center"
-                               FontSize="25"
-                                Margin="0,5,0,0"/>
-                    <Rectangle Height="2" Fill="LightGray"
+                      adonisExtensions:LayerExtension.Layer="3">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0">
+                        
+                        <TextBlock Text="Popular Genres" FontFamily="{StaticResource Poppins}"
+                                   Foreground="White" FontWeight="Medium"
+                                   TextAlignment="Center"
+                                   FontSize="25"
+                                   Margin="0,5,0,0"/>
+                        <Rectangle Height="2" Fill="LightGray"
                                    Margin="0,0,0,5"/>
-                    <TextBlock Text=" {GenrePopularity used here}" FontFamily="{StaticResource Poppins}"
+                        <TextBlock Text=" {GenrePopularity used here}" FontFamily="{StaticResource Poppins}"
                                    Foreground="White" FontWeight="Regular"
                                    TextWrapping="WrapWithOverflow"
                                    FontSize="15"
                                    Margin="0,0,0,5"/>
 
-                    <TextBlock Text=" {generate procedure to show popular genres low in stock}" FontFamily="{StaticResource Poppins}"
+                        <TextBlock Text=" {generate procedure to show popular genres low in stock}" FontFamily="{StaticResource Poppins}"
                                    Foreground="LightGray" FontWeight="Regular"
                                    TextWrapping="WrapWithOverflow"
                                    FontSize="12"
                                    Margin="0,0,0,0"/>
+                    </StackPanel>
+
+
+
+
+                    <StackPanel Grid.Row="1">
+                        
+                        <TextBlock Text="Popular Authors" FontFamily="{StaticResource Poppins}"
+                                    Foreground="White" FontWeight="Medium"
+                                    TextAlignment="Center"
+                                    FontSize="25"/>
+                        <Rectangle Height="2" Fill="LightGray"
+                                        Margin="0,0,0,5"/>
+                        <TextBlock Text=" {Author popularity}" FontFamily="{StaticResource Poppins}"
+                                    Foreground="White" FontWeight="Regular"
+                                    TextWrapping="WrapWithOverflow"
+                                    FontSize="15"
+                                    Margin="0,0,0,0"/>
+                    </StackPanel>
+
+
+                    <StackPanel Grid.Row="2">
+                        
+                        <TextBlock Text="Popular Publishers" FontFamily="{StaticResource Poppins}"
+                                    Foreground="White" FontWeight="Medium"
+                                    TextAlignment="Center"
+                                    FontSize="25"/>
+                        <Rectangle Height="2" Fill="LightGray"
+                                        Margin="0,0,0,5"/>
+                        <TextBlock Text=" {Publisher popularity}" FontFamily="{StaticResource Poppins}"
+                                    Foreground="White" FontWeight="Regular"
+                                    TextWrapping="WrapWithOverflow"
+                                    FontSize="15"
+                                    Margin="0,0,0,0"/>
+                    </StackPanel>
 
 
 
 
 
-                    <TextBlock Text="Popular Authors" FontFamily="{StaticResource Poppins}"
-                               Foreground="White" FontWeight="Medium"
-                               TextAlignment="Center"
-                               FontSize="25"/>
-                    <Rectangle Height="2" Fill="LightGray"
-                                   Margin="0,0,0,5"/>
-                    <TextBlock Text=" {Authpr popularity}" FontFamily="{StaticResource Poppins}"
-                               Foreground="White" FontWeight="Regular"
-                               TextWrapping="WrapWithOverflow"
-                               FontSize="15"
-                               Margin="0,0,0,0"/>
-
-
-
-
-
-
-                    <TextBlock Text="Low stock" FontFamily="{StaticResource Poppins}"
-                               Foreground="White" FontWeight="Medium"
-                               TextAlignment="Center"
-                               FontSize="25"/>
-                    <Rectangle Height="2" Fill="LightGray"
-                                   Margin="0,0,0,5"/>
-
-                    <TextBlock Text=" {Book table low stock display}" FontFamily="{StaticResource Poppins}"
-                                   Foreground="White" FontWeight="Regular"
-                                   TextWrapping="WrapWithOverflow"
-                                   FontSize="15"
-                                   Margin="0,0,0,0"/>
-                    <!--TextBlock Text="Notes from Underground by Fyodor Dostoevsky" FontFamily="{StaticResource Poppins}"
-                                   Foreground="White" FontWeight="Regular"
-                                   TextWrapping="WrapWithOverflow"
-                                   FontSize="15"
-                                   Margin="0,0,0,0"/>
-                    <TextBlock Text="The Kingdom of God Is Within You by Leo Tolstoy " FontFamily="{StaticResource Poppins}"
-                                   Foreground="White" FontWeight="Regular"
-                                   TextWrapping="WrapWithOverflow"
-                                   FontSize="15"
-                                   Margin="0,0,0,0"/>
-                    <TextBlock Text="Nineteen Eighty-Four by George Orwell" FontFamily="{StaticResource Poppins}"
-                                   Foreground="White" FontWeight="Regular"
-                                   TextWrapping="WrapWithOverflow"
-                                   FontSize="15"
-                                   Margin="0,0,0,5"/>
-                    <TextBlock Text="For more infomation refer to the Inventory panel" FontFamily="{StaticResource Poppins}"
-                                   Foreground="LightGray" FontWeight="Regular"
-                                   TextWrapping="WrapWithOverflow"
-                                   FontSize="12"
-                                   Margin="0,0,0,0"/-->
-                </StackPanel>
+                    <StackPanel Grid.Row="3">
+                        
+                        <TextBlock Text="Low stock" FontFamily="{StaticResource Poppins}"
+                                    Foreground="White" FontWeight="Medium"
+                                    TextAlignment="Center"
+                                    FontSize="25"/>
+                        <Rectangle Height="2" Fill="LightGray"
+                                        Margin="0,0,0,5"/>
+                        <StackPanel>
+                            <TextBlock Text=" {Book table low stock display}" FontFamily="{StaticResource Poppins}"
+                                            Foreground="White" FontWeight="Regular"
+                                            TextWrapping="WrapWithOverflow"
+                                            FontSize="15"
+                                            Margin="0,0,0,0"/>
+                            <TextBlock Text="For more infomation refer to the Inventory panel" FontFamily="{StaticResource Poppins}"
+                                            Foreground="LightGray" FontWeight="Regular"
+                                            TextWrapping="WrapWithOverflow"
+                                            FontSize="12"
+                                            Margin="0,0,0,0"/>
+                        </StackPanel>
+                    </StackPanel>
+                    
+                </Grid>
             </GroupBox>
 
 
