@@ -1,6 +1,6 @@
 
 # BookInventoryAdminProgram
-<img src="https://cdn.discordapp.com/attachments/1144292069649686568/1144292104974110821/InventoryManagerGithubBanner.png">
+<img src="https://cdn.discordapp.com/attachments/1144292069649686568/1144292104974110821/InventoryManagerGithubBanner.png" width=520 height=335>
 
 
 # Screenshots
