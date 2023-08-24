@@ -29,19 +29,25 @@
             </GroupBox>
             <GroupBox Grid.Row="1" Grid.Column="0"
                       adonisExtensions:LayerExtension.Layer="2">
-                <StackPanel>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <!-- Top row for navigation buttons -->
+                        <RowDefinition Height="Auto" />
+                        <!-- Bottom row for Logout button -->
+                    </Grid.RowDefinitions>
 
-                    <Button Content="Home" Width="98"
-                            Margin="0,0,0,10"/>
-                    <Button Content="Inventory" Width="98"
-                            Margin="0,0,0,10"/>
-                    <Button Content="Sales reports" Width="98"
-                            Margin="0,0,0,10"/>
-                    <Button Content="Graph Viewer" Width="98"
-                            Margin="0,0,0,10"/>
-                    <Button Content="Staff Viewer" Width="98"
-                            Margin="0,0,0,10"/>
-                </StackPanel>
+                    <StackPanel Grid.Row="0">
+                        <Button Content="Home" Width="98" Margin="0,0,0,10"/>
+                        <Button Content="Inventory" Width="98" Margin="0,0,0,10"/>
+                        <Button Content="Sales reports" Width="98" Margin="0,0,0,10"/>
+                        <Button Content="Graph Viewer" Width="98" Margin="0,0,0,10"/>
+                        <Button Content="Staff Viewer" Width="98" Margin="0,0,0,10"/>
+                    </StackPanel>
+
+                    <Button Content="Logout" Width="98" Grid.Row="1" Margin="0,10,0,0"/>
+                </Grid>
+
             </GroupBox> 
 
             
@@ -51,8 +57,8 @@
              <!-- THIS IS WHERE THE CONTENT CONTROL WILL BE -->
             <!--Rectangle Fill="Yellow"  Grid.Column="1"
                        Grid.Row="1"/-->
-            <Views:InventoryPanel Grid.Column="1"
-                                  Grid.Row="1"/>
+            <Views:Home Grid.Column="1"
+                                    Grid.Row="1"/>
 
             
             

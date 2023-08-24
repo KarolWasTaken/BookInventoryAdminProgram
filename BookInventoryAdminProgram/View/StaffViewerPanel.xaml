@@ -1,0 +1,45 @@
+﻿<UserControl x:Class="BookInventoryAdminProgram.View.StaffViewerPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:BookInventoryAdminProgram.View"
+             xmlns:adonisExtensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"
+             mc:Ignorable="d" 
+             d:DesignHeight="818" d:DesignWidth="1080">
+    <GroupBox Header="Staff view" Grid.Row="1"
+              Grid.Column="1"
+              adonisExtensions:LayerExtension.Layer="3">
+        <Grid>
+
+            <StackPanel Margin="10,0,0,0">
+                
+                <TextBlock Text="Employees" FontSize="50"
+                           HorizontalAlignment="Center"
+                           FontFamily="{StaticResource Poppins}"
+                           FontWeight="Medium"
+                           Margin="0,0,0,20"/>
+
+                <DataGrid Name="EmployeesDatagrid"
+                          VerticalAlignment="Top"
+                          HorizontalAlignment="Center"
+                          FontFamily="{StaticResource Poppins}"
+                          FontSize="20"
+                          ScrollViewer.CanContentScroll="True"
+                          CanUserAddRows="False"
+                          IsReadOnly="True"
+                          AutoGenerateColumns="False"
+                          AlternatingRowBackground="#323341">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="EmployeeID" Binding="{Binding Path=EmployeeID}"/>
+                        <DataGridTextColumn Header="First Name" Binding="{Binding Path=FirstName}"/>
+                        <DataGridTextColumn Header="Second Name" Binding="{Binding Path=SecondName}"/>
+                        <DataGridTextColumn Header="Administrator" Binding="{Binding Path=Admin}"/>
+                    </DataGrid.Columns>
+
+                </DataGrid>
+            </StackPanel>            
+
+        </Grid>
+    </GroupBox>
+</UserControl>
