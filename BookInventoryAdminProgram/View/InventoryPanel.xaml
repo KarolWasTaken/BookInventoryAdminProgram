@@ -1,0 +1,261 @@
+﻿<UserControl x:Class="BookInventoryAdminProgram.View.InventoryPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:BookInventoryAdminProgram.View"
+             xmlns:adonisExtensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"
+             mc:Ignorable="d" 
+             d:DesignHeight="818" d:DesignWidth="1080">
+    <Grid>
+        <GroupBox Header="Inventory view" Grid.Row="1"
+                      Grid.Column="1"
+                      adonisExtensions:LayerExtension.Layer="3">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="60"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <DockPanel>
+                    <!--ComboBox Width="100" Height="30" adonisExtensions:WatermarkExtension.Watermark="Author"
+                              Margin="0,0,10,0"
+                              IsEditable="True">
+                        <ComboBoxItem Content="Author"></ComboBoxItem>
+                    </ComboBox>
+                    
+                    <ComboBox Width="100" Height="30" adonisExtensions:WatermarkExtension.Watermark="Genre"
+                              Margin="0,0,10,0"
+                              IsEditable="True">
+                        <ComboBoxItem Content="Genre"></ComboBoxItem>
+                    </ComboBox>
+
+                    <Border Width="2"
+                            Background="LightGray"
+                            CornerRadius="2"
+                            Height="45"
+                            Margin="0,0,10,0"/-->
+                    
+                    <ComboBox Width="100" Height="30" adonisExtensions:WatermarkExtension.Watermark="Type"
+                              Margin="0,0,10,0"
+                              IsEditable="True">
+                        <ComboBoxItem Content="Stock"></ComboBoxItem>
+                        <ComboBoxItem Content="Revenue"></ComboBoxItem>
+                    </ComboBox>
+                    
+                    <ComboBox Width="100" Height="30" adonisExtensions:WatermarkExtension.Watermark="Sales"
+                              Margin="0,0,10,0"
+                              IsEditable="True">
+                        <ComboBoxItem Content="Daily"></ComboBoxItem>
+                        <ComboBoxItem Content="Monthly"></ComboBoxItem>
+                        <ComboBoxItem Content="Yearly"></ComboBoxItem>
+                        <ComboBoxItem Content="All-time"></ComboBoxItem>
+                    </ComboBox>
+                    
+                    <ComboBox Width="100" Height="30" adonisExtensions:WatermarkExtension.Watermark="Modifier"
+                              Margin="0,0,10,0"
+                              IsEditable="True">
+                        <ComboBoxItem Content="Greater than"></ComboBoxItem>
+                        <ComboBoxItem Content="Less than"></ComboBoxItem>
+                        <ComboBoxItem Content="Equal to"></ComboBoxItem>
+                    </ComboBox>
+                    <Border Background="#1f2029" Width="150"
+                            Height="30"
+                            CornerRadius="15"
+                            Margin="0,0,10,0">
+                        <TextBox adonisExtensions:WatermarkExtension.Watermark="Quantity ..."
+                                 adonisExtensions:CursorSpotlightExtension.RelativeSpotlightSize="0"
+                                 Background="Transparent"
+                                 FontFamily="{StaticResource Poppins}"
+                                 FontWeight="Regular"
+                                 BorderThickness="0"
+                                 FontSize="11"
+                                 Padding="5,1,0,0"/>
+                    </Border>
+
+
+
+
+                    <DockPanel HorizontalAlignment="Right" Margin="0,0,10,0">
+                        <Border Background="#1f2029" Width="250"
+                                Height="40"
+                                CornerRadius="25"
+                                Margin="0,0,10,0">
+                            <TextBox adonisExtensions:WatermarkExtension.Watermark="Book Search ..."
+                                     adonisExtensions:CursorSpotlightExtension.RelativeSpotlightSize="0"
+                                     Background="Transparent"
+                                     FontFamily="{StaticResource Poppins}"
+                                     FontWeight="Regular"
+                                     BorderThickness="0"
+                                     FontSize="11"/>
+                        </Border>
+                        <Button Content="&#x1F50E;&#xFE0E;"
+                                FontSize="20"
+                                adonisExtensions:CornerRadiusExtension.CornerRadius="25"
+                                Height="40"
+                                Width="40"
+                                Background="#1f2029"
+                                BorderThickness="0"
+                                Padding="0,0,1,0"/>
+
+                    </DockPanel>
+                </DockPanel>
+
+
+                <Grid Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <DockPanel>
+                        <Expander Header="Authors" BorderThickness="2"
+                                  BorderBrush="White" Margin="0,0,50,10"
+                                  IsExpanded="True">
+                            <WrapPanel Orientation="Horizontal" Margin="0,10,0,0">
+                                <ComboBox Width="100" Height="30" adonisExtensions:WatermarkExtension.Watermark="Author"
+                                  Margin="0,0,10,0"
+                                  IsEditable="True">
+                                    <!--ComboBoxItem Content="Stock"></ComboBoxItem-->
+                                </ComboBox>
+
+                                <Button Content="Add"
+                                        FontSize="10"
+                                        Height="20"
+                                        Width="60"
+                                        Background="#1f2029"
+                                        Margin="0,0,10,0"/>
+
+                                <Border Width="2"
+                                Background="LightGray"
+                                CornerRadius="2"
+                                Height="35"
+                                Margin="0,0,10,0"/>
+
+                                <ComboBox Width="100" Height="30" adonisExtensions:WatermarkExtension.Watermark="Search List"
+                                          Margin="0,0,10,0"
+                                          IsEditable="True">
+                                    <!--ComboBoxItem Content="Stock"></ComboBoxItem-->                                   
+                                </ComboBox>
+
+                                <Button Content="Remove"
+                                        FontSize="10"
+                                        Height="20"
+                                        Width="60"
+                                        Background="#1f2029" />
+
+                            </WrapPanel>
+                        </Expander>
+                        <Expander Header="Genres" BorderThickness="2"
+                                  BorderBrush="White" Margin="0,0,50,10"
+                                  IsExpanded="True">
+                            <WrapPanel Orientation="Horizontal" Margin="0,10,0,0">
+                                <ComboBox Width="100" Height="30" adonisExtensions:WatermarkExtension.Watermark="Genre"
+                                  Margin="0,0,10,0"
+                                  IsEditable="True">
+                                    <!--ComboBoxItem Content="Stock"></ComboBoxItem-->
+                                </ComboBox>
+
+                                <Button Content="Add"
+                                        FontSize="10"
+                                        Height="20"
+                                        Width="60"
+                                        Background="#1f2029"
+                                        Margin="0,0,10,0"/>
+                                
+                                <Border Width="2"
+                                Background="LightGray"
+                                CornerRadius="2"
+                                Height="35"
+                                Margin="0,0,10,0"/>
+
+                                <ComboBox Width="100" Height="30" adonisExtensions:WatermarkExtension.Watermark="Search List"
+                                          Margin="0,0,10,0"
+                                          IsEditable="True">
+                                    <!--ComboBoxItem Content="Stock"></ComboBoxItem-->
+                                </ComboBox>
+
+                                <Button Content="Remove"
+                                        FontSize="10"
+                                        Height="20"
+                                        Width="60"
+                                        Background="#1f2029" />
+                            </WrapPanel>
+                        </Expander>
+                        <Expander Header="Options" BorderThickness="2"
+                                  BorderBrush="White" Margin="0,0,0,10"
+                                  IsExpanded="True">
+                            <WrapPanel Margin="0,10,0,0">
+                                <DockPanel>
+                                    <StackPanel Margin="0,0,10,0">
+                                        <CheckBox Content="ISBN" IsChecked="True"/>
+                                        <CheckBox Content="Title" IsChecked="True"/>
+                                        <CheckBox Content="Author" IsChecked="True"/>
+                                        <CheckBox Content="Genre" IsChecked="True"/>
+                                        <CheckBox Content="ReleaseDate" IsChecked="True"/>
+
+                                    </StackPanel>
+                                    <StackPanel>
+                                        <CheckBox Content="Publisher" IsChecked="False"/>
+                                        <CheckBox Content="All-Time Sales" IsChecked="False"/>
+                                        <CheckBox Content="Yearly Sales" IsChecked="True"/>
+                                        <CheckBox Content="Monthly Sales" IsChecked="True"/>
+                                        <CheckBox Content="Daily Sales" IsChecked="True"/>
+                                    </StackPanel>
+                                </DockPanel>
+                            </WrapPanel>
+                        </Expander>
+                    </DockPanel>
+
+
+                    
+                    <DataGrid Name="BookstoreInventoryDatagrid"
+                                Grid.Row="1"
+                                VerticalAlignment="Top"
+                                HorizontalAlignment="Left"
+                                FontFamily="{StaticResource Poppins}"
+                                ScrollViewer.CanContentScroll="True"
+                                CanUserAddRows="False"
+                                IsReadOnly="True"
+                                AutoGenerateColumns="False"
+                                AlternatingRowBackground="#323341">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ISBN" Binding="{Binding Path=ISBN}"/>
+                            <DataGridTextColumn Header="Title" Binding="{Binding Path=Name}"/>
+                            <DataGridTextColumn Header="Author" Binding="{Binding Path=Authors}"/>
+                            <DataGridTextColumn Header="Genre" Binding="{Binding Path=Genre}"/>
+                            <DataGridTemplateColumn Header="Release Date">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Path=ReleaseDate, StringFormat=d}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Header="Yearly Sales" Binding="{Binding Path=YearlySales}"/>
+                            <DataGridTextColumn Header="Monthly Sales" Binding="{Binding Path=MonthlySales}"/>
+                            <DataGridTextColumn Header="Daily Sales" Binding="{Binding Path=DailySales}"/>
+                        </DataGrid.Columns>
+
+                    </DataGrid>
+                    
+                </Grid>
+
+
+
+
+                <!--ScrollViewer Grid.Row="1">
+                    <DataGrid Name="dataGrid1"
+                              VerticalAlignment="Top"
+                              HorizontalAlignment="Left"
+                              FontFamily="{StaticResource Poppins}"
+                              ScrollViewer.CanContentScroll="True"
+                              ScrollViewer.IsDeferredScrollingEnabled="True" 
+                              ScrollViewer.HorizontalScrollBarVisibility="Visible">
+
+                    </DataGrid>
+                </ScrollViewer-->
+
+            </Grid>
+        </GroupBox>
+    </Grid>
+</UserControl>
