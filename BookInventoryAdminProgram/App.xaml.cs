@@ -4,8 +4,13 @@ using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Threading.Tasks;
+using System.Threading.Tasks.Dataflow;
 using System.Windows;
+using BookInventoryAdminProgram.Model;
+using Dapper;
+
 
 namespace BookInventoryAdminProgram
 {
@@ -17,17 +22,28 @@ namespace BookInventoryAdminProgram
         protected override void OnStartup(StartupEventArgs e)
         {
 
-            // Debug to check if connection to server is working. Throw if not.
-            /*MessageBox.Show($"{Helper.CnnVal()}"); debug
-
-            using (SqlConnection conn = new SqlConnection(Helper.CnnVal()))
+            // check whether or not the server an be reached.
+            try
             {
-                conn.Open(); // throws if invalid
-            }*/
+                using (SqlConnection connection = new SqlConnection(Helper.CnnVal()))
+                {
+                    connection.Open(); // Try to open the connection
+                }
+            }
+            catch (SqlException ex)
+            {
+                // Handle connection failure
+                MessageBox.Show("Connection failed: " + ex.Message);
+                Application.Current.Shutdown();
+            }
+            catch (Exception ex)
+            {
+                // Handle other exceptions
+                MessageBox.Show("An error occurred: " + ex.Message);
+                Application.Current.Shutdown();
+            }
 
-
-
-
+            
 
 
             base.OnStartup(e);

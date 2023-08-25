@@ -12,6 +12,10 @@ namespace BookInventoryAdminProgram
     public static class Helper
     {
 
+        /// <summary>
+        /// Returns connection string for BookstoreInventoryDB
+        /// </summary>
+        /// <returns></returns>
         public static string? CnnVal ()
         {
             IConfigurationRoot config = new ConfigurationBuilder()
