@@ -30,10 +30,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ViewModel\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Resource Include="BookstoreInventoryPanel.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
