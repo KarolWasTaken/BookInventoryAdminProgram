@@ -38,14 +38,6 @@ namespace BookInventoryAdminProgram
         protected override void OnStartup(StartupEventArgs e)
         {
             OpenLoginWindow();
-            // set default window on startup to be LoginWindow
-            //_navigationStore.CurrentViewModel = new LoginWindowViewModel(_navigationStore, CreateHomeViewModel, _mainWindowViewModel);
-            //_navigationStore.CurrentViewModel = new HomeViewModel();
-            //MainWindow = new MainWindow()
-            //{
-            //    DataContext = new MainWindowViewModel(_navigationStore, CreateHomeViewModel, CreateInventoryPanelViewModel, CreateStaffViewerViewModel, CreateLoginWindowViewModel)
-            //};
-            //MainWindow.Show();
 
             // check whether or not the server an be reached.
             try
@@ -82,8 +74,6 @@ namespace BookInventoryAdminProgram
             if (IsMainWindowOpen())
                 mainWindow.Close();
             loginWindow.Show(); // Show the login window as a modal dialog
-            
-
         }
         /// <summary>
         /// Opens Main Window
@@ -98,8 +88,6 @@ namespace BookInventoryAdminProgram
 
             loginWindow.Close();
             mainWindow.Show();
-            
-
         }
         /// <summary>
         /// Check if MainWindow is open.

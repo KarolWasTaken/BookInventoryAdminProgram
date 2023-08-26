@@ -18,7 +18,7 @@ namespace BookInventoryAdminProgram.Model
         /// the ammout of times i need to query the server when i want this data. 
         /// </summary>
         /// <param name="EmployeeID"></param>
-        public CurrentUserInfomation getUserData(int EmployeeID)
+        /*public CurrentUserInfomation getUserData(int EmployeeID)
         {
             CurrentUserInfomation output;
             using (SqlConnection connection = new SqlConnection(Helper.CnnVal()))
@@ -26,6 +26,6 @@ namespace BookInventoryAdminProgram.Model
                 output = connection.Query<CurrentUserInfomation>("dbo.spGetEmployeeName @EmployeeID", new { EmployeeID = EmployeeID }).ToList()[0];
             }
             return output;
-        }
+        }*/
     }
 }

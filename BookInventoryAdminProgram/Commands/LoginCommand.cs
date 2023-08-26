@@ -26,7 +26,6 @@ namespace BookInventoryAdminProgram.Commands
         /// <param name="loginWindowViewModel">Need this to access inputs</param>
         /// <param name="navigationStore">Need this to change viewmodels</param>
         /// <param name="createHomeViewModel">func that changes the viewmodel. Made in app.xaml.cs and passed over here to make _navigationCommand</param>
-        /// <param name="currentUserInfomationStore">Store to store users fist and second name</param>
         /// <param name="mainWindowViewModel">needed to change Welcome <Firstname> msg after login</param>
         public LoginCommand(LoginWindowViewModel loginWindowViewModel, NavigationStore navigationStore, Func<HomeViewModel> createHomeViewModel, MainWindowViewModel mainWindowViewModel, Action openMainWindow)
         {
@@ -41,8 +40,6 @@ namespace BookInventoryAdminProgram.Commands
             if (!(int.TryParse(_loginWindowViewModel.EmployeeID, out int intValue)))
             {
                 // input is not in ID
-                // throw error on textbox with Inotifterrorchanged
-
                 ThrowLoginError(_loginWindowViewModel, usernameFail:true);
                 return;
             }
@@ -56,9 +53,9 @@ namespace BookInventoryAdminProgram.Commands
                 return;
             }
 
-            //OpenMainWindow();
-            // command responsible for chaning viewmodel which changes the view and datacontext
+            // this action closes login window and opens mainwindow.
             _openMainWindow?.Invoke();
+            // command responsible for chaning viewmodel which changes the view and datacontext
             _navigationCommand.ChangeViewModel();
         }
 
