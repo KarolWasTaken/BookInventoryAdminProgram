@@ -74,9 +74,9 @@ namespace BookInventoryAdminProgram.ViewModel
         // INotifyDataErrorInfo. We use methods from there here.
         private readonly ErrorsViewModel _errorsViewModel;
 
-        public LoginWindowViewModel(NavigationStore navigationStore, Func<HomeViewModel> createHomeViewModel, MainWindowViewModel mainWindowViewModel)
+        public LoginWindowViewModel(NavigationStore navigationStore, Func<HomeViewModel> createHomeViewModel, MainWindowViewModel mainWindowViewModel, Action openMainWindow)
         {
-            LoginCommand = new LoginCommand(this, navigationStore, createHomeViewModel, mainWindowViewModel);
+            LoginCommand = new LoginCommand(this, navigationStore, createHomeViewModel, mainWindowViewModel, openMainWindow);
             _errorsViewModel = new ErrorsViewModel();
             _errorsViewModel.ErrorsChanged += ErrorsViewModel_ErrorsChanged;
         }

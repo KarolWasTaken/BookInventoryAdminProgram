@@ -13,6 +13,7 @@ using System.Windows.Navigation;
 using BookInventoryAdminProgram.Model;
 using BookInventoryAdminProgram.Stores;
 using BookInventoryAdminProgram.ViewModel;
+using BookInventoryAdminProgram.Windows;
 using Dapper;
 
 
@@ -26,6 +27,8 @@ namespace BookInventoryAdminProgram
 
         private readonly NavigationStore _navigationStore;
         private readonly MainWindowViewModel _mainWindowViewModel;
+        private LoginWindow loginWindow;
+        private MainWindow mainWindow;
 
         public App()
         {
@@ -34,14 +37,15 @@ namespace BookInventoryAdminProgram
 
         protected override void OnStartup(StartupEventArgs e)
         {
-
+            OpenLoginWindow();
             // set default window on startup to be LoginWindow
-            _navigationStore.CurrentViewModel = new LoginWindowViewModel(_navigationStore, CreateHomeViewModel, _mainWindowViewModel);
-            MainWindow = new MainWindow()
-            {
-                DataContext = new MainWindowViewModel(_navigationStore, CreateHomeViewModel, CreateInventoryPanelViewModel, CreateStaffViewerViewModel, CreateLoginWindowViewModel)
-            };
-            MainWindow.Show();
+            //_navigationStore.CurrentViewModel = new LoginWindowViewModel(_navigationStore, CreateHomeViewModel, _mainWindowViewModel);
+            //_navigationStore.CurrentViewModel = new HomeViewModel();
+            //MainWindow = new MainWindow()
+            //{
+            //    DataContext = new MainWindowViewModel(_navigationStore, CreateHomeViewModel, CreateInventoryPanelViewModel, CreateStaffViewerViewModel, CreateLoginWindowViewModel)
+            //};
+            //MainWindow.Show();
 
             // check whether or not the server an be reached.
             try
@@ -67,6 +71,52 @@ namespace BookInventoryAdminProgram
             base.OnStartup(e);
         }
 
+        /// <summary>
+        /// Opens Login window
+        /// </summary>
+        private void OpenLoginWindow()
+        {
+            loginWindow = new LoginWindow();
+            loginWindow.DataContext = new LoginWindowViewModel(_navigationStore, CreateHomeViewModel, _mainWindowViewModel, OpenMainWindow);
+
+            if (IsMainWindowOpen())
+                mainWindow.Close();
+            loginWindow.Show(); // Show the login window as a modal dialog
+            
+
+        }
+        /// <summary>
+        /// Opens Main Window
+        /// </summary>
+        private void OpenMainWindow()
+        {
+            _navigationStore.CurrentViewModel = new HomeViewModel();
+            mainWindow = new MainWindow()
+            {
+                DataContext = new MainWindowViewModel(_navigationStore, CreateHomeViewModel, CreateInventoryPanelViewModel, CreateStaffViewerViewModel, CreateLoginWindowViewModel, OpenLoginWindow)
+            };
+
+            loginWindow.Close();
+            mainWindow.Show();
+            
+
+        }
+        /// <summary>
+        /// Check if MainWindow is open.
+        /// </summary>
+        /// <returns></returns>
+        bool IsMainWindowOpen()
+        {
+            foreach (Window window in Application.Current.Windows)
+            {
+                if (window is MainWindow)
+                {
+                    return true; // Main window is open
+                }
+            }
+            return false; // Main window is not open
+        }
+
         private HomeViewModel CreateHomeViewModel()
         {
             return new HomeViewModel();
@@ -81,7 +131,7 @@ namespace BookInventoryAdminProgram
         }
         private LoginWindowViewModel CreateLoginWindowViewModel()
         {
-            return new LoginWindowViewModel(_navigationStore, CreateHomeViewModel, _mainWindowViewModel);
+            return new LoginWindowViewModel(_navigationStore, CreateHomeViewModel, _mainWindowViewModel, OpenMainWindow);
         }
     }
 }

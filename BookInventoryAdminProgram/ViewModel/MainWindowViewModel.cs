@@ -40,7 +40,7 @@ namespace BookInventoryAdminProgram.ViewModel
         public ICommand LogoutCommand { get; }
         
         public MainWindowViewModel(NavigationStore navigationStore, Func<HomeViewModel> createHomeViewModel, Func<InventoryPanelViewModel> createInventoryPanelViewModel, 
-            Func<StaffViewerPanelViewModel> createStaffViewerPanelViewModel, Func<LoginWindowViewModel> createLoginWindowViewModel)
+            Func<StaffViewerPanelViewModel> createStaffViewerPanelViewModel, Func<LoginWindowViewModel> createLoginWindowViewModel, Action openLoginWindow)
         {
 
             _navigationStore = navigationStore;
@@ -50,7 +50,7 @@ namespace BookInventoryAdminProgram.ViewModel
             HomeNavigateCommand = new HomeNavigateCommand(this, navigationStore, createHomeViewModel);
             InventoryNavigateCommand = new InventoryNavigateCommand(this, navigationStore, createInventoryPanelViewModel);
             StaffViewerNavigateCommand = new StaffViewerNavigateCommand(this, navigationStore, createStaffViewerPanelViewModel);
-            LogoutCommand = new LogoutCommand(this, navigationStore, createLoginWindowViewModel);
+            LogoutCommand = new LogoutCommand(this, navigationStore, createLoginWindowViewModel, openLoginWindow);
         }
         /// <summary>
         /// reminds model to update, on the ui thread, the CurrentViewModel property - which updates the view and datacontext
