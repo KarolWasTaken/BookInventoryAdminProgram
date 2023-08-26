@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using System.Windows;
 using BookInventoryAdminProgram.Model;
+using BookInventoryAdminProgram.ViewModel;
 using Dapper;
 
 
@@ -21,6 +22,15 @@ namespace BookInventoryAdminProgram
     {
         protected override void OnStartup(StartupEventArgs e)
         {
+
+
+            // startup logic to set datacontext (temp)
+            MainWindow = new MainWindow()
+            {
+                DataContext = new MainWindowViewModel()
+            };
+            MainWindow.Show();
+
 
             // check whether or not the server an be reached.
             try

@@ -19,12 +19,19 @@ namespace BookInventoryAdminProgram.Model
         /// </summary>
         /// <param name="userID"></param>
         /// <returns></returns>
-        public static string returnSalt(int userID)
+        private static string returnSalt(int userID)
         {
             string PasswordSalt = string.Empty;
             using (SqlConnection connection = new SqlConnection(Helper.CnnVal()))
             {
-                PasswordSalt = connection.Query<string>("dbo.spGetSalt @EmployeeID", new { EmployeeID = userID }).ToList()[0];
+                try
+                {
+                    PasswordSalt = connection.Query<string>("dbo.spGetSalt @EmployeeID", new { EmployeeID = userID }).ToList()[0];
+                }
+                catch(ArgumentOutOfRangeException ex) 
+                {
+                    return "Employee doesnt exist";
+                }
             }
             return PasswordSalt;
         }
@@ -34,7 +41,7 @@ namespace BookInventoryAdminProgram.Model
         /// </summary>
         /// <param name="password"></param>
         /// <returns></returns>
-        public static byte[]  HashPasswordSHA256(string password)
+        private static byte[]  HashPasswordSHA256(string password)
         {       
             using (SHA256 sha256 = SHA256.Create())
             {
@@ -46,13 +53,19 @@ namespace BookInventoryAdminProgram.Model
         /// <summary>
         /// Grabs hashed password in DB and checks user's hash against server's hash
         /// </summary>
-        /// <param name="userID"></param>
+        /// <param name="userID">This is EmployeeID in the DB</param>
         /// <param name="password"></param>
-        /// <returns></returns>
+        /// <returns>true = entry granted, otherwise, re-enter password.</returns>
         public bool VerifyPassword(int userID, string password)
         {
+
             string passwordSalt = returnSalt(userID);
-            byte[] userPasswordHash = HashPasswordSHA256(password + passwordSalt);
+            if (userID == 0 || passwordSalt == "Employee doesnt exist")
+            {
+                return false;
+            }
+
+            Byte[] userPasswordHash = HashPasswordSHA256(password + passwordSalt);
             Byte[] serverPasswordHash;
 
             using (SqlConnection connection = new SqlConnection(Helper.CnnVal()))
