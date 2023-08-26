@@ -1,0 +1,79 @@
+﻿<Window x:Class="BookInventoryAdminProgram.Windows.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BookInventoryAdminProgram"
+        xmlns:adonisExtensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"
+        xmlns:Views="clr-namespace:BookInventoryAdminProgram.View"
+        mc:Ignorable="d"
+        Title="LoginWindow" Height="850" Width="1200">
+    <Grid>
+        <GroupBox Header="Welcome" BorderThickness="0" BorderBrush="Wheat">
+        </GroupBox>
+        <Grid>
+            <Image Source="pack://application:,,,/Resources/AppImages/LoginMenuArt.jpg"
+                       HorizontalAlignment="Right"
+                       OpacityMask="{StaticResource HeaderBackgroundOpacityMask}"
+                       RenderOptions.BitmapScalingMode="NearestNeighbor"
+                       RenderOptions.EdgeMode="Aliased"
+                       VerticalAlignment="Bottom"
+                       Height="818"/>
+
+            <GroupBox Width="550" Height="390" VerticalAlignment="Center"
+                              HorizontalAlignment="Center" Header="Login"
+                              FontFamily="{StaticResource Poppins}"
+                              FontWeight="Bold" Margin="0,0,0,20"
+                              adonisExtensions:LayerExtension.Layer="2">
+                <Grid>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="50*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Margin="10" Grid.Column="1">
+                        <TextBlock Text="Employee ID" FontSize="26"
+                                           FontFamily="{StaticResource Poppins}"
+                                           FontWeight="Regular"
+                                           Margin="0,0,0,15"/>
+                        <TextBox FontFamily="{StaticResource Poppins}"
+                                         FontWeight="Regular"
+                                         FontSize="20"
+                                         Width="470"
+                                         Margin="0,0,0,40"
+                                         Text="{Binding EmployeeID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         HorizontalAlignment="Left"
+                                         adonisExtensions:WatermarkExtension.Watermark="Username"/>
+                        <TextBlock Text="Password" FontSize="26"
+                                           FontFamily="{StaticResource Poppins}"
+                                           FontWeight="Regular"
+                                           Margin="0,0,0,15"/>
+                        <PasswordBox FontFamily="{StaticResource Poppins}"
+                                             FontWeight="Regular"
+                                             FontSize="20"
+                                             Width="470"
+                                             Margin="0,0,0,40"
+                                             HorizontalAlignment="Left"
+                                             local:HelperSecurePassword.Attach="True"
+                                             local:HelperSecurePassword.Password="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                             adonisExtensions:WatermarkExtension.Watermark="MyAwesomePassword"/>
+
+                        <Button Content="Login" 
+                                        Width="470"
+                                        FontFamily="{StaticResource Poppins}"
+                                        FontWeight="Medium"
+                                        FontSize="20"
+                                        HorizontalAlignment="Left"
+                                        Command="{Binding LoginCommand}"
+                                        IsEnabled="{Binding FinalCanLogin}"/>
+                    </StackPanel>
+
+                </Grid>
+
+            </GroupBox>
+        </Grid>
+
+    </Grid>
+</Window>

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BookInventoryAdminProgram.ViewModel
 {
-    class InventoryPanelViewModel : ViewModelBase
+    public class InventoryPanelViewModel : ViewModelBase
     {
     }
 }

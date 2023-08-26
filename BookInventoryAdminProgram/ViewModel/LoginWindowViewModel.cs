@@ -1,4 +1,5 @@
 ﻿using BookInventoryAdminProgram.Commands;
+using BookInventoryAdminProgram.Stores;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -67,15 +68,15 @@ namespace BookInventoryAdminProgram.ViewModel
         public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
 
         public ICommand LoginCommand { get; }
-
+        
         // so basically what is happening here is i cant inherit from 2 classes at once.
         // so i made a class we pass into here that has most of the boilerplate for 
         // INotifyDataErrorInfo. We use methods from there here.
         private readonly ErrorsViewModel _errorsViewModel;
 
-        public LoginWindowViewModel()
+        public LoginWindowViewModel(NavigationStore navigationStore, Func<HomeViewModel> createHomeViewModel, MainWindowViewModel mainWindowViewModel)
         {
-            LoginCommand = new LoginCommand(this);
+            LoginCommand = new LoginCommand(this, navigationStore, createHomeViewModel, mainWindowViewModel);
             _errorsViewModel = new ErrorsViewModel();
             _errorsViewModel.ErrorsChanged += ErrorsViewModel_ErrorsChanged;
         }
