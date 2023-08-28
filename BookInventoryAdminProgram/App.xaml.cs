@@ -27,16 +27,22 @@ namespace BookInventoryAdminProgram
 
         private readonly NavigationStore _navigationStore;
         private readonly MainWindowViewModel _mainWindowViewModel;
+        private readonly UserInfoStore _userInfoStore;
         private LoginWindow loginWindow;
         private MainWindow mainWindow;
-
         public App()
         {
             _navigationStore = new NavigationStore();
+            _userInfoStore = new UserInfoStore();
         }
 
         protected override void OnStartup(StartupEventArgs e)
         {
+            UserInfoStore userInfoStore = new UserInfoStore();
+
+
+
+
             OpenLoginWindow();
 
             // check whether or not the server an be reached.
@@ -69,11 +75,11 @@ namespace BookInventoryAdminProgram
         private void OpenLoginWindow()
         {
             loginWindow = new LoginWindow();
-            loginWindow.DataContext = new LoginWindowViewModel(_navigationStore, CreateHomeViewModel, _mainWindowViewModel, OpenMainWindow);
+            loginWindow.DataContext = new LoginWindowViewModel(_navigationStore, CreateHomeViewModel, _mainWindowViewModel, OpenMainWindow, _userInfoStore);
 
             if (IsMainWindowOpen())
                 mainWindow.Close();
-            loginWindow.Show(); // Show the login window as a modal dialog
+            loginWindow.ShowDialog(); // Show the login window as a modal dialog
         }
         /// <summary>
         /// Opens Main Window
@@ -83,7 +89,7 @@ namespace BookInventoryAdminProgram
             _navigationStore.CurrentViewModel = new HomeViewModel();
             mainWindow = new MainWindow()
             {
-                DataContext = new MainWindowViewModel(_navigationStore, CreateHomeViewModel, CreateInventoryPanelViewModel, CreateStaffViewerViewModel, CreateLoginWindowViewModel, OpenLoginWindow)
+                DataContext = new MainWindowViewModel(_navigationStore, CreateHomeViewModel, CreateInventoryPanelViewModel, CreateStaffViewerViewModel, CreateLoginWindowViewModel, OpenLoginWindow, _userInfoStore)
             };
 
             loginWindow.Close();
@@ -119,7 +125,7 @@ namespace BookInventoryAdminProgram
         }
         private LoginWindowViewModel CreateLoginWindowViewModel()
         {
-            return new LoginWindowViewModel(_navigationStore, CreateHomeViewModel, _mainWindowViewModel, OpenMainWindow);
+            return new LoginWindowViewModel(_navigationStore, CreateHomeViewModel, _mainWindowViewModel, OpenMainWindow, _userInfoStore);
         }
     }
 }

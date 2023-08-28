@@ -40,7 +40,7 @@
                 <RowDefinition Height="*"/>
                  <!-- 818 pixels -->
             </Grid.RowDefinitions>
-            <GroupBox Header="Welcome {FirstName}" Grid.RowSpan="3"
+            <GroupBox Header="{Binding EmployeeFirstnameWelcome}" Grid.RowSpan="3"
                       Grid.ColumnSpan="3">
 
             </GroupBox>

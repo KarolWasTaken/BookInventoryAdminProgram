@@ -7,7 +7,8 @@
         xmlns:adonisExtensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"
         xmlns:Views="clr-namespace:BookInventoryAdminProgram.View"
         mc:Ignorable="d"
-        Title="LoginWindow" Height="850" Width="1200">
+        Title="LoginWindow" Height="850" Width="1200"
+        ResizeMode="CanMinimize">
     <Window.Style>
         <Style TargetType="Window" BasedOn="{StaticResource {x:Type Window}}"/>
     </Window.Style>

@@ -39,7 +39,7 @@ namespace BookInventoryAdminProgram.Commands
             {
                 case AdonisUI.Controls.MessageBoxResult.Yes:
                     _openLoginWindow?.Invoke();
-                    _navigationCommand.ChangeViewModel();
+                    //_navigationCommand.ChangeViewModel();
                     break;
                 case AdonisUI.Controls.MessageBoxResult.No:
                     return;

@@ -3,6 +3,7 @@ using BookInventoryAdminProgram.Model;
 using BookInventoryAdminProgram.Stores;
 using BookInventoryAdminProgram.View;
 using BookInventoryAdminProgram.ViewModel;
+using Dapper;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -16,6 +17,7 @@ namespace BookInventoryAdminProgram.Commands
     public class LoginCommand : CommandBase
     {
         private readonly LoginWindowViewModel _loginWindowViewModel;
+        private readonly UserInfoStore _userInfoStore;
         private readonly MainWindowViewModel _mainWindowViewModel;
         private readonly NavigateCommand _navigationCommand;
         public Action _openMainWindow;
@@ -27,11 +29,12 @@ namespace BookInventoryAdminProgram.Commands
         /// <param name="navigationStore">Need this to change viewmodels</param>
         /// <param name="createHomeViewModel">func that changes the viewmodel. Made in app.xaml.cs and passed over here to make _navigationCommand</param>
         /// <param name="mainWindowViewModel">needed to change Welcome <Firstname> msg after login</param>
-        public LoginCommand(LoginWindowViewModel loginWindowViewModel, NavigationStore navigationStore, Func<HomeViewModel> createHomeViewModel, MainWindowViewModel mainWindowViewModel, Action openMainWindow)
+        public LoginCommand(LoginWindowViewModel loginWindowViewModel, NavigationStore navigationStore, Func<HomeViewModel> createHomeViewModel, MainWindowViewModel mainWindowViewModel, Action openMainWindow, UserInfoStore userInfoStore)
         {
             _loginWindowViewModel = loginWindowViewModel;
             _navigationCommand = new NavigateCommand(navigationStore, createHomeViewModel);
             _openMainWindow = openMainWindow;
+            _userInfoStore = userInfoStore;
         }
 
         public override void Execute(object? parameter)
@@ -52,6 +55,15 @@ namespace BookInventoryAdminProgram.Commands
                 ThrowLoginError(_loginWindowViewModel, usernameFail:false, passwordFail:true);
                 return;
             }
+
+            UserInfoStore userNames;
+            using (SqlConnection connection = new SqlConnection(Helper.CnnVal()))
+            {
+                userNames = connection.Query<UserInfoStore>("dbo.spGetEmployeeName @EmployeeID", new { EmployeeID = EmployeeID }).ToList()[0];
+            }
+            _userInfoStore.StoreUserName(userNames);
+
+
 
             // this action closes login window and opens mainwindow.
             _openMainWindow?.Invoke();

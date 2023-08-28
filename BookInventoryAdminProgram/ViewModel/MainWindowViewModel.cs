@@ -15,7 +15,9 @@ namespace BookInventoryAdminProgram.ViewModel
     {
 
         private readonly NavigationStore _navigationStore;
+        private readonly UserInfoStore _userInfoStore;
         public ViewModelBase CurrentViewModel => _navigationStore.CurrentViewModel;
+
 
         private string _employeeFistnameWelcome;
         public string EmployeeFirstnameWelcome
@@ -38,20 +40,23 @@ namespace BookInventoryAdminProgram.ViewModel
         //public ICommand GraphViewerNavigateCommand { get; }
         public ICommand StaffViewerNavigateCommand { get; }
         public ICommand LogoutCommand { get; }
-        
-        public MainWindowViewModel(NavigationStore navigationStore, Func<HomeViewModel> createHomeViewModel, Func<InventoryPanelViewModel> createInventoryPanelViewModel, 
-            Func<StaffViewerPanelViewModel> createStaffViewerPanelViewModel, Func<LoginWindowViewModel> createLoginWindowViewModel, Action openLoginWindow)
+
+        public MainWindowViewModel(NavigationStore navigationStore, Func<HomeViewModel> createHomeViewModel, Func<InventoryPanelViewModel> createInventoryPanelViewModel,
+            Func<StaffViewerPanelViewModel> createStaffViewerPanelViewModel, Func<LoginWindowViewModel> createLoginWindowViewModel, Action openLoginWindow, UserInfoStore userInfoStore)
         {
-
-            _navigationStore = navigationStore;
-            _navigationStore.CurrentViewModelChanged += OnCurrentViewModelChanged;
-
 
             HomeNavigateCommand = new HomeNavigateCommand(this, navigationStore, createHomeViewModel);
             InventoryNavigateCommand = new InventoryNavigateCommand(this, navigationStore, createInventoryPanelViewModel);
             StaffViewerNavigateCommand = new StaffViewerNavigateCommand(this, navigationStore, createStaffViewerPanelViewModel);
             LogoutCommand = new LogoutCommand(this, navigationStore, createLoginWindowViewModel, openLoginWindow);
+            
+            _navigationStore = navigationStore;
+            _navigationStore.CurrentViewModelChanged += OnCurrentViewModelChanged;
+            _userInfoStore = userInfoStore;
+            EmployeeFirstnameWelcome = userInfoStore.FirstName;
         }
+
+
         /// <summary>
         /// reminds model to update, on the ui thread, the CurrentViewModel property - which updates the view and datacontext
         /// </summary>
