@@ -20,7 +20,7 @@
                            FontWeight="Medium"
                            Margin="0,0,0,20"/>
 
-                <DataGrid Name="EmployeesDatagrid"
+                <DataGrid Name="StaffDatagrid"
                           VerticalAlignment="Top"
                           HorizontalAlignment="Center"
                           FontFamily="{StaticResource Poppins}"
@@ -29,12 +29,13 @@
                           CanUserAddRows="False"
                           IsReadOnly="True"
                           AutoGenerateColumns="False"
-                          AlternatingRowBackground="#323341">
+                          AlternatingRowBackground="#323341"
+                          ItemsSource="{Binding StaffList}">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="EmployeeID" Binding="{Binding Path=EmployeeID}"/>
                         <DataGridTextColumn Header="First Name" Binding="{Binding Path=FirstName}"/>
                         <DataGridTextColumn Header="Second Name" Binding="{Binding Path=SecondName}"/>
-                        <DataGridTextColumn Header="Administrator" Binding="{Binding Path=Admin}"/>
+                        <DataGridCheckBoxColumn Header="Administrator" Binding="{Binding Path=Administrator}"/>
                     </DataGrid.Columns>
 
                 </DataGrid>

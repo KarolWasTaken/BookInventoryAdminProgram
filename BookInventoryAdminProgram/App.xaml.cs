@@ -42,7 +42,6 @@ namespace BookInventoryAdminProgram
 
 
 
-
             OpenLoginWindow();
 
             // check whether or not the server an be reached.
