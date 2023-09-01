@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
 using System.Security.Policy;
+using System.Data.Common;
+using System.Data;
 
 namespace BookInventoryAdminProgram.Model
 {
@@ -67,16 +69,18 @@ namespace BookInventoryAdminProgram.Model
 
             Byte[] userPasswordHash = HashPasswordSHA256(password + passwordSalt);
             Byte[] serverPasswordHash;
+            bool isAdmin;
 
             using (SqlConnection connection = new SqlConnection(Helper.CnnVal()))
             {
-                serverPasswordHash = connection.Query<Byte[]>("dbo.spGetHash @EmployeeID", new { EmployeeID = userID }).ToList()[0];
+                serverPasswordHash = connection.QuerySingle<Byte[]>("dbo.spGetHash @EmployeeID", new { EmployeeID = userID });
+                isAdmin = connection.QuerySingle<bool>("dbo.spVerifyAdmin @EmployeeID", new { EmployeeID = userID });
             }
 
 
             string userPasswordHashString = BitConverter.ToString(userPasswordHash).Replace("-", "");
             string serverPasswordHashString = BitConverter.ToString(serverPasswordHash).Replace("-", "");
-            if (userPasswordHashString == serverPasswordHashString)
+            if (userPasswordHashString == serverPasswordHashString && isAdmin)
                 return true;
             else
                 return false;
