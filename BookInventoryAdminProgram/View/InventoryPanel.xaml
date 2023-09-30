@@ -10,6 +10,7 @@
              d:DesignHeight="818" d:DesignWidth="1080">
     <UserControl.Resources>
         <Converter:ListToStringConverter x:Key="ListToStringConverter"/>
+        <Converter:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <Style x:Key="InnerDataGridStyle" TargetType="DataGrid">
             <!-- Set initial visibility to visible -->
             <Setter Property="Visibility" Value="Visible"/>
@@ -214,7 +215,7 @@
                             <WrapPanel Margin="0,10,0,0">
                                 <DockPanel>
                                     <StackPanel Margin="0,0,10,0">
-                                        <CheckBox Content="ISBN" IsChecked="True" Command="{Binding ToggleHeaderCommand}"/>
+                                        <CheckBox Content="ISBN" IsChecked="True" Command="{Binding ToggleHeaderVisibilityCommand}" CommandParameter="ISBN"/>
                                         <CheckBox Content="Title" IsChecked="True"/>
                                         <CheckBox Content="Author" IsChecked="True"/>
                                         <CheckBox Content="Genre" IsChecked="True"/>
@@ -242,19 +243,20 @@
 
                     
                     <DataGrid Name="BookstoreInventoryDatagrid"
-                                Grid.Row="1"
-                                VerticalAlignment="Top"
-                                HorizontalAlignment="Left"
-                                FontFamily="{StaticResource Poppins}"
-                                ScrollViewer.CanContentScroll="True"
-                                CanUserAddRows="False"
-                                SelectionUnit="CellOrRowHeader"
-                                IsReadOnly="True"
-                                AutoGenerateColumns="False"
-                                AlternatingRowBackground="#323341"
+                              Grid.Row="1"
+                              VerticalAlignment="Top"
+                              HorizontalAlignment="Left"
+                              FontFamily="{StaticResource Poppins}"
+                              ScrollViewer.CanContentScroll="True"
+                              CanUserAddRows="False"
+                              SelectionUnit="CellOrRowHeader"
+                              IsReadOnly="True"
+                              AutoGenerateColumns="False"
+                              AlternatingRowBackground="#323341"
                               ItemsSource="{Binding InventoryDatagrid}">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="ISBN" Binding="{Binding Path=ISBN}"/>
+                            <DataGridTextColumn Header="ISBN" Binding="{Binding Path=ISBN}"
+                                                Visibility="{Binding Vis}"/>
                             <DataGridTextColumn Header="Title" Binding="{Binding Path=Title}"/>
                             <DataGridTextColumn Header="Author" Binding="{Binding Path=Authors,Converter={StaticResource ListToStringConverter}}"/>
                             <DataGridTextColumn Header="Genre" Binding="{Binding Path=Genres,Converter={StaticResource ListToStringConverter}}" Width="200"/>
