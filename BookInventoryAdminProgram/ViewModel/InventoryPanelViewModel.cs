@@ -29,46 +29,37 @@ namespace BookInventoryAdminProgram.ViewModel
 			}
 		}
 
-		//
-		private Dictionary<string, bool> _headerVisibility = new Dictionary<string, bool>
-		{
-			{ "ISBN", true },{ "Title", true }
-		};
-		public Dictionary<string, bool> HeaderVisibility
+        private Dictionary<string, bool> _headerVisibility = new Dictionary<string, bool>
         {
-			get
-			{
-				return _headerVisibility;
-			}
-			set
-			{
+            { "ISBN", true },{ "Title", true }, { "Author", true }, { "Genre", true }, { "ReleaseDate", true },
+            { "Publisher", true }, { "AllTimeSales", false }, { "YearlySales", true }, { "MonthlySales", true },
+            { "DailySales", true }
+        };
+        public Dictionary<string, bool> HeaderVisibility
+        {
+            get
+            {
+                return _headerVisibility;
+            }
+            set
+            {
                 //_headerVisibility = value;
                 //OnPropertyChanged(nameof(HeaderVisibility));
-                if (_headerVisibility != value)
-                {
-                    _headerVisibility = value;
-                    OnPropertyChanged(nameof(HeaderVisibility));
-                }
-            }
-		}
-		private Visibility _vis;
-		public Visibility Vis
-		{
-			get
-			{
-				return _vis;
-			}
-			set
-			{
-				_vis = value;
-				OnPropertyChanged(nameof(Vis));
-			}
-		}
+                _headerVisibility = value;
+                OnPropertyChanged(nameof(HeaderVisibility));
 
-		public ICommand ToggleHeaderVisibilityCommand { get; }
+            }
+        }
+        public void SetDictionary(string key, bool value)
+        {
+            HeaderVisibility[key] = value;
+            OnPropertyChanged(nameof(HeaderVisibility));
+        }
+
+        public ICommand ToggleHeaderVisibilityCommand { get; }
         public InventoryPanelViewModel()
         {
-            ToggleHeaderVisibilityCommand = new ToggleHeaderVisibilityCommand(_headerVisibility, OnPropertyChanged);
+            ToggleHeaderVisibilityCommand = new ToggleHeaderVisibilityCommand(HeaderVisibility, SetDictionary);
             InventoryDatagrid = DatabaseStore.updateDatastore();
             //var test = InventoryDatagrid.Select(item => item.ISBN.ToList());
         }

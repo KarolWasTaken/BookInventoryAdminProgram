@@ -10,32 +10,26 @@ namespace BookInventoryAdminProgram.Commands
 {
     public class ToggleHeaderVisibilityCommand : CommandBase
     {
-        private readonly Dictionary<string, bool> _headerVisibility;
-        private readonly PropertyChangedEventHandler _propertyChangedHandler;
-        public Action<string> OnPropertyChanged { get; }
-        /*public ToggleHeaderVisibilityCommand(Dictionary<string, bool> headerVisibility, PropertyChangedEventHandler propertyChangedHandler)
-        {
-            _headerVisibility = headerVisibility;
-            _propertyChangedHandler = propertyChangedHandler;
-        }*/
+        public Dictionary<string, bool> HeaderVisibility { get; }
+        public Action<string, bool> SetDictionary { get; }
 
-        public ToggleHeaderVisibilityCommand(Dictionary<string, bool>? headerVisibility, Action<string> onPropertyChanged)
+
+        public ToggleHeaderVisibilityCommand(Dictionary<string, bool> headerVisibility, Action<string, bool> setDictionary)
         {
-            _headerVisibility = headerVisibility;
-            OnPropertyChanged = onPropertyChanged;
+            HeaderVisibility = headerVisibility;
+            SetDictionary = setDictionary;
         }
 
         public override void Execute(object? parameter)
         {
-            if (parameter is string headerName)
-            {
-                if (_headerVisibility.ContainsKey(headerName))
-                {
-                    _headerVisibility[headerName] = !_headerVisibility[headerName];
-                    //_propertyChangedHandler.Invoke(_headerVisibility, new PropertyChangedEventArgs(nameof(_headerVisibility)));
-                    OnPropertyChanged.Invoke(nameof(_headerVisibility));
-                }
-            }
+            // Hours wasted: 3
+            
+            // Literally only God knows why this code wont work without the below line
+            // it literally does nothing. Everything it does is done by SetDictionary.
+            // I have no words.
+
+            HeaderVisibility[parameter.ToString()] = !HeaderVisibility[parameter.ToString()];
+            SetDictionary.Invoke(parameter.ToString(), !HeaderVisibility[parameter.ToString()]);
         }
     }
 }
