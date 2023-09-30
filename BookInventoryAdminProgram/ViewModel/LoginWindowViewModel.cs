@@ -1,4 +1,5 @@
 ﻿using BookInventoryAdminProgram.Commands;
+using BookInventoryAdminProgram.Model;
 using BookInventoryAdminProgram.Stores;
 using System;
 using System.Collections;

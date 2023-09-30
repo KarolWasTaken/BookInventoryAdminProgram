@@ -15,7 +15,7 @@ using BookInventoryAdminProgram.Stores;
 using BookInventoryAdminProgram.ViewModel;
 using BookInventoryAdminProgram.Windows;
 using Dapper;
-
+using static BookInventoryAdminProgram.Stores.DatabaseStore;
 
 namespace BookInventoryAdminProgram
 {
@@ -39,10 +39,10 @@ namespace BookInventoryAdminProgram
         protected override void OnStartup(StartupEventArgs e)
         {
             UserInfoStore userInfoStore = new UserInfoStore();
-
-
+            List<BookInfo> maindataset = DatabaseStore.updateDatastore();
 
             OpenLoginWindow();
+
 
             // check whether or not the server an be reached.
             try

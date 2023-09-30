@@ -4,6 +4,7 @@ using BookInventoryAdminProgram.Stores;
 using BookInventoryAdminProgram.View;
 using BookInventoryAdminProgram.ViewModel;
 using Dapper;
+using Microsoft.SqlServer.Server;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -21,7 +22,6 @@ namespace BookInventoryAdminProgram.Commands
         private readonly MainWindowViewModel _mainWindowViewModel;
         private readonly NavigateCommand _navigationCommand;
         public Action _openMainWindow;
-
         /// <summary>
         /// Logins in our user, grabs his first and second name, and changes viewmodel to home view
         /// </summary>
@@ -59,7 +59,7 @@ namespace BookInventoryAdminProgram.Commands
             UserInfoStore userNames;
             using (SqlConnection connection = new SqlConnection(Helper.CnnVal()))
             {
-                userNames = connection.Query<UserInfoStore>("dbo.spGetEmployeeName @EmployeeID", new { EmployeeID = EmployeeID }).ToList()[0];
+                userNames = connection.QuerySingle<UserInfoStore>("dbo.spGetEmployeeName @EmployeeID", new { EmployeeID = EmployeeID });
             }
             _userInfoStore.StoreUserName(userNames);
 
@@ -69,6 +69,8 @@ namespace BookInventoryAdminProgram.Commands
             _openMainWindow?.Invoke();
             // command responsible for chaning viewmodel which changes the view and datacontext
             _navigationCommand.ChangeViewModel();
+            // grabs maindata from our database and stores it in our maindataset store
+            //_mainDataSetStore = md.GetMainDataset(); RELIC
         }
 
 

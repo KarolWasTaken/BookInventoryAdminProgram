@@ -4,9 +4,35 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BookInventoryAdminProgram.View"
-             xmlns:adonisExtensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"
+             xmlns:adonisExtensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI" 
+             xmlns:Converter="clr-namespace:BookInventoryAdminProgram.Converter"
              mc:Ignorable="d" 
              d:DesignHeight="818" d:DesignWidth="1080">
+    <UserControl.Resources>
+        <Converter:ListToStringConverter x:Key="ListToStringConverter"/>
+        <Style x:Key="InnerDataGridStyle" TargetType="DataGrid">
+            <!-- Set initial visibility to visible -->
+            <Setter Property="Visibility" Value="Visible"/>
+            
+            <!-- set initial styling for datagrid -->
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="AutoGenerateColumns" Value="True"/>
+            <Setter Property="IsReadOnly" Value="True"/>
+            <Setter Property="CanUserAddRows" Value="False"/>
+            <Setter Property="SelectionUnit" Value="CellOrRowHeader"/>
+            <Setter Property="FontFamily" Value="{StaticResource Poppins}"/>
+            <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
+      
+            <Style.Triggers>
+                <!-- when no items set to collapsed -->
+                <DataTrigger Binding="{Binding Items.Count, RelativeSource={RelativeSource Self}}" Value="0">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
     <Grid>
         <GroupBox Header="Inventory view" Grid.Row="1"
                       Grid.Column="1"
@@ -110,10 +136,10 @@
 
                     <DockPanel>
                         <Expander Header="Authors" BorderThickness="2"
-                                  BorderBrush="White" Margin="0,0,50,10"
+                                  BorderBrush="White" Margin="0,0,20,10"
                                   IsExpanded="True">
                             <WrapPanel Orientation="Horizontal" Margin="0,10,0,0">
-                                <ComboBox Width="100" Height="30" adonisExtensions:WatermarkExtension.Watermark="Author"
+                                <ComboBox Width="90" Height="30" adonisExtensions:WatermarkExtension.Watermark="Author"
                                   Margin="0,0,10,0"
                                   IsEditable="True">
                                     <!--ComboBoxItem Content="Stock"></ComboBoxItem-->
@@ -132,7 +158,7 @@
                                 Height="35"
                                 Margin="0,0,10,0"/>
 
-                                <ComboBox Width="100" Height="30" adonisExtensions:WatermarkExtension.Watermark="Search List"
+                                <ComboBox Width="90" Height="30" adonisExtensions:WatermarkExtension.Watermark="Search List"
                                           Margin="0,0,10,0"
                                           IsEditable="True">
                                     <!--ComboBoxItem Content="Stock"></ComboBoxItem-->                                   
@@ -147,10 +173,10 @@
                             </WrapPanel>
                         </Expander>
                         <Expander Header="Genres" BorderThickness="2"
-                                  BorderBrush="White" Margin="0,0,50,10"
+                                  BorderBrush="White" Margin="0,0,20,10"
                                   IsExpanded="True">
                             <WrapPanel Orientation="Horizontal" Margin="0,10,0,0">
-                                <ComboBox Width="100" Height="30" adonisExtensions:WatermarkExtension.Watermark="Genre"
+                                <ComboBox Width="90" Height="30" adonisExtensions:WatermarkExtension.Watermark="Genre"
                                   Margin="0,0,10,0"
                                   IsEditable="True">
                                     <!--ComboBoxItem Content="Stock"></ComboBoxItem-->
@@ -169,7 +195,7 @@
                                 Height="35"
                                 Margin="0,0,10,0"/>
 
-                                <ComboBox Width="100" Height="30" adonisExtensions:WatermarkExtension.Watermark="Search List"
+                                <ComboBox Width="90" Height="30" adonisExtensions:WatermarkExtension.Watermark="Search List"
                                           Margin="0,0,10,0"
                                           IsEditable="True">
                                     <!--ComboBoxItem Content="Stock"></ComboBoxItem-->
@@ -188,19 +214,25 @@
                             <WrapPanel Margin="0,10,0,0">
                                 <DockPanel>
                                     <StackPanel Margin="0,0,10,0">
-                                        <CheckBox Content="ISBN" IsChecked="True"/>
+                                        <CheckBox Content="ISBN" IsChecked="True" Command="{Binding ToggleHeaderCommand}"/>
                                         <CheckBox Content="Title" IsChecked="True"/>
                                         <CheckBox Content="Author" IsChecked="True"/>
                                         <CheckBox Content="Genre" IsChecked="True"/>
                                         <CheckBox Content="ReleaseDate" IsChecked="True"/>
 
                                     </StackPanel>
-                                    <StackPanel>
-                                        <CheckBox Content="Publisher" IsChecked="False"/>
+                                    <StackPanel Margin="0,0,10,0">
+                                        <CheckBox Content="Publisher" IsChecked="True"/>
                                         <CheckBox Content="All-Time Sales" IsChecked="False"/>
+                                        <CheckBox Content="All-Time Revenue" IsChecked="False"/>
                                         <CheckBox Content="Yearly Sales" IsChecked="True"/>
+                                        <CheckBox Content="Yearly Revenue" IsChecked="False"/>
+                                    </StackPanel>
+                                    <StackPanel>
                                         <CheckBox Content="Monthly Sales" IsChecked="True"/>
+                                        <CheckBox Content="Monthly Revenue" IsChecked="False"/>
                                         <CheckBox Content="Daily Sales" IsChecked="True"/>
+                                        <CheckBox Content="Daily Revenue" IsChecked="False"/>
                                     </StackPanel>
                                 </DockPanel>
                             </WrapPanel>
@@ -216,14 +248,16 @@
                                 FontFamily="{StaticResource Poppins}"
                                 ScrollViewer.CanContentScroll="True"
                                 CanUserAddRows="False"
+                                SelectionUnit="CellOrRowHeader"
                                 IsReadOnly="True"
                                 AutoGenerateColumns="False"
-                                AlternatingRowBackground="#323341">
+                                AlternatingRowBackground="#323341"
+                              ItemsSource="{Binding InventoryDatagrid}">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="ISBN" Binding="{Binding Path=ISBN}"/>
-                            <DataGridTextColumn Header="Title" Binding="{Binding Path=Name}"/>
-                            <DataGridTextColumn Header="Author" Binding="{Binding Path=Authors}"/>
-                            <DataGridTextColumn Header="Genre" Binding="{Binding Path=Genre}"/>
+                            <DataGridTextColumn Header="Title" Binding="{Binding Path=Title}"/>
+                            <DataGridTextColumn Header="Author" Binding="{Binding Path=Authors,Converter={StaticResource ListToStringConverter}}"/>
+                            <DataGridTextColumn Header="Genre" Binding="{Binding Path=Genres,Converter={StaticResource ListToStringConverter}}" Width="200"/>
                             <DataGridTemplateColumn Header="Release Date">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
@@ -231,9 +265,40 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTextColumn Header="Yearly Sales" Binding="{Binding Path=YearlySales}"/>
-                            <DataGridTextColumn Header="Monthly Sales" Binding="{Binding Path=MonthlySales}"/>
-                            <DataGridTextColumn Header="Daily Sales" Binding="{Binding Path=DailySales}"/>
+                            <DataGridTextColumn Header="Publisher" Binding="{Binding Path=PublisherName}"/>
+                            
+                            <!-- Only God knows why i cant puts rowbackgrounds in
+                                 the styling and have them work -->
+                            <DataGridTemplateColumn Header="Yearly Sales">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <DataGrid ItemsSource="{Binding YearlySales}"
+                                                  Style="{StaticResource InnerDataGridStyle}"
+                                                  RowBackground="#262630"
+                                                  AlternatingRowBackground="#323341"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Header="Monthly Sales">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <DataGrid ItemsSource="{Binding MonthlySales}"
+                                                  Style="{StaticResource InnerDataGridStyle}"
+                                                  RowBackground="#262630"
+                                                  AlternatingRowBackground="#323341"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Header="Daily Sales">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <DataGrid ItemsSource="{Binding DailySales}"
+                                                  Style="{StaticResource InnerDataGridStyle}"
+                                                  RowBackground="#262630"
+                                                  AlternatingRowBackground="#323341"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
                         </DataGrid.Columns>
 
                     </DataGrid>
