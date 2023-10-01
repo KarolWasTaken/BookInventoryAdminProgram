@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BookInventoryAdminProgram.Model;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -15,7 +16,8 @@ namespace BookInventoryAdminProgram.Converter
             if (value is List<string> stringList) 
             {
                 // converts List<string> to string of comma seperated values
-                return string.Join(", ", stringList);
+                List<string> sortedList = FilterMethod.MergeSort(stringList);
+                return string.Join(", ", sortedList);
             }
 
             // value was not a list of strings

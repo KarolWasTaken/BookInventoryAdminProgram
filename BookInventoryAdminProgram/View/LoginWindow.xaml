@@ -46,29 +46,32 @@
                                          Margin="0,0,0,40"
                                          Text="{Binding EmployeeID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                          HorizontalAlignment="Left"
-                                         adonisExtensions:WatermarkExtension.Watermark="Username"/>
+                                         adonisExtensions:WatermarkExtension.Watermark="Username"
+                                         TabIndex="1"/>
                                 <TextBlock Text="Password" FontSize="26"
                                            FontFamily="{StaticResource Poppins}"
                                            FontWeight="Regular"
                                            Margin="0,0,0,15"/>
-                                <PasswordBox FontFamily="{StaticResource Poppins}"
-                                             FontWeight="Regular"
-                                             FontSize="20"
-                                             Width="470"
-                                             Margin="0,0,0,40"
-                                             HorizontalAlignment="Left"
-                                             local:HelperSecurePassword.Attach="True"
-                                             local:HelperSecurePassword.Password="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                             adonisExtensions:WatermarkExtension.Watermark="MyAwesomePassword"/>
+                        <PasswordBox FontFamily="{StaticResource Poppins}"
+                                                 FontWeight="Regular"
+                                                 FontSize="20"
+                                                 Width="470"
+                                                 Margin="0,0,0,40"
+                                                 HorizontalAlignment="Left"
+                                                 local:HelperSecurePassword.Attach="True"
+                                                 local:HelperSecurePassword.Password="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                 adonisExtensions:WatermarkExtension.Watermark="MyAwesomePassword"
+                                                 TabIndex="2"/>
 
-                                <Button Content="Login" 
+                        <Button Content="Login" 
                                         Width="470"
                                         FontFamily="{StaticResource Poppins}"
                                         FontWeight="Medium"
                                         FontSize="20"
                                         HorizontalAlignment="Left"
                                         Command="{Binding LoginCommand}"
-                                        IsEnabled="{Binding FinalCanLogin}"/>
+                                        IsEnabled="{Binding FinalCanLogin}"
+                                        TabIndex="3"/>
                             </StackPanel>
 
                         </Grid>

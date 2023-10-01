@@ -62,29 +62,26 @@
                             CornerRadius="2"
                             Height="45"
                             Margin="0,0,10,0"/-->
-                    
-                    <ComboBox Width="100" Height="30" adonisExtensions:WatermarkExtension.Watermark="Type"
-                              Margin="0,0,10,0"
-                              IsEditable="True">
-                        <ComboBoxItem Content="Stock"></ComboBoxItem>
-                        <ComboBoxItem Content="Revenue"></ComboBoxItem>
-                    </ComboBox>
-                    
+
                     <ComboBox Width="100" Height="30" adonisExtensions:WatermarkExtension.Watermark="Sales"
                               Margin="0,0,10,0"
-                              IsEditable="True">
-                        <ComboBoxItem Content="Daily"></ComboBoxItem>
-                        <ComboBoxItem Content="Monthly"></ComboBoxItem>
-                        <ComboBoxItem Content="Yearly"></ComboBoxItem>
-                        <ComboBoxItem Content="All-time"></ComboBoxItem>
+                              IsEditable="True"
+                              ItemsSource="{Binding SalesComboBoxOptions}"
+                              SelectedItem="{Binding SelectedItemTest}">
                     </ComboBox>
-                    
+
+                    <ComboBox Width="100" Height="30" adonisExtensions:WatermarkExtension.Watermark="Type"
+                              Margin="0,0,10,0"
+                              IsEditable="True"
+                              ItemsSource="{Binding TypeComboBoxOptions}"
+                              SelectedItem="{Binding SelectedItemTest}">
+                    </ComboBox>
+
                     <ComboBox Width="100" Height="30" adonisExtensions:WatermarkExtension.Watermark="Modifier"
                               Margin="0,0,10,0"
-                              IsEditable="True">
-                        <ComboBoxItem Content="Greater than"></ComboBoxItem>
-                        <ComboBoxItem Content="Less than"></ComboBoxItem>
-                        <ComboBoxItem Content="Equal to"></ComboBoxItem>
+                              IsEditable="True"
+                              ItemsSource="{Binding ModifierComboBoxOptions}"
+                              SelectedItem="{Binding SelectedItemTest}">
                     </ComboBox>
                     <Border Background="#1f2029" Width="150"
                             Height="30"
@@ -97,7 +94,8 @@
                                  FontWeight="Regular"
                                  BorderThickness="0"
                                  FontSize="11"
-                                 Padding="5,1,0,0"/>
+                                 Padding="5,1,0,0"
+                                 Text="{Binding ComboBoxQueryQuantity}"/>
                     </Border>
 
 
@@ -255,7 +253,12 @@
                         </Expander>
                     </DockPanel>
 
-
+                    <!-- WPF doesnt pass down the datacontext to children in a datagrid.
+                         Children in a datagrid also dont have a way to set their own datacontext.
+                    
+                         The only functional workaround i found is to create a dummyElement
+                         (which by default inherits the datacontext) and using that as a source
+                         when binding-->
                     <FrameworkElement Name="dummyElement" />
                     <DataGrid Name="BookstoreInventoryDatagrid"
                               Grid.Row="1"
@@ -270,6 +273,7 @@
                               AlternatingRowBackground="#323341"
                               ItemsSource="{Binding InventoryDatagrid}">
                         <DataGrid.Columns>
+                            <!-- It was the only way. I had to repeat the code. -->
                             <DataGridTextColumn Header="ISBN" Binding="{Binding Path=ISBN}"
                                                 Visibility="{Binding 
                                 Source={x:Reference dummyElement},
