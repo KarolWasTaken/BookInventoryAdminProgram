@@ -26,6 +26,7 @@ namespace BookInventoryAdminProgram.Commands
         public override void Execute(object? parameter)
         {
             FilteringDatabase fd = new FilteringDatabase();
+            bool filterData = false;
             if (fd.CheckForErrors(_errorsViewModel, _inventoryPanelViewModel))
                 return;
 
@@ -35,18 +36,32 @@ namespace BookInventoryAdminProgram.Commands
             List<BookInfo> database = DatabaseStore.updateDatastore();
             IQueryable<BookInfo> query = database.AsQueryable();
 
-
-            // Construct the filtering condition based on the criteria         
-            string filterExpression = $"{inputs["PropertyName"]}.Any({inputs["PropertyName"]}Item => {inputs["PropertyName"]}Item.{inputs["FieldName"]} {inputs["Condition"]} {inputs["FilterValue"]})";
+            if (!(inputs["PropertyName"] == null && inputs["FieldName"] == null && inputs["Condition"] == null && inputs["FilterValue"] == null))
+            {
+                // Construct the filtering condition based on the criteria         
+                string filterExpression = $"{inputs["PropertyName"]}.Any({inputs["PropertyName"]}Item => {inputs["PropertyName"]}Item.{inputs["FieldName"]} {inputs["Condition"]} {inputs["FilterValue"]})";
             
-            // Use Dynamic LINQ to filter the data
-            query = query.Where(filterExpression);
+                // Use Dynamic LINQ to filter the data
+                query = query.Where(filterExpression);
+                filterData = true;
+            }
 
+            if (inputs["FilterBookName"] != null)
+            {
+                query = query.Where(n => n.Title.ToUpper().StartsWith(inputs["FilterBookName"].ToUpper()));
+                filterData = true;
+            }
+
+            
             // Filtered result in the 'query' variable
-            List<BookInfo> filteredResults = query.ToList();
-            
+            if(filterData)
+            {
+                List<BookInfo> filteredResults = query.ToList();
+                _inventoryPanelViewModel.InventoryDatagrid = filteredResults;
+            }
+
             // Update datagrid in inventoryView
-            _inventoryPanelViewModel.InventoryDatagrid = filteredResults; 
+            
         }
     }
 }

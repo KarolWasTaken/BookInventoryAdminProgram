@@ -23,22 +23,19 @@ namespace BookInventoryAdminProgram.ViewModel
         private List<string> _salesComboBoxOptions = new List<string> {"Sales", "Revenue"};
         public List<string> SalesComboBoxOptions
         { get => _salesComboBoxOptions; set => _salesComboBoxOptions = value; }
-        
-        
         private List<string> _typeComboBoxOptions = new List<string> {"Daily","Monthly","Yearly","All-Time" };
         public List<string> TypeComboBoxOptions
         { get => _typeComboBoxOptions; set => _typeComboBoxOptions = value; }
-        
-        
         private List<string> _modifierComboBoxOptions = new List<string> {"Greater than","Less than","Equal to"};
         public List<string> ModifierComboBoxOptions
         { get => _modifierComboBoxOptions; set => _modifierComboBoxOptions = value; }
-
-
-        //public ObservableCollection<ComboBoxSelectedCollection> SelectedItem = new ObservableCollection<ComboBoxSelectedCollection>();
+        public Dictionary<string, bool> HasValue = new Dictionary<string, bool>()
+        {
+            {"Sales", false}, {"Type", false}, {"Modifier", false}
+        };
         private Dictionary<string, string> _selectedItem = new Dictionary<string, string>
         {
-            {"Sales", ""}, {"Type", ""}, {"Modifier", ""}
+            {"Sales", null}, {"Type", null}, {"Modifier", null}
         };
         public Dictionary<string, string> SelectedItem
         {
@@ -53,10 +50,25 @@ namespace BookInventoryAdminProgram.ViewModel
                 OnPropertyChanged(nameof(SelectedItem));
             }
         }
+        private Dictionary<string,string> _comboBoxTypedText = new Dictionary<string, string>
+        {
+            {"Sales", null}, {"Type", null}, {"Modifier", null}
+        };
+        public Dictionary<string,string> ComboBoxTypedText
+        {
+            get
+            {
+                return _comboBoxTypedText;
+            }
+            set
+            {
+                _comboBoxTypedText = value;
+                OnPropertyChanged(nameof(ComboBoxTypedText));
+            }
+        }
 
-        
 
-        private string _comboBoxQueryQuantity;
+        private string _comboBoxQueryQuantity = null;
         public string ComboBoxQueryQuantity
         {
             get
@@ -65,9 +77,24 @@ namespace BookInventoryAdminProgram.ViewModel
             }
             set
             {
-                _comboBoxQueryQuantity = value;
-                //MessageBox.Show($"Sales: {SelectedItem["Sales"]}\nType: {SelectedItem["Type"]}\nModifier: {SelectedItem["Modifier"]}"); debug
+                if (value == "")
+                    _comboBoxQueryQuantity = null;
+                else
+                    _comboBoxQueryQuantity = value;
                 OnPropertyChanged(nameof(ComboBoxQueryQuantity));
+            }
+        }
+        private string _searchFieldValue;
+        public string SearchFieldValue
+        {
+            get
+            {
+                return _searchFieldValue;
+            }
+            set
+            {
+                _searchFieldValue = value;
+                OnPropertyChanged(nameof(SearchFieldValue));
             }
         }
 
@@ -89,8 +116,6 @@ namespace BookInventoryAdminProgram.ViewModel
 				OnPropertyChanged(nameof(InventoryDatagrid));
 			}
 		}
-
-        
         // all the checkbuttons bind to this. When check/uncheck it reflects here
         private Dictionary<string, bool> _headerVisibility = new Dictionary<string, bool>
         {
@@ -113,7 +138,7 @@ namespace BookInventoryAdminProgram.ViewModel
         }
         /// <summary>
         /// Because the goddamn setter wont run on this cursed Dict, i need to make 
-        /// a method to run in it's stread.
+        /// a method to run in it's stead.
         /// </summary>
         /// <param name="key"></param>
         /// <param name="value"></param>

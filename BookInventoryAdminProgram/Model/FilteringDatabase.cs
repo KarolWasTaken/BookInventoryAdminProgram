@@ -14,7 +14,7 @@ namespace BookInventoryAdminProgram.Model
         /// Gets all the inputs required for a filter operation in the InventoryViewModel.
         /// Returns them as a Dict(str,str).
         /// 
-        /// Keys: PropertyName, FieldName, Condition, FilterValue.
+        /// Keys: PropertyName, FieldName, Condition, FilterValue, FilterBookName.
         /// </summary>
         /// <param name="InvenPanelviewModel"></param>
         /// <returns></returns>
@@ -40,6 +40,9 @@ namespace BookInventoryAdminProgram.Model
                 case "All-Time":
                     propertyName = "AllTimeSales";
                     break;
+                case null:
+                    propertyName = null;
+                    break;
                 default:
                     //propertyName = "Invalid choice"; // Handle invalid input
                     break;
@@ -52,6 +55,9 @@ namespace BookInventoryAdminProgram.Model
                     break;
                 case "Sales":
                     fieldName = "QuantitySold";
+                    break;
+                case null: 
+                    fieldName = null;
                     break;
                 default:
                     throw new Exception("Input not recognised. Ill handle this later probably");
@@ -69,18 +75,23 @@ namespace BookInventoryAdminProgram.Model
                 case "Equal to":
                     condition = "==";
                     break;
+                case null:
+                    condition = null;
+                    break;
                 default:
                     throw new Exception("Input not recognised. Ill handle this later probably");
                     break;
             }
             string filterValue = InvenPanelviewModel.ComboBoxQueryQuantity;
+            string filterBookName = InvenPanelviewModel.SearchFieldValue;
 
             return new Dictionary<string, string>
             {
                 { "PropertyName", propertyName },
                 { "FieldName", fieldName },
                 { "Condition", condition },
-                { "FilterValue", filterValue }
+                { "FilterValue", filterValue },
+                { "FilterBookName", filterBookName },
             };
         }
         /// <summary>
@@ -90,28 +101,41 @@ namespace BookInventoryAdminProgram.Model
         /// <param name="errorsViewModel"></param>
         /// <param name="InvenPanelviewModel"></param>
         /// <returns></returns>
-        public bool CheckForErrors(ErrorsViewModel errorsViewModel, InventoryPanelViewModel InvenPanelviewModel)
+        public bool CheckForErrors(ErrorsViewModel errorsViewModel, InventoryPanelViewModel ip)
         {
-            // sorry god
-            errorsViewModel.RemoveError(nameof(InvenPanelviewModel.ComboBoxQueryQuantity));
-            errorsViewModel.RemoveError(nameof(InvenPanelviewModel.SalesComboBoxOptions));
-            errorsViewModel.RemoveError(nameof(InvenPanelviewModel.TypeComboBoxOptions));
-            errorsViewModel.RemoveError(nameof(InvenPanelviewModel.ModifierComboBoxOptions));
+            // fucking filthy code but itll do
+
+            //start by assuming combobox is populated well
+            bool comboBoxDoesntHaveItems = false;
+            errorsViewModel.RemoveError(nameof(ip.ComboBoxQueryQuantity));
+            errorsViewModel.RemoveError(nameof(ip.SalesComboBoxOptions));
+            errorsViewModel.RemoveError(nameof(ip.TypeComboBoxOptions));
+            errorsViewModel.RemoveError(nameof(ip.ModifierComboBoxOptions));
 
             // this needs some tidying up. Will do before release.
-            if (!InvenPanelviewModel.SalesComboBoxOptions.Contains(InvenPanelviewModel.SelectedItem["Sales"]))
-                errorsViewModel.AddError(nameof(InvenPanelviewModel.SalesComboBoxOptions), "Not a recognised operation");
-            if (!InvenPanelviewModel.TypeComboBoxOptions.Contains(InvenPanelviewModel.SelectedItem["Type"]))
-                errorsViewModel.AddError(nameof(InvenPanelviewModel.TypeComboBoxOptions), "Not a recognised operation");
-            if (!InvenPanelviewModel.ModifierComboBoxOptions.Contains(InvenPanelviewModel.SelectedItem["Modifier"]))
-                errorsViewModel.AddError(nameof(InvenPanelviewModel.ModifierComboBoxOptions), "Not a recognised operation");
+            if (!ip.SalesComboBoxOptions.Contains(ip.SelectedItem["Sales"]) && (ip.ComboBoxTypedText["Sales"] != null && ip.ComboBoxTypedText["Sales"] != ""))
+            {
+                errorsViewModel.AddError(nameof(ip.SalesComboBoxOptions), "Not a recognised operation"); comboBoxDoesntHaveItems = true; }
+            if (!ip.TypeComboBoxOptions.Contains(ip.SelectedItem["Type"]) && (ip.ComboBoxTypedText["Type"] != null && ip.ComboBoxTypedText["Type"] != ""))
+            {
+                errorsViewModel.AddError(nameof(ip.TypeComboBoxOptions), "Not a recognised operation"); comboBoxDoesntHaveItems = true; }
+            if (!ip.ModifierComboBoxOptions.Contains(ip.SelectedItem["Modifier"]) && (ip.ComboBoxTypedText["Modifier"] != null && ip.ComboBoxTypedText["Modifier"] != ""))
+            {
+                errorsViewModel.AddError(nameof(ip.ModifierComboBoxOptions), "Not a recognised operation"); comboBoxDoesntHaveItems = true; }
 
-            if (!int.TryParse(InvenPanelviewModel.ComboBoxQueryQuantity, out int i) && InvenPanelviewModel.ComboBoxQueryQuantity != "")
-                errorsViewModel.AddError(nameof(InvenPanelviewModel.ComboBoxQueryQuantity), "Quantity is only a number");
-            else if (InvenPanelviewModel.ComboBoxQueryQuantity == "")
-                errorsViewModel.AddError(nameof(InvenPanelviewModel.ComboBoxQueryQuantity), "Quantity is empty");
-            else if (int.Parse(InvenPanelviewModel.ComboBoxQueryQuantity) < 0)
-                errorsViewModel.AddError(nameof(InvenPanelviewModel.ComboBoxQueryQuantity), "Quantity cant be less than one");
+
+            if((ip.ComboBoxTypedText["Modifier"] == null || ip.ComboBoxTypedText["Modifier"] == "")
+                || (ip.ComboBoxTypedText["Type"] == null || ip.ComboBoxTypedText["Type"] == "")
+                || (ip.ComboBoxTypedText["Sales"] == null || ip.ComboBoxTypedText["Sales"] == ""))
+                comboBoxDoesntHaveItems = true;
+
+            // not a number and not empty => error. Is number and number < 0 => error
+            if (!int.TryParse(ip.ComboBoxQueryQuantity, out int i) && ip.ComboBoxQueryQuantity != null)
+                errorsViewModel.AddError(nameof(ip.ComboBoxQueryQuantity), "Quantity is only a number");
+            else if (int.TryParse(ip.ComboBoxQueryQuantity, out int j) && int.Parse(ip.ComboBoxQueryQuantity) < 0)
+                errorsViewModel.AddError(nameof(ip.ComboBoxQueryQuantity), "Quantity cant be less than one");
+            else if (comboBoxDoesntHaveItems && ip.ComboBoxQueryQuantity != null)
+                errorsViewModel.AddError(nameof(ip.ComboBoxQueryQuantity), "Incomplete query");
 
             if (errorsViewModel.HasErrors)
                 return true;

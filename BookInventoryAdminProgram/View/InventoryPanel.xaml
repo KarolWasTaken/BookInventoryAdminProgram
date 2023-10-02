@@ -66,22 +66,25 @@
                     <ComboBox Width="100" Height="30" adonisExtensions:WatermarkExtension.Watermark="Sales"
                               Margin="0,0,10,0"
                               IsEditable="True"
+                              Text="{Binding ComboBoxTypedText[Sales], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                               ItemsSource="{Binding SalesComboBoxOptions}"
-                              SelectedItem="{Binding SelectedItem[Sales], Mode=TwoWay}">
+                              SelectedItem="{Binding SelectedItem[Sales], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                     </ComboBox>
 
                     <ComboBox Width="100" Height="30" adonisExtensions:WatermarkExtension.Watermark="Type"
                               Margin="0,0,10,0"
                               IsEditable="True"
+                              Text="{Binding ComboBoxTypedText[Type], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                               ItemsSource="{Binding TypeComboBoxOptions}"
-                              SelectedItem="{Binding SelectedItem[Type], Mode=TwoWay}">
+                              SelectedItem="{Binding SelectedItem[Type], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                     </ComboBox>
 
                     <ComboBox Width="100" Height="30" adonisExtensions:WatermarkExtension.Watermark="Modifier"
                               Margin="0,0,10,0"
                               IsEditable="True"
+                              Text="{Binding ComboBoxTypedText[Modifier], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                               ItemsSource="{Binding ModifierComboBoxOptions}"
-                              SelectedItem="{Binding SelectedItem[Modifier], Mode=TwoWay}">
+                              SelectedItem="{Binding SelectedItem[Modifier], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                     </ComboBox>
                     <Border Background="#1f2029" Width="150"
                             Height="30"
@@ -110,6 +113,7 @@
                                      adonisExtensions:CursorSpotlightExtension.RelativeSpotlightSize="0"
                                      Background="Transparent"
                                      FontFamily="{StaticResource Poppins}"
+                                     Text="{Binding SearchFieldValue, UpdateSourceTrigger=PropertyChanged}"
                                      FontWeight="Regular"
                                      BorderThickness="0"
                                      FontSize="11"/>
