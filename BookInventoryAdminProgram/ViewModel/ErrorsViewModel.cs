@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BookInventoryAdminProgram.ViewModel
 {
-    class ErrorsViewModel : INotifyDataErrorInfo
+    public class ErrorsViewModel : INotifyDataErrorInfo
     {
         public readonly Dictionary<string, List<string>> _propertyErrors = new Dictionary<string, List<string>>();
 

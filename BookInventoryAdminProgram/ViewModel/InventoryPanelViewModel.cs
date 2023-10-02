@@ -6,16 +6,18 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Input;
 using static BookInventoryAdminProgram.Stores.DatabaseStore;
 
 namespace BookInventoryAdminProgram.ViewModel
 {
-    public class InventoryPanelViewModel : ViewModelBase
+    public class InventoryPanelViewModel : ViewModelBase, INotifyDataErrorInfo
     {
         // combobox options
         private List<string> _salesComboBoxOptions = new List<string> {"Sales", "Revenue"};
@@ -31,25 +33,28 @@ namespace BookInventoryAdminProgram.ViewModel
         private List<string> _modifierComboBoxOptions = new List<string> {"Greater than","Less than","Equal to"};
         public List<string> ModifierComboBoxOptions
         { get => _modifierComboBoxOptions; set => _modifierComboBoxOptions = value; }
-        
-            
-        //public ObservableCollection<ComboBoxSelectedCollection> SelectedItem = new ObservableCollection<ComboBoxSelectedCollection>();
-        
 
-        private string _selectedItemTest;
-        public string SelectedItemTest
+
+        //public ObservableCollection<ComboBoxSelectedCollection> SelectedItem = new ObservableCollection<ComboBoxSelectedCollection>();
+        private Dictionary<string, string> _selectedItem = new Dictionary<string, string>
+        {
+            {"Sales", ""}, {"Type", ""}, {"Modifier", ""}
+        };
+        public Dictionary<string, string> SelectedItem
         {
             get
             {
-                return _selectedItemTest;
+                return _selectedItem;
             }
             set
             {
-                _selectedItemTest = value;
-                OnPropertyChanged(nameof(SelectedItemTest));
+                // I have no words.This doesnt run yet the dict still updates.
+                _selectedItem = value;
+                OnPropertyChanged(nameof(SelectedItem));
             }
         }
 
+        
 
         private string _comboBoxQueryQuantity;
         public string ComboBoxQueryQuantity
@@ -61,6 +66,7 @@ namespace BookInventoryAdminProgram.ViewModel
             set
             {
                 _comboBoxQueryQuantity = value;
+                //MessageBox.Show($"Sales: {SelectedItem["Sales"]}\nType: {SelectedItem["Type"]}\nModifier: {SelectedItem["Modifier"]}"); debug
                 OnPropertyChanged(nameof(ComboBoxQueryQuantity));
             }
         }
@@ -89,7 +95,7 @@ namespace BookInventoryAdminProgram.ViewModel
         private Dictionary<string, bool> _headerVisibility = new Dictionary<string, bool>
         {
             { "ISBN", true },{ "Title", true }, { "Author", true }, { "Genre", true }, { "ReleaseDate", true },
-            { "Publisher", true }, { "AllTimeSales", false }, { "YearlySales", true }, { "MonthlySales", true },
+            { "Publisher", true }, { "AllTimeSales", true }, { "YearlySales", true }, { "MonthlySales", true },
             { "DailySales", true }
         };
         public Dictionary<string, bool> HeaderVisibility
@@ -118,6 +124,7 @@ namespace BookInventoryAdminProgram.ViewModel
         }
 
         public ICommand ToggleHeaderVisibilityCommand { get; }
+        public ICommand InventorySearchButtonCommand { get; }
 
 
         private readonly ErrorsViewModel _errorsViewModel;
@@ -125,11 +132,12 @@ namespace BookInventoryAdminProgram.ViewModel
         public bool HasErrors => _errorsViewModel.HasErrors;
         public InventoryPanelViewModel()
         {
-            ToggleHeaderVisibilityCommand = new ToggleHeaderVisibilityCommand(HeaderVisibility, SetDictionary);
-            InventoryDatagrid = DatabaseStore.updateDatastore();
-
             _errorsViewModel = new ErrorsViewModel();
             _errorsViewModel.ErrorsChanged += ErrorsViewModel_ErrorsChanged;
+            InventoryDatagrid = DatabaseStore.updateDatastore();
+
+            ToggleHeaderVisibilityCommand = new ToggleHeaderVisibilityCommand(HeaderVisibility, SetDictionary);
+            InventorySearchButtonCommand = new InventorySearchButtonCommand(this, _errorsViewModel);
         }
 
 

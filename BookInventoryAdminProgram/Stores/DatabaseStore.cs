@@ -11,6 +11,9 @@ namespace BookInventoryAdminProgram.Stores
 {
     public class DatabaseStore
     {
+        /// <summary>
+        /// Class that stores database data
+        /// </summary>
         public class BookInfo
         {
             public string ISBN { get; set; }
@@ -20,8 +23,7 @@ namespace BookInventoryAdminProgram.Stores
             public List<string> Genres { get; set; }
             public DateTime? ReleaseDate { get; set; }
             public string PublisherName { get; set; }
-            public int AllTimeSales { get; set; }
-            public double AllTimeRevenue { get; set; }
+            public List<AllTimeSales> AllTimeSales { get; set; }
             public List<YearlySales> YearlySales { get; set; }
             public List<MonthlySales> MonthlySales { get; set; }
             public List<DailySales> DailySales { get; set; }
@@ -42,6 +44,11 @@ namespace BookInventoryAdminProgram.Stores
         public class YearlySales
         {
             public int SalesYear { get; set; }
+            public int QuantitySold { get; set; }
+            public double Revenue { get; set; }
+        }
+        public class AllTimeSales
+        {
             public int QuantitySold { get; set; }
             public double Revenue { get; set; }
         }
@@ -78,6 +85,13 @@ namespace BookInventoryAdminProgram.Stores
             public int QuantitySold { get; set; }
             public double Revenue { get; set; }
         }
+        public class AllTimeSalesSQL
+        {
+            public int SalesYear { get; set; }
+            public int BookID { get; set; }
+            public int QuantitySold { get; set; }
+            public double Revenue { get; set; }
+        }
 
         /// <summary>
         /// Updates variable that holds database store. 
@@ -92,6 +106,7 @@ namespace BookInventoryAdminProgram.Stores
             List<DailySalesSQL> dailySalesSQL;
             List<MonthlySalesSQL> monthlySalesSQL;
             List<YearlySalesSQL> yearlySalesSQL;
+            List<AllTimeSalesSQL> allTimeSalesSQL;
 
             using (IDbConnection dbConnection = new SqlConnection(Helper.CnnVal()))
             {
@@ -103,6 +118,7 @@ namespace BookInventoryAdminProgram.Stores
                 yearlySalesSQL = results.Read<YearlySalesSQL>().ToList();
                 monthlySalesSQL = results.Read<MonthlySalesSQL>().ToList();
                 dailySalesSQL = results.Read<DailySalesSQL>().ToList();
+                allTimeSalesSQL = results.Read<AllTimeSalesSQL>().ToList();
             }
 
             // this bit perfroms a JOIN-like operation on genreList and authorList
@@ -130,6 +146,14 @@ namespace BookInventoryAdminProgram.Stores
             {
                 int bookID = bookInfo.BookID;
 
+
+                var allTimeSales = allTimeSalesSQL.Where(s => s.BookID == bookID && s.QuantitySold > 0).ToList();
+                bookInfo.AllTimeSales = allTimeSales.Select(s => new AllTimeSales
+                {
+                    QuantitySold = s.QuantitySold,
+                    Revenue = s.Revenue
+                }).ToList();
+
                 // Join YearlySalesSQL data
                 var yearlySales = yearlySalesSQL.Where(s => s.BookID == bookID).ToList();
                 bookInfo.YearlySales = yearlySales.Select(s => new YearlySales
@@ -150,7 +174,12 @@ namespace BookInventoryAdminProgram.Stores
                 }).ToList();
 
                 // Join DailySalesSQL data
-                var dailySales = dailySalesSQL.Where(s => s.BookID == bookID).ToList();
+                // daily sales does this annoying thing that even if it has no sales, because there is a datetime,
+                // it'll still display on the datagrid as datetime: 0001 12am, quanSold 0, reven 0 instead of not having
+                // anything like the others
+                var dailySales = dailySalesSQL
+                .Where(s => s.BookID == bookID && s.QuantitySold > 0) // Filter out entries with QuantitySold == 0
+                .ToList();
                 bookInfo.DailySales = dailySales.Select(s => new DailySales
                 {
                     SalesDate = s.SalesDate,
@@ -158,7 +187,7 @@ namespace BookInventoryAdminProgram.Stores
                     Revenue = s.Revenue
                 }).ToList();
 
-
+                // Matches up authors to their coresponding books. Likewise for genre.
                 if (bookAuthorDictionary.ContainsKey(bookInfo.BookID))
                 {
                     bookInfo.Authors = bookAuthorDictionary[bookInfo.BookID];

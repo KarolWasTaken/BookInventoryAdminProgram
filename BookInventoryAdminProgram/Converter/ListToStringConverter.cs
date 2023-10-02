@@ -16,7 +16,7 @@ namespace BookInventoryAdminProgram.Converter
             if (value is List<string> stringList) 
             {
                 // converts List<string> to string of comma seperated values
-                List<string> sortedList = FilterMethod.MergeSort(stringList);
+                List<string> sortedList = FilteringDatabase.MergeSort(stringList);
                 return string.Join(", ", sortedList);
             }
 

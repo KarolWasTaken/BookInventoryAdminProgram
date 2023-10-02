@@ -67,21 +67,21 @@
                               Margin="0,0,10,0"
                               IsEditable="True"
                               ItemsSource="{Binding SalesComboBoxOptions}"
-                              SelectedItem="{Binding SelectedItemTest}">
+                              SelectedItem="{Binding SelectedItem[Sales], Mode=TwoWay}">
                     </ComboBox>
 
                     <ComboBox Width="100" Height="30" adonisExtensions:WatermarkExtension.Watermark="Type"
                               Margin="0,0,10,0"
                               IsEditable="True"
                               ItemsSource="{Binding TypeComboBoxOptions}"
-                              SelectedItem="{Binding SelectedItemTest}">
+                              SelectedItem="{Binding SelectedItem[Type], Mode=TwoWay}">
                     </ComboBox>
 
                     <ComboBox Width="100" Height="30" adonisExtensions:WatermarkExtension.Watermark="Modifier"
                               Margin="0,0,10,0"
                               IsEditable="True"
                               ItemsSource="{Binding ModifierComboBoxOptions}"
-                              SelectedItem="{Binding SelectedItemTest}">
+                              SelectedItem="{Binding SelectedItem[Modifier], Mode=TwoWay}">
                     </ComboBox>
                     <Border Background="#1f2029" Width="150"
                             Height="30"
@@ -95,7 +95,7 @@
                                  BorderThickness="0"
                                  FontSize="11"
                                  Padding="5,1,0,0"
-                                 Text="{Binding ComboBoxQueryQuantity}"/>
+                                 Text="{Binding ComboBoxQueryQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     </Border>
 
 
@@ -121,7 +121,8 @@
                                 Width="40"
                                 Background="#1f2029"
                                 BorderThickness="0"
-                                Padding="0,0,1,0"/>
+                                Padding="0,0,1,0"
+                                Command="{Binding InventorySearchButtonCommand}"/>
 
                     </DockPanel>
                 </DockPanel>
@@ -310,9 +311,43 @@
                                 Source={x:Reference dummyElement},
                                 Path=DataContext.HeaderVisibility[Publisher],
                                 Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                            
+
                             <!-- Only God knows why i cant puts rowbackgrounds in
                                  the styling and have them work -->
+                            <!--DataGridTemplateColumn Header="All-Time Sales" Visibility="{Binding 
+                                Source={x:Reference dummyElement},
+                                Path=DataContext.HeaderVisibility[AllTimeSales],
+                                Converter={StaticResource BooleanToVisibilityConverter}}">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <DataGrid ItemsSource="{Binding InventoryDatagrid}"
+                                                  Style="{StaticResource InnerDataGridStyle}"
+                                                  RowBackground="#262630"
+                                                  AlternatingRowBackground="#323341">
+                                            <DataGridTextColumn Header="QuantitySold" Binding="{Binding Path=AllTimeSales}"/>
+                                            <DataGridTextColumn Header="Revenue" Binding="{Binding Path=AllTimeRevenue}"/>
+                                        </DataGrid>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn-->
+                            <DataGridTemplateColumn Header="AllTimeSales"
+                                                    Visibility="{Binding 
+                                Source={x:Reference dummyElement},
+                                Path=DataContext.HeaderVisibility[AllTimeSales],
+                                Converter={StaticResource BooleanToVisibilityConverter}}">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <!-- Bind to the properties of the current BookInfo item -->
+                                        <DataGrid ItemsSource="{Binding AllTimeSales}"
+                                                  Style="{StaticResource InnerDataGridStyle}"
+                                                  RowBackground="#262630"
+                                                  AlternatingRowBackground="#323341"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+
+
                             <DataGridTemplateColumn Header="Yearly Sales" Visibility="{Binding 
                                 Source={x:Reference dummyElement},
                                 Path=DataContext.HeaderVisibility[YearlySales],
