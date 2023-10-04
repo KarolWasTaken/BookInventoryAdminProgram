@@ -16,7 +16,7 @@ namespace BookInventoryAdminProgram
         /// Returns connection string for BookstoreInventoryDB
         /// </summary>
         /// <returns></returns>
-        public static string? CnnVal ()
+        public static string? CnnVal()
         {
             IConfigurationRoot config = new ConfigurationBuilder()
             .AddJsonFile("appsettings.json")
