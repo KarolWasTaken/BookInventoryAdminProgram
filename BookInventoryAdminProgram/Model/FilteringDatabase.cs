@@ -9,7 +9,6 @@ namespace BookInventoryAdminProgram.Model
 {
     public class FilteringDatabase
     {
-
         /// <summary>
         /// Gets all the inputs required for a filter operation in the InventoryViewModel.
         /// Returns them as a Dict(str,str).
