@@ -1,4 +1,5 @@
 ﻿using BookInventoryAdminProgram.Commands;
+using BookInventoryAdminProgram.Model;
 using BookInventoryAdminProgram.Stores;
 using System;
 using System.Collections;
@@ -19,6 +20,7 @@ namespace BookInventoryAdminProgram.ViewModel
 {
     public class InventoryPanelViewModel : ViewModelBase, INotifyDataErrorInfo
     {
+        private static List<BookInfo> mainDataBase = DatabaseStore.updateDatastore();
         // combobox options
         private List<string> _salesComboBoxOptions = new List<string> {"Sales", "Revenue"};
         public List<string> SalesComboBoxOptions
@@ -84,6 +86,8 @@ namespace BookInventoryAdminProgram.ViewModel
                 OnPropertyChanged(nameof(ComboBoxQueryQuantity));
             }
         }
+
+        // Search Bar
         private string _searchFieldValue;
         public string SearchFieldValue
         {
@@ -98,8 +102,25 @@ namespace BookInventoryAdminProgram.ViewModel
             }
         }
 
+        // Author Search
+        private List<string> _presentAuthorList = FilteringDatabase.MergeSort(mainDataBase
+            .SelectMany(book => book.Authors)
+            .Distinct()
+            .ToList()
+            );
+        public List<string> PresentAuthorList
+        { get => _presentAuthorList; set => _presentAuthorList = value; }
 
 
+
+        // GenreSearch
+        private List<string> _presentGenreList = FilteringDatabase.MergeSort(mainDataBase
+            .SelectMany(book => book.Genres)
+            .Distinct()
+            .ToList()
+            );
+        public List<string> PresentGenreList
+        { get => _presentGenreList; set => _presentGenreList = value; }
 
 
         // datagrid property
@@ -157,9 +178,10 @@ namespace BookInventoryAdminProgram.ViewModel
         public bool HasErrors => _errorsViewModel.HasErrors;
         public InventoryPanelViewModel()
         {
+            _headerVisibility = Helper.ReturnSettings().HeaderVisibilitiesSerialised;
             _errorsViewModel = new ErrorsViewModel();
             _errorsViewModel.ErrorsChanged += ErrorsViewModel_ErrorsChanged;
-            InventoryDatagrid = DatabaseStore.updateDatastore();
+            InventoryDatagrid = mainDataBase;
 
             ToggleHeaderVisibilityCommand = new ToggleHeaderVisibilityCommand(HeaderVisibility, SetDictionary);
             InventorySearchButtonCommand = new InventorySearchButtonCommand(this, _errorsViewModel);

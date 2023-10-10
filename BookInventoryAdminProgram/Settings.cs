@@ -10,5 +10,6 @@ namespace BookInventoryAdminProgram
     public class Settings
     {
         public string ConnectionString { get; set; }
+        public Dictionary<string, bool> HeaderVisibilitiesSerialised { get; set; }
     }
 }

@@ -144,8 +144,9 @@
                                   IsExpanded="True">
                             <WrapPanel Orientation="Horizontal" Margin="0,10,0,0">
                                 <ComboBox Width="90" Height="30" adonisExtensions:WatermarkExtension.Watermark="Author"
-                                  Margin="0,0,10,0"
-                                  IsEditable="True">
+                                          Margin="0,0,10,0"
+                                          IsEditable="True"
+                                          ItemsSource="{Binding PresentAuthorList, Mode=OneWay}">
                                     <!--ComboBoxItem Content="Stock"></ComboBoxItem-->
                                 </ComboBox>
 
@@ -182,8 +183,8 @@
                             <WrapPanel Orientation="Horizontal" Margin="0,10,0,0">
                                 <ComboBox Width="90" Height="30" adonisExtensions:WatermarkExtension.Watermark="Genre"
                                   Margin="0,0,10,0"
-                                  IsEditable="True">
-                                    <!--ComboBoxItem Content="Stock"></ComboBoxItem-->
+                                  IsEditable="True"
+                                  ItemsSource="{Binding PresentGenreList, Mode=OneWay}">
                                 </ComboBox>
 
                                 <Button Content="Add"

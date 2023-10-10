@@ -22,6 +22,10 @@ namespace BookInventoryAdminProgram.Commands
 
         public override void Execute(object? parameter)
         {
+
+            // updates appsettings.json to hold new visibility dict
+            Helper.UpdateHeaderVisibilityJson(HeaderVisibility);
+
             // Hours wasted: 3
             
             // Literally only God knows why this code wont work without the below line

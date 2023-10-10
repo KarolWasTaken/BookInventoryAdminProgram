@@ -109,7 +109,7 @@ namespace BookInventoryAdminProgram.Stores
             List<YearlySalesSQL> yearlySalesSQL;
             List<AllTimeSalesSQL> allTimeSalesSQL;
 
-            using (IDbConnection dbConnection = new SqlConnection(Helper.CnnVal()))
+            using (IDbConnection dbConnection = new SqlConnection(Helper.ReturnSettings().ConnectionString))
             {
                 mainDataSet = dbConnection.Query<BookInfo>("spGetDatabaseTestProcedure").ToList();
                 authorList = dbConnection.Query<BookAuthor>("spGetBookAuthor").ToList();

@@ -40,15 +40,15 @@ namespace BookInventoryAdminProgram
         {
             UserInfoStore userInfoStore = new UserInfoStore();
             List<BookInfo> maindataset = DatabaseStore.updateDatastore();
-
+            
             OpenLoginWindow();
             //OpenMainWindow();
-
+            
 
             // check whether or not the server an be reached.
             try
             {
-                using (SqlConnection connection = new SqlConnection(Helper.CnnVal()))
+                using (SqlConnection connection = new SqlConnection(Helper.ReturnSettings().ConnectionString))
                 {
                     connection.Open(); // Try to open the connection
                 }
