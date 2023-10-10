@@ -102,9 +102,9 @@ namespace BookInventoryAdminProgram.Model
         /// <returns></returns>
         public bool CheckForErrors(ErrorsViewModel errorsViewModel, InventoryPanelViewModel ip)
         {
-            // fucking filthy code but itll do
+            // fucking filthy code
+            // may God have mercy on my soul
 
-            //start by assuming combobox is populated well
             bool comboBoxDoesntHaveItems = false;
             errorsViewModel.RemoveError(nameof(ip.ComboBoxQueryQuantity));
             errorsViewModel.RemoveError(nameof(ip.SalesComboBoxOptions));
@@ -113,14 +113,11 @@ namespace BookInventoryAdminProgram.Model
 
             // this needs some tidying up. Will do before release.
             if (!ip.SalesComboBoxOptions.Contains(ip.SelectedItem["Sales"]) && (ip.ComboBoxTypedText["Sales"] != null && ip.ComboBoxTypedText["Sales"] != ""))
-            {
-                errorsViewModel.AddError(nameof(ip.SalesComboBoxOptions), "Not a recognised operation"); comboBoxDoesntHaveItems = true; }
+            { errorsViewModel.AddError(nameof(ip.SalesComboBoxOptions), "Not a recognised operation"); comboBoxDoesntHaveItems = true; }
             if (!ip.TypeComboBoxOptions.Contains(ip.SelectedItem["Type"]) && (ip.ComboBoxTypedText["Type"] != null && ip.ComboBoxTypedText["Type"] != ""))
-            {
-                errorsViewModel.AddError(nameof(ip.TypeComboBoxOptions), "Not a recognised operation"); comboBoxDoesntHaveItems = true; }
+            { errorsViewModel.AddError(nameof(ip.TypeComboBoxOptions), "Not a recognised operation"); comboBoxDoesntHaveItems = true; }
             if (!ip.ModifierComboBoxOptions.Contains(ip.SelectedItem["Modifier"]) && (ip.ComboBoxTypedText["Modifier"] != null && ip.ComboBoxTypedText["Modifier"] != ""))
-            {
-                errorsViewModel.AddError(nameof(ip.ModifierComboBoxOptions), "Not a recognised operation"); comboBoxDoesntHaveItems = true; }
+            { errorsViewModel.AddError(nameof(ip.ModifierComboBoxOptions), "Not a recognised operation"); comboBoxDoesntHaveItems = true; }
 
 
             if((ip.ComboBoxTypedText["Modifier"] == null || ip.ComboBoxTypedText["Modifier"] == "")
@@ -128,7 +125,6 @@ namespace BookInventoryAdminProgram.Model
                 || (ip.ComboBoxTypedText["Sales"] == null || ip.ComboBoxTypedText["Sales"] == ""))
                 comboBoxDoesntHaveItems = true;
 
-            // not a number and not empty => error. Is number and number < 0 => error
             if (!int.TryParse(ip.ComboBoxQueryQuantity, out int i) && ip.ComboBoxQueryQuantity != null)
                 errorsViewModel.AddError(nameof(ip.ComboBoxQueryQuantity), "Quantity is only a number");
             else if (int.TryParse(ip.ComboBoxQueryQuantity, out int j) && int.Parse(ip.ComboBoxQueryQuantity) < 0)

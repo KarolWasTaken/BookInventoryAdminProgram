@@ -36,6 +36,9 @@ namespace BookInventoryAdminProgram.Commands
             // update here to ensure we are using most up to date version of db
             List<BookInfo> database = DatabaseStore.updateDatastore();
             IQueryable<BookInfo> query = database.AsQueryable();
+            bool areComboBoxesEmpty = inputs["PropertyName"] == null && inputs["FieldName"] == null && inputs["Condition"] == null && inputs["FilterValue"] == null;
+
+
 
             if (inputs["PropertyName"] != null && inputs["FieldName"] != null && inputs["Condition"] != null && inputs["FilterValue"] != null)
             {
