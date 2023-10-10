@@ -8,6 +8,7 @@ using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Linq.Dynamic.Core.CustomTypeProviders;
 using System.Reflection;
+using System.Windows;
 using static BookInventoryAdminProgram.Stores.DatabaseStore;
 
 namespace BookInventoryAdminProgram.Commands
@@ -36,7 +37,7 @@ namespace BookInventoryAdminProgram.Commands
             List<BookInfo> database = DatabaseStore.updateDatastore();
             IQueryable<BookInfo> query = database.AsQueryable();
 
-            if (!(inputs["PropertyName"] == null && inputs["FieldName"] == null && inputs["Condition"] == null && inputs["FilterValue"] == null))
+            if (inputs["PropertyName"] != null && inputs["FieldName"] != null && inputs["Condition"] != null && inputs["FilterValue"] != null)
             {
                 // Construct the filtering condition based on the criteria         
                 string filterExpression = $"{inputs["PropertyName"]}.Any({inputs["PropertyName"]}Item => {inputs["PropertyName"]}Item.{inputs["FieldName"]} {inputs["Condition"]} {inputs["FilterValue"]})";

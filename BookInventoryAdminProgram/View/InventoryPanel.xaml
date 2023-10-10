@@ -225,18 +225,21 @@
                                         <CheckBox Content="Title" IsChecked="{Binding HeaderVisibility[Title]}"
                                                   Command="{Binding ToggleHeaderVisibilityCommand}"
                                                   CommandParameter="Title"/>
+                                        <CheckBox Content="Price" IsChecked="{Binding HeaderVisibility[Price]}"
+                                                  Command="{Binding ToggleHeaderVisibilityCommand}"
+                                                  CommandParameter="Price"/>
                                         <CheckBox Content="Author" IsChecked="{Binding HeaderVisibility[Author]}"
                                                   Command="{Binding ToggleHeaderVisibilityCommand}"
                                                   CommandParameter="Author"/>
                                         <CheckBox Content="Genre" IsChecked="{Binding HeaderVisibility[Genre]}"
                                                   Command="{Binding ToggleHeaderVisibilityCommand}"
                                                   CommandParameter="Genre"/>
-                                        <CheckBox Content="ReleaseDate" IsChecked="{Binding HeaderVisibility[ReleaseDate]}"
-                                                  Command="{Binding ToggleHeaderVisibilityCommand}"
-                                                  CommandParameter="ReleaseDate"/>
 
                                     </StackPanel>
                                     <StackPanel Margin="0,0,10,0">
+                                        <CheckBox Content="ReleaseDate" IsChecked="{Binding HeaderVisibility[ReleaseDate]}"
+                                                  Command="{Binding ToggleHeaderVisibilityCommand}"
+                                                  CommandParameter="ReleaseDate"/>
                                         <CheckBox Content="Publisher" IsChecked="{Binding HeaderVisibility[Publisher]}"
                                                   Command="{Binding ToggleHeaderVisibilityCommand}"
                                                   CommandParameter="Publisher"/>
@@ -249,6 +252,8 @@
                                         <CheckBox Content="Monthly Sales" IsChecked="{Binding HeaderVisibility[MonthlySales]}"
                                                   Command="{Binding ToggleHeaderVisibilityCommand}"
                                                   CommandParameter="MonthlySales"/>
+                                    </StackPanel>
+                                    <StackPanel Margin="0,0,10,0">
                                         <CheckBox Content="Daily Sales" IsChecked="{Binding HeaderVisibility[DailySales]}"
                                                   Command="{Binding ToggleHeaderVisibilityCommand}"
                                                   CommandParameter="DailySales"/>
@@ -288,6 +293,11 @@
                                                 Visibility="{Binding 
                                 Source={x:Reference dummyElement},
                                 Path=DataContext.HeaderVisibility[Title],
+                                Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                            <DataGridTextColumn Header="Price (£)" Binding="{Binding Path=Price}"
+                                                Visibility="{Binding 
+                                Source={x:Reference dummyElement},
+                                Path=DataContext.HeaderVisibility[Price],
                                 Converter={StaticResource BooleanToVisibilityConverter}}"/>
                             <DataGridTextColumn Header="Author" Binding="{Binding Path=Authors,Converter={StaticResource ListToStringConverter}}"
                                                 Visibility="{Binding 

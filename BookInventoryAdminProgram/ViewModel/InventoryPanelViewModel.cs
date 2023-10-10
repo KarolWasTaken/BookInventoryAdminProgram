@@ -119,7 +119,7 @@ namespace BookInventoryAdminProgram.ViewModel
         // all the checkbuttons bind to this. When check/uncheck it reflects here
         private Dictionary<string, bool> _headerVisibility = new Dictionary<string, bool>
         {
-            { "ISBN", true },{ "Title", true }, { "Author", true }, { "Genre", true }, { "ReleaseDate", true },
+            { "ISBN", true },{ "Title", true }, {"Price", true },  { "Author", true }, { "Genre", true }, { "ReleaseDate", true },
             { "Publisher", true }, { "AllTimeSales", true }, { "YearlySales", true }, { "MonthlySales", true },
             { "DailySales", true }
         };
