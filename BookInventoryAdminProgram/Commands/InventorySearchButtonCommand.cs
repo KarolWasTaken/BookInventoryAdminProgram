@@ -36,10 +36,10 @@ namespace BookInventoryAdminProgram.Commands
             List<BookInfo> database = DatabaseStore.updateDatastore();
             IQueryable<BookInfo> query = database.AsQueryable();
             bool areComboBoxesEmpty = inputs["PropertyName"] == null && inputs["FieldName"] == null && inputs["Condition"] == null && inputs["FilterValue"] == null;
+            bool isSearchFieldEmpty = inputs["FilterBookName"] == null;
 
 
-
-            if (!(inputs["PropertyName"] == null && inputs["FieldName"] == null && inputs["Condition"] == null && inputs["FilterValue"] == null))
+            if (!areComboBoxesEmpty)
             {
                 // Construct the filtering condition based on the criteria         
                 string filterExpression = $"{inputs["PropertyName"]}.Any({inputs["PropertyName"]}Item => {inputs["PropertyName"]}Item.{inputs["FieldName"]} {inputs["Condition"]} {inputs["FilterValue"]})";
@@ -49,7 +49,7 @@ namespace BookInventoryAdminProgram.Commands
                 filterData = true;
             }
 
-            if (inputs["FilterBookName"] != null)
+            if (!isSearchFieldEmpty)
             {
                 query = query.Where(n => n.Title.ToUpper().StartsWith(inputs["FilterBookName"].ToUpper()));
                 filterData = true;

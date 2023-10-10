@@ -69,8 +69,6 @@ namespace BookInventoryAdminProgram.Commands
             _openMainWindow?.Invoke();
             // command responsible for chaning viewmodel which changes the view and datacontext
             _navigationCommand.ChangeViewModel();
-            // grabs maindata from our database and stores it in our maindataset store
-            //_mainDataSetStore = md.GetMainDataset(); RELIC
         }
 
 

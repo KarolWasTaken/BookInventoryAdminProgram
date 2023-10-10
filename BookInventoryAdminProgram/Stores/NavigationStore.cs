@@ -25,6 +25,5 @@ namespace BookInventoryAdminProgram.Stores
         {
             CurrentViewModelChanged?.Invoke();
         }
-
     }
 }
