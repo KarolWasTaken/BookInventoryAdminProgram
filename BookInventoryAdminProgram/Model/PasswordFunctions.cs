@@ -24,7 +24,7 @@ namespace BookInventoryAdminProgram.Model
         private static string returnSalt(int userID)
         {
             string PasswordSalt = string.Empty;
-            using (SqlConnection connection = new SqlConnection(Helper.CnnVal()))
+            using (SqlConnection connection = new SqlConnection(Helper.ReturnSettings().ConnectionString))
             {
                 try
                 {
@@ -71,7 +71,7 @@ namespace BookInventoryAdminProgram.Model
             Byte[] serverPasswordHash;
             bool isAdmin;
 
-            using (SqlConnection connection = new SqlConnection(Helper.CnnVal()))
+            using (SqlConnection connection = new SqlConnection(Helper.ReturnSettings().ConnectionString))
             {
                 serverPasswordHash = connection.QuerySingle<Byte[]>("dbo.spGetHash @EmployeeID", new { EmployeeID = userID });
                 isAdmin = connection.QuerySingle<bool>("dbo.spVerifyAdmin @EmployeeID", new { EmployeeID = userID });

@@ -19,6 +19,7 @@ namespace BookInventoryAdminProgram.Stores
             public string ISBN { get; set; }
             public int BookID { get; set; }
             public string Title { get; set; }
+            public double Price { get; set; }
             public List<string> Authors { get; set; }
             public List<string> Genres { get; set; }
             public DateTime? ReleaseDate { get; set; }
@@ -108,7 +109,7 @@ namespace BookInventoryAdminProgram.Stores
             List<YearlySalesSQL> yearlySalesSQL;
             List<AllTimeSalesSQL> allTimeSalesSQL;
 
-            using (IDbConnection dbConnection = new SqlConnection(Helper.CnnVal()))
+            using (IDbConnection dbConnection = new SqlConnection(Helper.ReturnSettings().ConnectionString))
             {
                 mainDataSet = dbConnection.Query<BookInfo>("spGetDatabaseTestProcedure").ToList();
                 authorList = dbConnection.Query<BookAuthor>("spGetBookAuthor").ToList();

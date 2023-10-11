@@ -57,7 +57,7 @@ namespace BookInventoryAdminProgram.Commands
             }
 
             UserInfoStore userNames;
-            using (SqlConnection connection = new SqlConnection(Helper.CnnVal()))
+            using (SqlConnection connection = new SqlConnection(Helper.ReturnSettings().ConnectionString))
             {
                 userNames = connection.QuerySingle<UserInfoStore>("dbo.spGetEmployeeName @EmployeeID", new { EmployeeID = EmployeeID });
             }

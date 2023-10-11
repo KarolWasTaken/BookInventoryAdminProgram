@@ -18,7 +18,7 @@ namespace BookInventoryAdminProgram.Model
 
         public List<ReturnStaff> GetStaff()
         {
-            using (SqlConnection connection = new SqlConnection(Helper.CnnVal()))
+            using (SqlConnection connection = new SqlConnection(Helper.ReturnSettings().ConnectionString))
             {
                 List<ReturnStaff> staffList = connection.Query<ReturnStaff>("dbo.spGetStaff").ToList();
                 return staffList;
