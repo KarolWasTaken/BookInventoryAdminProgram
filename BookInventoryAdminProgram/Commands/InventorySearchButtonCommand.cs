@@ -39,8 +39,9 @@ namespace BookInventoryAdminProgram.Commands
             bool areComboBoxesEmpty = inputs["PropertyName"] == null && inputs["FieldName"] == null && inputs["Condition"] == null && inputs["FilterValue"] == null;
 
 
-
-            if (inputs["PropertyName"] != null && inputs["FieldName"] != null && inputs["Condition"] != null && inputs["FilterValue"] != null)
+            bool areComboBoxesPopulated = inputs["PropertyName"] != null && inputs["FieldName"] != null && inputs["Condition"] != null && inputs["FilterValue"] != null;
+            bool isSearchFieldPopulated = inputs["FilterBookName"] != null;
+            if (areComboBoxesPopulated)
             {
                 // Construct the filtering condition based on the criteria         
                 string filterExpression = $"{inputs["PropertyName"]}.Any({inputs["PropertyName"]}Item => {inputs["PropertyName"]}Item.{inputs["FieldName"]} {inputs["Condition"]} {inputs["FilterValue"]})";
@@ -50,7 +51,7 @@ namespace BookInventoryAdminProgram.Commands
                 filterData = true;
             }
 
-            if (inputs["FilterBookName"] != null)
+            if (isSearchFieldPopulated)
             {
                 query = query.Where(n => n.Title.ToUpper().StartsWith(inputs["FilterBookName"].ToUpper()));
                 filterData = true;

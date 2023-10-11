@@ -25,5 +25,10 @@ namespace BookInventoryAdminProgram.View
         {
             InitializeComponent();
         }
+
+        private void ComboBox_Selected(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

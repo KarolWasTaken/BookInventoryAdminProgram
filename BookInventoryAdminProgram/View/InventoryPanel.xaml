@@ -146,7 +146,8 @@
                                 <ComboBox Width="90" Height="30" adonisExtensions:WatermarkExtension.Watermark="Author"
                                           Margin="0,0,10,0"
                                           IsEditable="True"
-                                          ItemsSource="{Binding PresentAuthorList, Mode=OneWay}">
+                                          ItemsSource="{Binding PresentAGList[Author]}"
+                                          SelectedItem="{Binding SelectedItemAG[Author]}">
                                     <!--ComboBoxItem Content="Stock"></ComboBoxItem-->
                                 </ComboBox>
 
@@ -155,7 +156,9 @@
                                         Height="20"
                                         Width="60"
                                         Background="#1f2029"
-                                        Margin="0,0,10,0"/>
+                                        Margin="0,0,10,0"
+                                        Command="{Binding AddSearchListItem}"
+                                        CommandParameter="Author"/>
 
                                 <Border Width="2"
                                 Background="LightGray"
@@ -165,7 +168,9 @@
 
                                 <ComboBox Width="90" Height="30" adonisExtensions:WatermarkExtension.Watermark="Search List"
                                           Margin="0,0,10,0"
-                                          IsEditable="True">
+                                          IsEditable="True"
+                                          ItemsSource="{Binding SearchList[Author]}"
+                                          SelectedItem="{Binding SelectedSearchListItem[Author]}">
                                     <!--ComboBoxItem Content="Stock"></ComboBoxItem-->                                   
                                 </ComboBox>
 
@@ -173,7 +178,9 @@
                                         FontSize="10"
                                         Height="20"
                                         Width="60"
-                                        Background="#1f2029" />
+                                        Background="#1f2029"
+                                        Command="{Binding RemoveSearchListItem}"
+                                        CommandParameter="Author"/>
 
                             </WrapPanel>
                         </Expander>
@@ -184,7 +191,8 @@
                                 <ComboBox Width="90" Height="30" adonisExtensions:WatermarkExtension.Watermark="Genre"
                                   Margin="0,0,10,0"
                                   IsEditable="True"
-                                  ItemsSource="{Binding PresentGenreList, Mode=OneWay}">
+                                  ItemsSource="{Binding PresentAGList[Genre]}"
+                                  SelectedItem="{Binding SelectedItemAG[Genre]}">
                                 </ComboBox>
 
                                 <Button Content="Add"
@@ -192,7 +200,9 @@
                                         Height="20"
                                         Width="60"
                                         Background="#1f2029"
-                                        Margin="0,0,10,0"/>
+                                        Margin="0,0,10,0"
+                                        Command="{Binding AddSearchListItem}"
+                                        CommandParameter="Genre"/>
                                 
                                 <Border Width="2"
                                 Background="LightGray"
@@ -202,7 +212,9 @@
 
                                 <ComboBox Width="90" Height="30" adonisExtensions:WatermarkExtension.Watermark="Search List"
                                           Margin="0,0,10,0"
-                                          IsEditable="True">
+                                          IsEditable="True"
+                                          ItemsSource="{Binding SearchList[Genre]}"
+                                          SelectedItem="{Binding SelectedSearchListItem[Genre]}">
                                     <!--ComboBoxItem Content="Stock"></ComboBoxItem-->
                                 </ComboBox>
 
@@ -210,7 +222,9 @@
                                         FontSize="10"
                                         Height="20"
                                         Width="60"
-                                        Background="#1f2029" />
+                                        Background="#1f2029"
+                                        Command="{Binding RemoveSearchListItem}"
+                                        CommandParameter="Genre"/>
                             </WrapPanel>
                         </Expander>
                         <Expander Header="Options" BorderThickness="2"
@@ -270,7 +284,7 @@
                          The only functional workaround i found is to create a dummyElement
                          (which by default inherits the datacontext) and using that as a source
                          when binding-->
-                    <FrameworkElement Name="dummyElement" />
+                    <FrameworkElement Name="dummyElement" Visibility="Hidden"/>
                     <DataGrid Name="BookstoreInventoryDatagrid"
                               Grid.Row="1"
                               VerticalAlignment="Top"
