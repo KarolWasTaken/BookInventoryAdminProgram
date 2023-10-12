@@ -20,6 +20,8 @@ namespace BookInventoryAdminProgram.Model
         /// <exception cref="Exception">i should probably handle this in a non fatal way ngl</exception>
         public Dictionary<string, string> GetInputsForFiltering(InventoryPanelViewModel InvenPanelviewModel)
         {
+            // this prolly violates mvvm becuase there is a connection between our viewmodel and our model but idc.
+
             string salesCriteria = InvenPanelviewModel.SelectedItem["Sales"];
             string typeCriteria = InvenPanelviewModel.SelectedItem["Type"];
             string modifierCriteria = InvenPanelviewModel.SelectedItem["Modifier"];
@@ -84,13 +86,14 @@ namespace BookInventoryAdminProgram.Model
             string filterValue = InvenPanelviewModel.ComboBoxQueryQuantity;
             string filterBookName = InvenPanelviewModel.SearchFieldValue;
 
+            
             return new Dictionary<string, string>
             {
                 { "PropertyName", propertyName },
                 { "FieldName", fieldName },
                 { "Condition", condition },
                 { "FilterValue", filterValue },
-                { "FilterBookName", filterBookName },
+                { "FilterBookName", filterBookName }
             };
         }
         /// <summary>

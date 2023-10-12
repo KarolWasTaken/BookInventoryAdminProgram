@@ -154,7 +154,7 @@
                                 <Button Content="Add"
                                         FontSize="10"
                                         Height="20"
-                                        Width="60"
+                                        Width="70"
                                         Background="#1f2029"
                                         Margin="0,0,10,0"
                                         Command="{Binding AddSearchListItem}"
@@ -173,14 +173,23 @@
                                           SelectedItem="{Binding SelectedSearchListItem[Author]}">
                                     <!--ComboBoxItem Content="Stock"></ComboBoxItem-->                                   
                                 </ComboBox>
-
-                                <Button Content="Remove"
-                                        FontSize="10"
-                                        Height="20"
-                                        Width="60"
-                                        Background="#1f2029"
-                                        Command="{Binding RemoveSearchListItem}"
-                                        CommandParameter="Author"/>
+                                <StackPanel>
+                                    <Button Content="Remove"
+                                            FontSize="10"
+                                            Height="20"
+                                            Width="70"
+                                            Background="#1f2029"
+                                            Command="{Binding RemoveSearchListItem}"
+                                            CommandParameter="Author,One"
+                                            Margin="0,0,0,5"/>
+                                    <Button Content="Remove All"
+                                            FontSize="10"
+                                            Height="20"
+                                            Width="70"
+                                            Background="#1f2029"
+                                            Command="{Binding RemoveSearchListItem}"
+                                            CommandParameter="Author,All"/>
+                                </StackPanel>
 
                             </WrapPanel>
                         </Expander>
@@ -198,7 +207,7 @@
                                 <Button Content="Add"
                                         FontSize="10"
                                         Height="20"
-                                        Width="60"
+                                        Width="70"
                                         Background="#1f2029"
                                         Margin="0,0,10,0"
                                         Command="{Binding AddSearchListItem}"
@@ -217,14 +226,23 @@
                                           SelectedItem="{Binding SelectedSearchListItem[Genre]}">
                                     <!--ComboBoxItem Content="Stock"></ComboBoxItem-->
                                 </ComboBox>
-
-                                <Button Content="Remove"
-                                        FontSize="10"
-                                        Height="20"
-                                        Width="60"
-                                        Background="#1f2029"
-                                        Command="{Binding RemoveSearchListItem}"
-                                        CommandParameter="Genre"/>
+                                <StackPanel>
+                                    <Button Content="Remove"
+                                            FontSize="10"
+                                            Height="20"
+                                            Width="70"
+                                            Background="#1f2029"
+                                            Command="{Binding RemoveSearchListItem}"
+                                            CommandParameter="Genre,One"
+                                            Margin="0,0,0,5"/>
+                                    <Button Content="Remove All"
+                                            FontSize="10"
+                                            Height="20"
+                                            Width="70"
+                                            Background="#1f2029"
+                                            Command="{Binding RemoveSearchListItem}"
+                                            CommandParameter="Genre,All"/>
+                                </StackPanel>
                             </WrapPanel>
                         </Expander>
                         <Expander Header="Options" BorderThickness="2"

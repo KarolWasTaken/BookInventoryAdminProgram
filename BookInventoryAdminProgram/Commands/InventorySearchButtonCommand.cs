@@ -33,14 +33,17 @@ namespace BookInventoryAdminProgram.Commands
 
 
             Dictionary<string, string> inputs = fd.GetInputsForFiltering(_inventoryPanelViewModel);
+            List<string> authorSearchlist = _inventoryPanelViewModel.SearchList["Author"].ToList();
+            List<string> genreSearchlist = _inventoryPanelViewModel.SearchList["Genre"].ToList();
             // update here to ensure we are using most up to date version of db
             List<BookInfo> database = DatabaseStore.updateDatastore();
-            IQueryable<BookInfo> query = database.AsQueryable();
-            bool areComboBoxesEmpty = inputs["PropertyName"] == null && inputs["FieldName"] == null && inputs["Condition"] == null && inputs["FilterValue"] == null;
-
 
             bool areComboBoxesPopulated = inputs["PropertyName"] != null && inputs["FieldName"] != null && inputs["Condition"] != null && inputs["FilterValue"] != null;
             bool isSearchFieldPopulated = inputs["FilterBookName"] != null;
+            bool isAuthorSearchListPopulated = authorSearchlist.Count > 0;
+            bool isGenreSearchListPopulated = genreSearchlist.Count > 0;
+
+            IQueryable<BookInfo> query = database.AsQueryable();
             if (areComboBoxesPopulated)
             {
                 // Construct the filtering condition based on the criteria         
@@ -56,16 +59,28 @@ namespace BookInventoryAdminProgram.Commands
                 query = query.Where(n => n.Title.ToUpper().StartsWith(inputs["FilterBookName"].ToUpper()));
                 filterData = true;
             }
-
             
-            // Filtered result in the 'query' variable
-            if(filterData)
+            if(isAuthorSearchListPopulated) 
+            { 
+                query = query.Where(n => n.Authors.Any(item => authorSearchlist.Contains(item)));
+                filterData = true;
+            }
+            if (isGenreSearchListPopulated)
+            {
+                query = query.Where(n => n.Genres.Any(item => genreSearchlist.Contains(item)));
+                filterData = true;
+            }
+
+            // Update datagrid in inventoryView if a query was performed
+            if (filterData)
             {
                 List<BookInfo> filteredResults = query.ToList();
                 _inventoryPanelViewModel.InventoryDatagrid = filteredResults;
             }
-
-            // Update datagrid in inventoryView
+            else
+            {
+                _inventoryPanelViewModel.InventoryDatagrid = database;
+            }
             
         }
     }

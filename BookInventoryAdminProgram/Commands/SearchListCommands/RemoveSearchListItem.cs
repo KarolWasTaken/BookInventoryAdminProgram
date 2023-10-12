@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO.Packaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,17 +25,28 @@ namespace BookInventoryAdminProgram.Commands
         public override void Execute(object? parameter)
         {
             string key;
-            if ((string)parameter == "Author")
+            bool deleteAll = false;
+            string[] parameters = parameter.ToString().Split(",");
+
+
+            if (parameters[0] == "Author")
                 key = "Author";
-            else if ((string)parameter == "Genre")
+            else if (parameters[0] == "Genre")
                 key = "Genre";
             else
                 throw new Exception("type not recognised");
 
-            if (_selectedSearchListItem[key] == null || _selectedSearchListItem[key] == "")
+            if (parameters[1] == "All")
+                deleteAll = true;
+
+
+            if ((_selectedSearchListItem[key] == null || _selectedSearchListItem[key] == "") && !deleteAll)
                 return;
             else
-                _searchList[key].Remove(_selectedSearchListItem[key]);
+                if (deleteAll)
+                    _searchList[key].Clear();
+                else
+                    _searchList[key].Remove(_selectedSearchListItem[key]);
         }
     }
 }
