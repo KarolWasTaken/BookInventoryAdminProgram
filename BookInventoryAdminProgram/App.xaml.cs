@@ -39,8 +39,6 @@ namespace BookInventoryAdminProgram
         protected override void OnStartup(StartupEventArgs e)
         {
             UserInfoStore userInfoStore = new UserInfoStore();
-            List<BookInfo> maindataset = DatabaseStore.updateDatastore();
-            
             OpenLoginWindow();
             //OpenMainWindow();
             

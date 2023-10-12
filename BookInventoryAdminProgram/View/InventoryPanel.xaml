@@ -194,7 +194,7 @@
                             </WrapPanel>
                         </Expander>
                         <Expander Header="Genres" BorderThickness="2"
-                                  BorderBrush="White" Margin="0,0,20,10"
+                                  BorderBrush="White" Margin="0,0,15,10"
                                   IsExpanded="True">
                             <WrapPanel Orientation="Horizontal" Margin="0,10,0,0">
                                 <ComboBox Width="90" Height="30" adonisExtensions:WatermarkExtension.Watermark="Genre"
@@ -261,15 +261,18 @@
                                         <CheckBox Content="Price" IsChecked="{Binding HeaderVisibility[Price]}"
                                                   Command="{Binding ToggleHeaderVisibilityCommand}"
                                                   CommandParameter="Price"/>
+                                        <CheckBox Content="Stock" IsChecked="{Binding HeaderVisibility[BookStock]}"
+                                                  Command="{Binding ToggleHeaderVisibilityCommand}"
+                                                  CommandParameter="BookStock"/>
                                         <CheckBox Content="Author" IsChecked="{Binding HeaderVisibility[Author]}"
                                                   Command="{Binding ToggleHeaderVisibilityCommand}"
                                                   CommandParameter="Author"/>
-                                        <CheckBox Content="Genre" IsChecked="{Binding HeaderVisibility[Genre]}"
-                                                  Command="{Binding ToggleHeaderVisibilityCommand}"
-                                                  CommandParameter="Genre"/>
 
                                     </StackPanel>
                                     <StackPanel Margin="0,0,10,0">
+                                        <CheckBox Content="Genre" IsChecked="{Binding HeaderVisibility[Genre]}"
+                                                  Command="{Binding ToggleHeaderVisibilityCommand}"
+                                                  CommandParameter="Genre"/>
                                         <CheckBox Content="ReleaseDate" IsChecked="{Binding HeaderVisibility[ReleaseDate]}"
                                                   Command="{Binding ToggleHeaderVisibilityCommand}"
                                                   CommandParameter="ReleaseDate"/>
@@ -282,11 +285,11 @@
                                         <CheckBox Content="Yearly Sales" IsChecked="{Binding HeaderVisibility[YearlySales]}"
                                                   Command="{Binding ToggleHeaderVisibilityCommand}"
                                                   CommandParameter="YearlySales"/>
+                                    </StackPanel>
+                                    <StackPanel Margin="0,0,10,0">
                                         <CheckBox Content="Monthly Sales" IsChecked="{Binding HeaderVisibility[MonthlySales]}"
                                                   Command="{Binding ToggleHeaderVisibilityCommand}"
                                                   CommandParameter="MonthlySales"/>
-                                    </StackPanel>
-                                    <StackPanel Margin="0,0,10,0">
                                         <CheckBox Content="Daily Sales" IsChecked="{Binding HeaderVisibility[DailySales]}"
                                                   Command="{Binding ToggleHeaderVisibilityCommand}"
                                                   CommandParameter="DailySales"/>
@@ -331,6 +334,11 @@
                                                 Visibility="{Binding 
                                 Source={x:Reference dummyElement},
                                 Path=DataContext.HeaderVisibility[Price],
+                                Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                            <DataGridTextColumn Header="Stock" Binding="{Binding Path=BookStock}"
+                                                Visibility="{Binding 
+                                Source={x:Reference dummyElement},
+                                Path=DataContext.HeaderVisibility[BookStock],
                                 Converter={StaticResource BooleanToVisibilityConverter}}"/>
                             <DataGridTextColumn Header="Author" Binding="{Binding Path=Authors,Converter={StaticResource ListToStringConverter}}"
                                                 Visibility="{Binding 

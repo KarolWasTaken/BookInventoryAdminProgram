@@ -20,10 +20,12 @@ namespace BookInventoryAdminProgram.Stores
             public int BookID { get; set; }
             public string Title { get; set; }
             public double Price { get; set; }
+            public int BookStock { get; set; }
             public List<string> Authors { get; set; }
             public List<string> Genres { get; set; }
             public DateTime? ReleaseDate { get; set; }
             public string PublisherName { get; set; }
+            public byte[] BookCover { get; set; }
             public List<AllTimeSales> AllTimeSales { get; set; }
             public List<YearlySales> YearlySales { get; set; }
             public List<MonthlySales> MonthlySales { get; set; }

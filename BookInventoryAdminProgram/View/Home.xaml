@@ -4,9 +4,15 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BookInventoryAdminProgram.View"
-             xmlns:adonisExtensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"        
+             xmlns:adonisExtensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"
+             xmlns:Converter="clr-namespace:BookInventoryAdminProgram.Converter"
              mc:Ignorable="d" 
              d:DesignHeight="818" d:DesignWidth="1080">
+    <UserControl.Resources>
+        <Converter:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSourceConverter"/>
+        <Converter:ListToStringConverter x:Key="ListToStringConverter"/>
+        <Converter:DateTimeToShortDateStringConverter x:Key="DateTimeToShortDateStringConverter"/>
+    </UserControl.Resources>
     <Grid>
         <Grid Grid.Column="1" Grid.Row="1">
             <Grid.ColumnDefinitions>
@@ -113,16 +119,16 @@
 
 
 
-
-
+            <!-- Incase i mess up -->
+            <!--Source="pack://application:,,,/Resources/BookImages/NoCoverDefault.png"-->
             <GroupBox Grid.Column="1" Header="Best Seller!"
                       adonisExtensions:LayerExtension.Layer="3">
                 <StackPanel>
-                    <Image     Source="pack://application:,,,/Resources/BookImages/NoCoverDefault.png"
+                    <Image     Source="{Binding PopularBookCover, Converter={StaticResource ByteArrayToImageSourceConverter}}"
                                Stretch="UniformToFill"
                                RenderOptions.BitmapScalingMode="NearestNeighbor"
                                Height="388" Width="243"/>
-                    <TextBlock Text=" {BookPopularity Title}" FontFamily="{StaticResource Poppins}"
+                    <TextBlock Text="{Binding PopularBookInfo[Title]}" FontFamily="{StaticResource Poppins}"
                                Foreground="White" FontWeight="Medium"
                                TextAlignment="Center"
                                FontSize="25"
@@ -168,27 +174,31 @@
                                        TextAlignment="Right"/>
                         </StackPanel>
                         <StackPanel Grid.Column="1" Margin="5,0,0,0">
-                            <TextBlock Text=" {}" FontFamily="{StaticResource Poppins}"
+                            <TextBlock Text="{Binding PopularBookInfo[Authors], Converter={StaticResource ListToStringConverter}}" FontFamily="{StaticResource Poppins}"
                                        Foreground="White" FontWeight="Regular"
+                                       TextWrapping="NoWrap"
+                                       TextTrimming="WordEllipsis"
                                        FontSize="18"
                                        Grid.Column="0"/>
-                            <TextBlock Text=" {}" FontFamily="{StaticResource Poppins}"
+                            <TextBlock Text="{Binding PopularBookInfo[Genres], Converter={StaticResource ListToStringConverter}}" FontFamily="{StaticResource Poppins}"
+                                       Foreground="White" FontWeight="Regular"
+                                       FontSize="18"
+                                       TextWrapping="NoWrap"
+                                       TextTrimming="WordEllipsis"
+                                       Margin="0,0,0,0"/>
+                            <TextBlock Text="{Binding PopularBookInfo[ReleaseDate],  Converter={StaticResource DateTimeToShortDateStringConverter}}" FontFamily="{StaticResource Poppins}"
                                        Foreground="White" FontWeight="Regular"
                                        FontSize="18"
                                        Margin="0,0,0,0"/>
-                            <TextBlock Text=" {}" FontFamily="{StaticResource Poppins}"
+                            <TextBlock Text="{Binding PopularBookInfo[Publisher]}" FontFamily="{StaticResource Poppins}"
                                        Foreground="White" FontWeight="Regular"
                                        FontSize="18"
                                        Margin="0,0,0,0"/>
-                            <TextBlock Text=" {}" FontFamily="{StaticResource Poppins}"
+                            <TextBlock Text="{Binding PopularBookInfo[ISBN]}" FontFamily="{StaticResource Poppins}"
                                        Foreground="White" FontWeight="Regular"
                                        FontSize="18"
                                        Margin="0,0,0,0"/>
-                            <TextBlock Text=" {}" FontFamily="{StaticResource Poppins}"
-                                       Foreground="White" FontWeight="Regular"
-                                       FontSize="18"
-                                       Margin="0,0,0,0"/>
-                            <TextBlock Text=" {}" FontFamily="{StaticResource Poppins}"
+                            <TextBlock Text="{Binding PopularBookInfo[Sales]}" FontFamily="{StaticResource Poppins}"
                                        Foreground="White" FontWeight="Regular"
                                        FontSize="18"
                                        Margin="0,0,0,0"/>
