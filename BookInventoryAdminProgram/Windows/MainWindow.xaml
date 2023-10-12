@@ -55,7 +55,7 @@
                     </Grid.RowDefinitions>
 
                     <StackPanel Grid.Row="0">
-                        <Button Content="Home" Width="98" Margin="0,0,0,10" Command="{Binding HomeNavigateCommand}" Cursor="Hand"/>
+                        <Button Content="Home" Width="98" Margin="0,0,0,10" Command="{Binding HomeNavigateCommand}"/>
                         <Button Content="Inventory" Width="98" Margin="0,0,0,10" Command="{Binding InventoryNavigateCommand}"/>
                         <Button Content="Sales reports" Width="98" Margin="0,0,0,10"/>
                         <Button Content="Graph Viewer" Width="98" Margin="0,0,0,10"/>

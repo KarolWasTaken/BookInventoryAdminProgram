@@ -40,26 +40,26 @@ namespace BookInventoryAdminProgram.Commands
         public override void Execute(object? parameter)
         {
             PasswordFunctions pf = new PasswordFunctions();
-            if (!(int.TryParse(_loginWindowViewModel.EmployeeID, out int intValue)))
+            if (!int.TryParse(_loginWindowViewModel.EmployeeID, out int intValue))
             {
                 // input is not in ID
-                ThrowLoginError(_loginWindowViewModel, usernameFail:true);
+                ThrowLoginError(_loginWindowViewModel, usernameFail: true);
                 return;
             }
             int EmployeeID = int.Parse(_loginWindowViewModel.EmployeeID);
             bool result = pf.VerifyPassword(EmployeeID, _loginWindowViewModel.Password);
 
 
-            if (result == false) 
+            if (result == false)
             {
-                ThrowLoginError(_loginWindowViewModel, usernameFail:false, passwordFail:true);
+                ThrowLoginError(_loginWindowViewModel, usernameFail: false, passwordFail: true);
                 return;
             }
 
             UserInfoStore userNames;
             using (SqlConnection connection = new SqlConnection(Helper.ReturnSettings().ConnectionString))
             {
-                userNames = connection.QuerySingle<UserInfoStore>("dbo.spGetEmployeeName @EmployeeID", new { EmployeeID = EmployeeID });
+                userNames = connection.QuerySingle<UserInfoStore>("dbo.spGetEmployeeName @EmployeeID", new { EmployeeID });
             }
             _userInfoStore.StoreUserName(userNames);
 
@@ -83,6 +83,6 @@ namespace BookInventoryAdminProgram.Commands
             if (passwordFail == true)
                 loginWindowViewModel.Password = "";
             MessageBox.Show("Error: login failed.", "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
-        }  
+        }
     }
 }

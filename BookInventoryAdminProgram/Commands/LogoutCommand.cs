@@ -34,7 +34,7 @@ namespace BookInventoryAdminProgram.Commands
             };
             AdonisUI.Controls.MessageBox.Show(messageBox);
 
-            
+
             switch (messageBox.Result)
             {
                 case AdonisUI.Controls.MessageBoxResult.Yes:
