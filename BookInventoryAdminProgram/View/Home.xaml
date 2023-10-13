@@ -39,7 +39,7 @@
                                    Margin="0,5,0,0"/>
                         <Rectangle Height="2" Fill="LightGray"
                                    Margin="0,0,0,5"/>
-                        <TextBlock Text=" {GenrePopularity used here}" FontFamily="{StaticResource Poppins}"
+                        <TextBlock Text="{Binding NotiflicationPanelMessage[Genre]}" FontFamily="{StaticResource Poppins}"
                                    Foreground="White" FontWeight="Regular"
                                    TextWrapping="WrapWithOverflow"
                                    FontSize="15"
@@ -63,7 +63,7 @@
                                     FontSize="25"/>
                         <Rectangle Height="2" Fill="LightGray"
                                         Margin="0,0,0,5"/>
-                        <TextBlock Text=" {Author popularity}" FontFamily="{StaticResource Poppins}"
+                        <TextBlock Text="{Binding NotiflicationPanelMessage[Author]}" FontFamily="{StaticResource Poppins}"
                                     Foreground="White" FontWeight="Regular"
                                     TextWrapping="WrapWithOverflow"
                                     FontSize="15"
@@ -79,7 +79,7 @@
                                     FontSize="25"/>
                         <Rectangle Height="2" Fill="LightGray"
                                         Margin="0,0,0,5"/>
-                        <TextBlock Text=" {Publisher popularity}" FontFamily="{StaticResource Poppins}"
+                        <TextBlock Text="{Binding NotiflicationPanelMessage[Publisher]}" FontFamily="{StaticResource Poppins}"
                                     Foreground="White" FontWeight="Regular"
                                     TextWrapping="WrapWithOverflow"
                                     FontSize="15"
@@ -119,13 +119,13 @@
 
 
 
-            <!-- Incase i mess up -->
+            <!-- Incase i mess up Stretch="UniformToFill" -->
             <!--Source="pack://application:,,,/Resources/BookImages/NoCoverDefault.png"-->
             <GroupBox Grid.Column="1" Header="Best Seller!"
                       adonisExtensions:LayerExtension.Layer="3">
                 <StackPanel>
                     <Image     Source="{Binding PopularBookCover, Converter={StaticResource ByteArrayToImageSourceConverter}}"
-                               Stretch="UniformToFill"
+                               Stretch="Uniform"
                                RenderOptions.BitmapScalingMode="NearestNeighbor"
                                Height="388" Width="243"/>
                     <TextBlock Text="{Binding PopularBookInfo[Title]}" FontFamily="{StaticResource Poppins}"

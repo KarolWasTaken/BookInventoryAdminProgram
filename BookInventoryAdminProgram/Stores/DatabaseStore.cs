@@ -6,13 +6,48 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Dapper;
+using System.Net;
 
 namespace BookInventoryAdminProgram.Stores
 {
     public class DatabaseStore
     {
+
+
+
+        private static Dictionary<string, List<CommonValues>>? junctionValuesDictionary;
         /// <summary>
-        /// Class that stores database data
+        /// Dictionary that maps the IDs of properties <strong>(like AuthorID)</strong> to their values <strong>(like AuthorName)</strong>
+        /// <para>Setter runs <seealso cref="UpdateDatastore"/></para>
+        /// </summary>
+        public static Dictionary<string, List<CommonValues>>? JunctionValuesDictionary 
+        {
+            get
+            {
+                UpdateDatastore();
+                return junctionValuesDictionary;
+            }
+            set { junctionValuesDictionary = value; }
+        }
+
+
+        private static List<BookInfo>? mainDataset;
+        /// <summary>
+        /// Property that holds all <see cref="BookInfo"/> values for all books.
+        /// <para>Setter runs <seealso cref="UpdateDatastore"/></para>
+        /// </summary>
+        public static List<BookInfo>? MainDataset 
+        {
+            get 
+            {
+                UpdateDatastore();
+                return mainDataset; 
+            }
+            set { mainDataset = value; }
+        } 
+
+        /// <summary>
+        /// Class that stores database data for books
         /// </summary>
         public class BookInfo
         {
@@ -25,36 +60,36 @@ namespace BookInventoryAdminProgram.Stores
             public List<string> Genres { get; set; }
             public DateTime? ReleaseDate { get; set; }
             public string PublisherName { get; set; }
-            public byte[] BookCover { get; set; }
-            public List<AllTimeSales> AllTimeSales { get; set; }
-            public List<YearlySales> YearlySales { get; set; }
-            public List<MonthlySales> MonthlySales { get; set; }
-            public List<DailySales> DailySales { get; set; }
+            public byte[]? BookCover { get; set; }
+            public List<AllTimeSales>? AllTimeSales { get; set; }
+            public List<YearlySales>? YearlySales { get; set; }
+            public List<MonthlySales>? MonthlySales { get; set; }
+            public List<DailySales>? DailySales { get; set; }
         }
-        public class DailySales
+        public class SalesJunctionBase
         {
-            public DateTime SalesDate { get; set; }
             public int QuantitySold { get; set; }
             public double Revenue { get; set; }
         }
-        public class MonthlySales
+        public class DailySales : SalesJunctionBase
+        {
+            public DateTime SalesDate { get; set; }
+        }
+        public class MonthlySales : SalesJunctionBase
         {
             public int SalesYear { get; set; }
             public int SalesMonth { get; set; }
-            public int QuantitySold { get; set; }
-            public double Revenue { get; set; }
         }
-        public class YearlySales
+        public class YearlySales : SalesJunctionBase
         {
             public int SalesYear { get; set; }
-            public int QuantitySold { get; set; }
-            public double Revenue { get; set; }
         }
-        public class AllTimeSales
-        {
-            public int QuantitySold { get; set; }
-            public double Revenue { get; set; }
-        }
+        public class AllTimeSales : SalesJunctionBase { }
+
+
+
+
+
         public class BookAuthor
         {
             public int BookID { get; set; }
@@ -66,46 +101,54 @@ namespace BookInventoryAdminProgram.Stores
             public int BookID { get; set; }
             public string GenreName { get; set; }
         }
-        public class DailySalesSQL
+
+        public class SalesJunctionSQLBase
         {
-            public DateTime SalesDate { get; set; }
             public int BookID { get; set; }
             public int QuantitySold { get; set; }
             public double Revenue { get; set; }
         }
-        public class MonthlySalesSQL
+            
+        public class DailySalesSQL : SalesJunctionSQLBase
+        {
+            public DateTime SalesDate { get; set; }
+        }
+        public class MonthlySalesSQL : SalesJunctionSQLBase
         {
             public int SalesYear { get; set; }
             public int SalesMonth { get; set; }
-            public int BookID { get; set; }
-            public int QuantitySold { get; set; }
-            public double Revenue { get; set; }
         }
-        public class YearlySalesSQL
+        public class YearlySalesSQL : SalesJunctionSQLBase
         {
             public int SalesYear { get; set; }
-            public int BookID { get; set; }
-            public int QuantitySold { get; set; }
-            public double Revenue { get; set; }
         }
-        public class AllTimeSalesSQL
+        public class AllTimeSalesSQL : SalesJunctionSQLBase
         {
             public int SalesYear { get; set; }
-            public int BookID { get; set; }
-            public int QuantitySold { get; set; }
-            public double Revenue { get; set; }
         }
 
         /// <summary>
-        /// Updates variable that holds database store. 
+        /// <para><strong>spGetJunctionValueTables</strong> returns 3 tables that all have values 'ID', and 'Name'</para>
+        /// <para>These are tables for Author, Genre, and Publisher (which are all keys)</para>
+        /// </summary>
+        public class CommonValues
+        {
+            public int ID { get; set; }
+            public string Name { get; set; }
+        }
+
+
+        /// <summary>
+        /// Updates <strong><see cref="JunctionValuesDictionary"/></strong> and <strong><see cref="MainDataset"/></strong> with new up-to-date database infomation. 
         /// </summary>
         /// <returns></returns>
-        public static List<BookInfo> updateDatastore()
+        private static void UpdateDatastore()
         {
             // ^^^ static so object doesnt need to be instantiated to be called.
             List<BookInfo> mainDataSet;
             List<BookAuthor> authorList;
             List<BookGenre> genreList;
+            Dictionary<string, List<CommonValues>> junctionValuesDictionary;
             List<DailySalesSQL> dailySalesSQL;
             List<MonthlySalesSQL> monthlySalesSQL;
             List<YearlySalesSQL> yearlySalesSQL;
@@ -116,6 +159,14 @@ namespace BookInventoryAdminProgram.Stores
                 mainDataSet = dbConnection.Query<BookInfo>("spGetDatabaseTestProcedure").ToList();
                 authorList = dbConnection.Query<BookAuthor>("spGetBookAuthor").ToList();
                 genreList = dbConnection.Query<BookGenre>("spGetBookGenre").ToList();
+
+                var results2 = dbConnection.QueryMultiple("spGetJunctionValueTables");
+                junctionValuesDictionary = new Dictionary<string, List<CommonValues>>()
+                {
+                    {"Author", results2.Read<CommonValues>().ToList() },
+                    {"Genre", results2.Read<CommonValues>().ToList() },
+                    {"Publisher", results2.Read<CommonValues>().ToList() }
+                };
 
                 var results = dbConnection.QueryMultiple("spGetSalesAggregates");
                 yearlySalesSQL = results.Read<YearlySalesSQL>().ToList();
@@ -197,7 +248,9 @@ namespace BookInventoryAdminProgram.Stores
                     bookInfo.Genres = bookGenreDictionary[bookInfo.BookID];
                 }
             }
-            return mainDataSet;
+            JunctionValuesDictionary = junctionValuesDictionary;
+            MainDataset = mainDataSet;
+            //return mainDataSet; relic
         }
     }
 }

@@ -6,9 +6,6 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
-using System.Linq.Dynamic.Core.CustomTypeProviders;
-using System.Reflection;
-using System.Windows;
 using static BookInventoryAdminProgram.Stores.DatabaseStore;
 
 namespace BookInventoryAdminProgram.Commands
@@ -36,7 +33,7 @@ namespace BookInventoryAdminProgram.Commands
             List<string> authorSearchlist = _inventoryPanelViewModel.SearchList["Author"].ToList();
             List<string> genreSearchlist = _inventoryPanelViewModel.SearchList["Genre"].ToList();
             // update here to ensure we are using most up to date version of db
-            List<BookInfo> database = DatabaseStore.updateDatastore();
+            List<BookInfo> database = DatabaseStore.MainDataset;
 
             bool areComboBoxesPopulated = inputs["PropertyName"] != null && inputs["FieldName"] != null && inputs["Condition"] != null && inputs["FilterValue"] != null;
             bool isSearchFieldPopulated = inputs["FilterBookName"] != null;

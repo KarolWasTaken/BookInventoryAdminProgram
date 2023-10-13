@@ -39,8 +39,8 @@ namespace BookInventoryAdminProgram
         protected override void OnStartup(StartupEventArgs e)
         {
             UserInfoStore userInfoStore = new UserInfoStore();
-            OpenLoginWindow();
-            //OpenMainWindow();
+            //OpenLoginWindow();
+            OpenMainWindow();
             
 
             // check whether or not the server an be reached.
@@ -90,7 +90,7 @@ namespace BookInventoryAdminProgram
                 DataContext = new MainWindowViewModel(_navigationStore, CreateHomeViewModel, CreateInventoryPanelViewModel, CreateStaffViewerViewModel, CreateLoginWindowViewModel, OpenLoginWindow, _userInfoStore)
             };
 
-            loginWindow.Close();
+            //loginWindow.Close();
             mainWindow.Show();
         }
         /// <summary>

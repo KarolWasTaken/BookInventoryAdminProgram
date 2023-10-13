@@ -1,10 +1,9 @@
-﻿using AdonisUI.Controls;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Data;
 using System.Linq;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
+using Dapper;
 using static BookInventoryAdminProgram.Stores.DatabaseStore;
 
 namespace BookInventoryAdminProgram.Model
@@ -16,15 +15,89 @@ namespace BookInventoryAdminProgram.Model
         {
             _database = database;
         }
+        public class SQLPopularity
+        {
+            public int ID { get; set; }
+            public int TotalSales { get; set; }
+            public DateTime PopularityDate { get; set; }
+        }
+        /// <summary>
+        /// Gets the 3 most popular Books, Authors, Genres, and Publishers in the last year.
+        /// </summary>
+        /// <returns></returns>
+        public Dictionary<string, List<SQLPopularity>> GetAllPopulatities()
+        {
+            List<SQLPopularity> bookPopularity;
+            List<SQLPopularity> authorPopularity;
+            List<SQLPopularity> genrePopularity;
+            List<SQLPopularity> publisherPopularity;
+            
+            using (IDbConnection dbConnection = new SqlConnection(Helper.ReturnSettings().ConnectionString))
+            {
+                var results = dbConnection.QueryMultiple("spGetSalesPopularities");
+                bookPopularity = results.Read<SQLPopularity>().ToList();
+                authorPopularity = results.Read<SQLPopularity>().ToList();
+                genrePopularity = results.Read<SQLPopularity>().ToList();
+                publisherPopularity = results.Read<SQLPopularity>().ToList();
+            }
+            
+            // Gets current day and current day last month. Datetime automatically solves issues like: March 30 --(minus 1 month)--> Feb 28
+            DateTime currentDay = DateTime.Now;
+            DateTime currentDayLastMonth = currentDay.AddMonths(-1);
+
+            List<SQLPopularity> bookPopularityWithMaxSalesLastMonth = GetPopularityWithMaxSalesLastMonth(bookPopularity, currentDay, currentDayLastMonth);
+            List<SQLPopularity> authorPopularityWithMaxSalesLastMonth = GetPopularityWithMaxSalesLastMonth(authorPopularity, currentDay, currentDayLastMonth);
+            List<SQLPopularity> genrePopularityWithMaxSalesLastMonth = GetPopularityWithMaxSalesLastMonth(genrePopularity, currentDay, currentDayLastMonth);
+            List<SQLPopularity> publisherPopularityWithMaxSalesLastMonth = GetPopularityWithMaxSalesLastMonth(publisherPopularity, currentDay, currentDayLastMonth);
+
+            return new Dictionary<string, List<SQLPopularity>>()
+            {
+                {"Book", bookPopularityWithMaxSalesLastMonth},
+                {"Author", authorPopularityWithMaxSalesLastMonth},
+                {"Genre", genrePopularityWithMaxSalesLastMonth},
+                {"Publisher", publisherPopularityWithMaxSalesLastMonth}
+            };
+        }
+
+        private List<SQLPopularity> GetPopularityWithMaxSalesLastMonth(List<SQLPopularity> popularityList, DateTime currentDay, DateTime currentDayLastMonth) 
+        {
+            DateTime localCurrentDayLastMonth = currentDayLastMonth;
+            int loopCount = 0;
+            List<SQLPopularity> topThreePopularity = new List<SQLPopularity>();
+
+            while (topThreePopularity.Count < 3)
+            {
+                if (loopCount == 0)
+                    localCurrentDayLastMonth = currentDayLastMonth;
+                if (loopCount >= 13)
+                    break;
+                var popularity = popularityList
+                    .Where(p => ((dynamic)p).PopularityDate >= localCurrentDayLastMonth && ((dynamic)p).PopularityDate <= currentDay) // Applies timespan constraints
+                    .OrderByDescending(p => ((dynamic)p).TotalSales)
+                    .Skip(topThreePopularity.Count) // Skip elements already added
+                    .FirstOrDefault();
+
+                if (popularity != null)
+                    topThreePopularity.Add(popularity);
+                else
+                    localCurrentDayLastMonth = currentDay.AddMonths(-1); // If no elements was found, add 1 month back more to widen timespan
+
+                loopCount++;
+            }
+
+            return topThreePopularity;
+        }
+
+
 
         /// <summary>
-        /// Gets Most popular book between specified timespan
+        /// returns most popular book between specified timespan
         /// </summary>
         /// <param name="startDate"></param>
         /// <param name="endDate"></param>
         /// <returns>book (index 0) and total quantity sold in timespan (index 1)</returns>
         /// <exception cref="Exception"></exception>
-        public List<object>? getPopularity(DateTime startDate, DateTime endDate)
+        public List<object>? GetMostPopularBook(DateTime startDate, DateTime endDate)
         {
 
             if(startDate > endDate)

@@ -12,10 +12,19 @@
     <None Remove="BookstoreInventoryPanel.ico" />
     <None Remove="Resources\AppImages\LoginMenuArt.jpg" />
     <None Remove="Resources\BookImages\NoCoverDefault.png" />
+    <None Remove="Resources\BookImages\NoCoverDefaultThree.png" />
+    <None Remove="Resources\BookImages\NoCoverDefaultTwo.png" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="BookstoreInventoryPanel.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\BookImages\NoCoverDefaultThree.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\BookImages\NoCoverDefaultTwo.png" />
   </ItemGroup>
 
   <ItemGroup>
