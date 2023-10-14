@@ -6,6 +6,11 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
+using System.Printing;
+using System.Transactions;
+using System.Windows;
+using System.Windows.Markup;
 using System.Windows.Media.Imaging;
 using static BookInventoryAdminProgram.Stores.DatabaseStore;
 
@@ -26,32 +31,28 @@ namespace BookInventoryAdminProgram.ViewModel
                 OnPropertyChanged(nameof(PopularBookCover));
             }
         }
+        public Dictionary<string, bool> MoreInfoRestock { get; set; }
         public Dictionary<string, object> PopularBookInfo { get; set; }
 
         public Dictionary<string, string> NotiflicationPanelMessage { get; set; }
 
+        public string LowInStockMessage { get; set; }
+        public Dictionary<string, string> PopularPropertyLowInStockMessage { get; set; }
 
         public PopularityCalculator pc;
         public HomeViewModel()
         {
             pc = new PopularityCalculator(DatabaseStore.MainDataset);
-            InitiliseBestSellerPanel();
-            var listOfMostPopularProperties = pc.GetAllPopulatities();
-            DatabaseOperations dbo = new DatabaseOperations();
-
-            //var test2 = new DatabaseOperations();
-            //test2.GetBookByID(5);
-            //var test2 = listOfMostPopularProperties["Author"][0].ID;
-            //System.Windows.MessageBox.Show(dbo.GetPropertyByID("Author", test2));
-
-            //var test3 = test2.
-
-            NotiflicationPanelMessage = new Dictionary<string, string>()
+            MoreInfoRestock = new Dictionary<string, bool>()
             {
-                { "Genre", $"{dbo.GetPropertyByID("Genre",listOfMostPopularProperties["Genre"][0].ID)}, {dbo.GetPropertyByID("Genre",listOfMostPopularProperties["Genre"][1].ID)}, and {dbo.GetPropertyByID("Genre",listOfMostPopularProperties["Genre"][2].ID)} are all popular!"},
-                { "Author", $"{dbo.GetPropertyByID("Author",listOfMostPopularProperties["Author"][0].ID)}, {dbo.GetPropertyByID("Author",listOfMostPopularProperties["Author"][1].ID)}, and {dbo.GetPropertyByID("Author",listOfMostPopularProperties["Author"][2].ID)} are all popular!"},
-                { "Publisher", $"{dbo.GetPropertyByID("Publisher",listOfMostPopularProperties["Publisher"][0].ID)}, {dbo.GetPropertyByID("Publisher",listOfMostPopularProperties["Publisher"][1].ID)}, and {dbo.GetPropertyByID("Publisher",listOfMostPopularProperties["Publisher"][2].ID)} are all popular!"}
+                { "Genre", false }, {"Author", false}, { "Stock", false}
             };
+            PopularPropertyLowInStockMessage = new Dictionary<string, string>()
+            {
+                {"Genre", null }, {"Author", null}
+            };
+            InitiliseBestSellerPanel();
+            InitialiseNotiflicationPanel();
         }
 
         private void InitiliseBestSellerPanel()
@@ -86,5 +87,55 @@ namespace BookInventoryAdminProgram.ViewModel
             else { PopularBookCover = imageBytes; }
             // Use the imageBytes to display the image or save it to a file.
         }
+        private void InitialiseNotiflicationPanel()
+        {
+            var listOfMostPopularProperties = pc.GetAllPopulatities();
+            DatabaseOperations dbo = new DatabaseOperations();
+
+
+            NotiflicationPanelMessage = new Dictionary<string, string>()
+            {
+                { "Genre", $"• {dbo.GetPropertyByID("Genre",listOfMostPopularProperties["Genre"][0].ID)}\n• {dbo.GetPropertyByID("Genre",listOfMostPopularProperties["Genre"][1].ID)}\n• {dbo.GetPropertyByID("Genre",listOfMostPopularProperties["Genre"][2].ID)}"},
+                { "Author", $"• {dbo.GetPropertyByID("Author",listOfMostPopularProperties["Author"][0].ID)}\n• {dbo.GetPropertyByID("Author",listOfMostPopularProperties["Author"][1].ID)}\n• {dbo.GetPropertyByID("Author",listOfMostPopularProperties["Author"][2].ID)}"},
+                { "Publisher", $"• {dbo.GetPropertyByID("Publisher",listOfMostPopularProperties["Publisher"][0].ID)}\n• {dbo.GetPropertyByID("Publisher", listOfMostPopularProperties["Publisher"][1].ID)}\n• {dbo.GetPropertyByID("Publisher",listOfMostPopularProperties["Publisher"][2].ID)}"}
+            };
+
+
+            var booksLowInStock = dbo.GetBooksLowInStock();
+            if (booksLowInStock != null)
+            {
+                booksLowInStock = booksLowInStock.Take(10).ToList();
+                foreach (BookInfo book in booksLowInStock)
+                {
+                    LowInStockMessage += $"{book.Title}: {book.BookStock}\n";
+                }
+                LowInStockMessage += "\nConsider restocking!";
+                MoreInfoRestock["Stock"] = true;
+            }
+            List<BookInfo> genresWithBooksLowInStock = dbo.GetBooksLowInStock("Genre", new List<string>()
+            {
+                dbo.GetPropertyByID("Genre",listOfMostPopularProperties["Genre"][0].ID),
+                dbo.GetPropertyByID("Genre",listOfMostPopularProperties["Genre"][1].ID),
+                dbo.GetPropertyByID("Genre",listOfMostPopularProperties["Genre"][2].ID)
+            });
+            List<BookInfo> authorsWithBooksLowInStock = dbo.GetBooksLowInStock("Author", new List<string>()
+            {
+                dbo.GetPropertyByID("Author",listOfMostPopularProperties["Author"][0].ID),
+                dbo.GetPropertyByID("Author",listOfMostPopularProperties["Author"][1].ID),
+                dbo.GetPropertyByID("Author",listOfMostPopularProperties["Author"][2].ID)
+            });
+
+            UpdateCategoryInfo(genresWithBooksLowInStock, "Genre");
+            UpdateCategoryInfo(authorsWithBooksLowInStock, "Author");
+        }
+        private void UpdateCategoryInfo(List<BookInfo> booksLowInStock, string category)
+        {
+            if (booksLowInStock != null && booksLowInStock.Count > 0)
+            {
+                PopularPropertyLowInStockMessage[category] = $"[{booksLowInStock[0].Title}] is low and has an above {category}!";
+                MoreInfoRestock[category] = true;
+            }
+        }
+
     }
 }

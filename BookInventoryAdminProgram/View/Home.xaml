@@ -12,6 +12,21 @@
         <Converter:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSourceConverter"/>
         <Converter:ListToStringConverter x:Key="ListToStringConverter"/>
         <Converter:DateTimeToShortDateStringConverter x:Key="DateTimeToShortDateStringConverter"/>
+        <Converter:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <Style x:Key="MoreInfoRestockMessageStyle" TargetType="TextBlock">
+            <Setter Property="Text" Value="For more infomation refer to the Inventory panel"/>
+            <Setter Property="FontFamily" Value="{StaticResource Poppins}"/>
+            <Setter Property="FontWeight" Value="Regular"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Foreground" Value="LightGray"/>
+            <Setter Property="TextWrapping" Value="WrapWithOverflow"/>
+            <Style.Triggers>
+                <!-- when no items set to collapsed -->
+                <DataTrigger Binding="{Binding Text.Length, RelativeSource={RelativeSource Self}}" Value="0">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
     </UserControl.Resources>
     <Grid>
         <Grid Grid.Column="1" Grid.Row="1">
@@ -19,6 +34,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
+            
 
             <GroupBox Grid.Column="0" Header="Notiflication Panel"
                       adonisExtensions:LayerExtension.Layer="3">
@@ -45,11 +61,10 @@
                                    FontSize="15"
                                    Margin="0,0,0,5"/>
 
-                        <TextBlock Text=" {generate procedure to show popular genres low in stock}" FontFamily="{StaticResource Poppins}"
-                                   Foreground="LightGray" FontWeight="Regular"
-                                   TextWrapping="WrapWithOverflow"
-                                   FontSize="12"
-                                   Margin="0,0,0,0"/>
+                        <TextBlock Text="{Binding PopularPropertyLowInStockMessage[Genre]}" FontFamily="{StaticResource Poppins}"
+                                   Style="{StaticResource MoreInfoRestockMessageStyle}"/>
+                        <TextBlock Style="{StaticResource MoreInfoRestockMessageStyle}"
+                                   Visibility="{Binding MoreInfoRestock[Genre], Converter={StaticResource BooleanToVisibilityConverter}}"/>
                     </StackPanel>
 
 
@@ -58,16 +73,21 @@
                     <StackPanel Grid.Row="1">
                         
                         <TextBlock Text="Popular Authors" FontFamily="{StaticResource Poppins}"
-                                    Foreground="White" FontWeight="Medium"
-                                    TextAlignment="Center"
-                                    FontSize="25"/>
+                                   Foreground="White" FontWeight="Medium"
+                                   TextAlignment="Center"
+                                   FontSize="25"
+                                   Margin="0,5,0,0"/>
                         <Rectangle Height="2" Fill="LightGray"
-                                        Margin="0,0,0,5"/>
+                                   Margin="0,0,0,5"/>
                         <TextBlock Text="{Binding NotiflicationPanelMessage[Author]}" FontFamily="{StaticResource Poppins}"
                                     Foreground="White" FontWeight="Regular"
                                     TextWrapping="WrapWithOverflow"
                                     FontSize="15"
                                     Margin="0,0,0,0"/>
+                        <TextBlock Text="{Binding PopularPropertyLowInStockMessage[Author]}" FontFamily="{StaticResource Poppins}"
+                                   Style="{StaticResource MoreInfoRestockMessageStyle}"/>
+                        <TextBlock Style="{StaticResource MoreInfoRestockMessageStyle}"
+                                   Visibility="{Binding MoreInfoRestock[Author], Converter={StaticResource BooleanToVisibilityConverter}}"/>
                     </StackPanel>
 
 
@@ -76,7 +96,8 @@
                         <TextBlock Text="Popular Publishers" FontFamily="{StaticResource Poppins}"
                                     Foreground="White" FontWeight="Medium"
                                     TextAlignment="Center"
-                                    FontSize="25"/>
+                                    FontSize="25"
+                                    Margin="0,5,0,0"/>
                         <Rectangle Height="2" Fill="LightGray"
                                         Margin="0,0,0,5"/>
                         <TextBlock Text="{Binding NotiflicationPanelMessage[Publisher]}" FontFamily="{StaticResource Poppins}"
@@ -95,20 +116,19 @@
                         <TextBlock Text="Low stock" FontFamily="{StaticResource Poppins}"
                                     Foreground="White" FontWeight="Medium"
                                     TextAlignment="Center"
-                                    FontSize="25"/>
+                                    FontSize="25"
+                                    Margin="0,5,0,0"/>
                         <Rectangle Height="2" Fill="LightGray"
                                         Margin="0,0,0,5"/>
                         <StackPanel>
-                            <TextBlock Text=" {Book table low stock display}" FontFamily="{StaticResource Poppins}"
+                            <TextBlock Text="{Binding LowInStockMessage}" FontFamily="{StaticResource Poppins}"
                                             Foreground="White" FontWeight="Regular"
                                             TextWrapping="WrapWithOverflow"
                                             FontSize="15"
                                             Margin="0,0,0,0"/>
-                            <TextBlock Text="For more infomation refer to the Inventory panel" FontFamily="{StaticResource Poppins}"
-                                            Foreground="LightGray" FontWeight="Regular"
-                                            TextWrapping="WrapWithOverflow"
-                                            FontSize="12"
-                                            Margin="0,0,0,0"/>
+
+                            <TextBlock Style="{StaticResource MoreInfoRestockMessageStyle}"
+                                       Visibility="{Binding MoreInfoRestock[Stock], Converter={StaticResource BooleanToVisibilityConverter}}"/>
                         </StackPanel>
                     </StackPanel>
                     

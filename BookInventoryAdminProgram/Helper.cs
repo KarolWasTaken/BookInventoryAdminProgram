@@ -20,45 +20,69 @@ namespace BookInventoryAdminProgram
 {
     public static class Helper
     {
+
+        private static IConfigurationRoot Config
+        {
+            get {
+                // Load the existing JSON file when needed. Ensures up-to-date JSON is always used.
+                return new ConfigurationBuilder()
+                    .AddJsonFile("appsettings.json")
+                    .Build(); 
+            }
+        }
+
         /// <summary>
         /// Returns settings object with up-to-date settings for BookstoreInventoryDB
         /// </summary>
         /// <returns></returns>
         public static Settings ReturnSettings()
         {
-            IConfigurationRoot config = new ConfigurationBuilder()
-            .AddJsonFile("appsettings.json")
-            .Build();
-            Settings? settings = config.GetRequiredSection("Settings").Get<Settings>();
+            Settings? settings = Config.GetRequiredSection("Settings").Get<Settings>();
             return settings;
         }
+
+
+        public static void UpdateMinBookStockNotificationJson(int minBookStockNotification)
+        {
+            var updatedConfig = new
+            {
+                Settings = new
+                {
+                    ConnectionString = Config["Settings:ConnectionString"],
+                    HeaderVisibilitiesSerialised = Config["Settings:HeaderVisibilitiesSerialised"],
+                    LowBookStockWarningCount = minBookStockNotification
+                }
+            };
+            WriteToJson(updatedConfig);
+        }
+
 
         /// <summary>
         /// Updates appsettings.JSON with new headerVisibility
         /// </summary>
         /// <param name="newDict"></param>
-        public static void UpdateHeaderVisibilityJson( Dictionary<string, bool> newDict)
+        public static void UpdateHeaderVisibilityJson(Dictionary<string, bool> newDict)
         {
-            // Load the existing JSON file
-            IConfigurationRoot config = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json")
-                .Build();
-
             // Create a new JSON structure with the Settings object (to preserve structure)
             var updatedConfig = new
             {
                 Settings = new
                 {
-                    ConnectionString = config["Settings:ConnectionString"],
-                    HeaderVisibilitiesSerialised = newDict
+                    ConnectionString = Config["Settings:ConnectionString"],
+                    HeaderVisibilitiesSerialised = newDict,
+                    LowBookStockWarningCount = Config["Settings:LowBookStockWarningCount"]
                 }
             };
+            WriteToJson(updatedConfig);
+        }
 
+        private static void WriteToJson(dynamic jsonConfig)
+        {
             // turn object into json string for filewriting
-            string updatedJson = JsonConvert.SerializeObject(updatedConfig, Formatting.Indented);
-
+            string updatedJson = JsonConvert.SerializeObject(jsonConfig, Formatting.Indented);
             // Write to file
             File.WriteAllText("appsettings.json", updatedJson);
+
         }
     }
 }

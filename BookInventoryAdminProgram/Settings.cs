@@ -11,5 +11,6 @@ namespace BookInventoryAdminProgram
     {
         public string ConnectionString { get; set; }
         public Dictionary<string, bool> HeaderVisibilitiesSerialised { get; set; }
+        public int LowBookStockWarningCount { get; set; }
     }
 }
