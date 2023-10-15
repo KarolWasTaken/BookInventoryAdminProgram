@@ -120,13 +120,6 @@ namespace BookInventoryAdminProgram.ViewModel
                     NotiflicationPanelMessage[key] = $"• {dbo.GetPropertyByID(key, listOfMostPopularProperties[key][0].ID)}\n• {dbo.GetPropertyByID(key, listOfMostPopularProperties[key][1].ID)}\n• {dbo.GetPropertyByID(key, listOfMostPopularProperties[key][2].ID)}";
             }
 
-            /*NotiflicationPanelMessage = new Dictionary<string, string>()
-            {
-                { "Genre", $"• {dbo.GetPropertyByID("Genre",listOfMostPopularProperties["Genre"][0].ID)}\n• {dbo.GetPropertyByID("Genre",listOfMostPopularProperties["Genre"][1].ID)}\n• {dbo.GetPropertyByID("Genre",listOfMostPopularProperties["Genre"][2].ID)}"},
-                { "Author", $"• {dbo.GetPropertyByID("Author",listOfMostPopularProperties["Author"][0].ID)}\n• {dbo.GetPropertyByID("Author",listOfMostPopularProperties["Author"][1].ID)}\n• {dbo.GetPropertyByID("Author",listOfMostPopularProperties["Author"][2].ID)}"},
-                { "Publisher", $"• {dbo.GetPropertyByID("Publisher",listOfMostPopularProperties["Publisher"][0].ID)}\n• {dbo.GetPropertyByID("Publisher", listOfMostPopularProperties["Publisher"][1].ID)}\n• {dbo.GetPropertyByID("Publisher",listOfMostPopularProperties["Publisher"][2].ID)}"}
-            };*/
-
 
             var booksLowInStock = dbo.GetBooksLowInStock();
             if (booksLowInStock != null)
@@ -153,21 +146,6 @@ namespace BookInventoryAdminProgram.ViewModel
                     UpdateCategoryInfo(propertyWithBooksLowInStock, property);
                 }
             }
-            /*List<BookInfo> genresWithBooksLowInStock = dbo.GetBooksLowInStock("Genre", new List<string>()
-            {
-                dbo.GetPropertyByID("Genre",listOfMostPopularProperties["Genre"][0].ID),
-                dbo.GetPropertyByID("Genre",listOfMostPopularProperties["Genre"][1].ID),
-                dbo.GetPropertyByID("Genre",listOfMostPopularProperties["Genre"][2].ID)
-            });
-            List<BookInfo> authorsWithBooksLowInStock = dbo.GetBooksLowInStock("Author", new List<string>()
-            {
-                dbo.GetPropertyByID("Author",listOfMostPopularProperties["Author"][0].ID),
-                dbo.GetPropertyByID("Author",listOfMostPopularProperties["Author"][1].ID),
-                dbo.GetPropertyByID("Author",listOfMostPopularProperties["Author"][2].ID)
-            });*/
-
-            //UpdateCategoryInfo(genresWithBooksLowInStock, "Genre");
-            //UpdateCategoryInfo(authorsWithBooksLowInStock, "Author");
         }
 
 
