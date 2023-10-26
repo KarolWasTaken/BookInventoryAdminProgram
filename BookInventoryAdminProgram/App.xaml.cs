@@ -87,7 +87,7 @@ namespace BookInventoryAdminProgram
             _navigationStore.CurrentViewModel = new HomeViewModel();
             mainWindow = new MainWindow()
             {
-                DataContext = new MainWindowViewModel(_navigationStore, CreateHomeViewModel, CreateInventoryPanelViewModel, CreateStaffViewerViewModel, CreateLoginWindowViewModel, OpenLoginWindow, _userInfoStore)
+                DataContext = new MainWindowViewModel(_navigationStore, CreateHomeViewModel, CreateInventoryPanelViewModel, CreateStaffViewerViewModel, CreateLoginWindowViewModel, CreateBookManagerPanelViewModel, OpenLoginWindow, _userInfoStore)
             };
 
             loginWindow.Close();
@@ -124,6 +124,10 @@ namespace BookInventoryAdminProgram
         private LoginWindowViewModel CreateLoginWindowViewModel()
         {
             return new LoginWindowViewModel(_navigationStore, CreateHomeViewModel, _mainWindowViewModel, OpenMainWindow, _userInfoStore);
+        }
+        private BookManagerPanelViewModel CreateBookManagerPanelViewModel() 
+        {
+            return new BookManagerPanelViewModel();
         }
     }
 }

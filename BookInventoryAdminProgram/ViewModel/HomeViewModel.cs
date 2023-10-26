@@ -7,13 +7,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Printing;
-using System.Transactions;
-using System.Windows;
-using System.Windows.Markup;
 using System.Windows.Media.Imaging;
 using static BookInventoryAdminProgram.Model.PopularityCalculator;
 using static BookInventoryAdminProgram.Stores.DatabaseStore;
+using static BookInventoryAdminProgram.Model.BookCoverImageProcesses;
 
 namespace BookInventoryAdminProgram.ViewModel
 {
@@ -52,6 +49,8 @@ namespace BookInventoryAdminProgram.ViewModel
             {
                 {"Genre", null }, {"Author", null}
             };
+
+            // I could probabaly move this into a Model file. I potentially should. Ill do this later
             InitiliseBestSellerPanel();
             InitialiseNotiflicationPanel();
         }
@@ -160,12 +159,6 @@ namespace BookInventoryAdminProgram.ViewModel
                 PopularPropertyLowInStockMessage[category] = $"[{booksLowInStock[0].Title}] is low and has an above {category}!";
                 MoreInfoRestock[category] = true;
             }
-        }
-        private byte[] GetNoCoverImage()
-        {
-            BitmapImage defaultNoCoverImageBitmap = new BitmapImage(new Uri("pack://application:,,,/Resources/BookImages/NoCoverDefault.png"));
-            byte[] defaultNoCoverImage = BitmapImageToByteArrayConverter.Convert(defaultNoCoverImageBitmap);
-            return defaultNoCoverImage;
         }
     }
 }

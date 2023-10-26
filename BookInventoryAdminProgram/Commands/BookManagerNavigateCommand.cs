@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace BookInventoryAdminProgram.Commands
 {
-    public class StaffViewerNavigateCommand : CommandBase
+    public class BookManagerNavigateCommand : CommandBase
     {
         private readonly NavigateCommand _navigationCommand;
-        public StaffViewerNavigateCommand(NavigationStore navigationStore, Func<StaffViewerPanelViewModel> createStaffViewerPanelViewModel)
+        public BookManagerNavigateCommand(NavigationStore navigationStore, Func<BookManagerPanelViewModel> createBookManagerPanelViewModel)
         {
-            _navigationCommand = new NavigateCommand(navigationStore, createStaffViewerPanelViewModel);
+            _navigationCommand = new NavigateCommand(navigationStore, createBookManagerPanelViewModel);
         }
         public override void Execute(object? parameter)
         {

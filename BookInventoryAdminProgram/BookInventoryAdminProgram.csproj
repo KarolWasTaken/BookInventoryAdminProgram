@@ -10,6 +10,8 @@
 
   <ItemGroup>
     <None Remove="BookstoreInventoryPanel.ico" />
+    <None Remove="Resources\AppImages\FileDragIcon.png" />
+    <None Remove="Resources\AppImages\FileDragIcon2.png" />
     <None Remove="Resources\AppImages\LoginMenuArt.jpg" />
     <None Remove="Resources\BookImages\NoCoverDefault.png" />
     <None Remove="Resources\BookImages\NoCoverDefaultThree.png" />
@@ -21,6 +23,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resources\AppImages\FileDragIcon.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\AppImages\FileDragIcon2.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Resources\BookImages\NoCoverDefaultThree.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>

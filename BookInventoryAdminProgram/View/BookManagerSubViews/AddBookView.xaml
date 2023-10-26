@@ -1,0 +1,269 @@
+﻿<UserControl x:Class="BookInventoryAdminProgram.View.BookManagerSubViews.AddBookView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:BookInventoryAdminProgram.View.BookManagerSubViews"
+             xmlns:adonisExtensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"
+             xmlns:Converter="clr-namespace:BookInventoryAdminProgram.Converter"
+             mc:Ignorable="d" 
+             d:DesignHeight="748" d:DesignWidth="1080" PreviewKeyDown="CtrlV">
+    <UserControl.Resources>
+        <Converter:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSourceConverter"/>
+        <Converter:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <Style x:Key="TextBoxStyle" TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Width" Value="675"/>
+            <Setter Property="Margin" Value="0,20,0,0"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+        </Style>
+        <Style x:Key="SeperatorStyle" TargetType="Border">
+            <Setter Property="Width" Value="2"/>
+            <Setter Property="Background" Value="LightGray"/>
+            <Setter Property="CornerRadius" Value="2"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Margin" Value="10,0,10,0"/>
+        </Style>
+        <Style x:Key="DeleteButtonStyle" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="Height" Value="20"/>
+            <Setter Property="Width" Value="70"/>
+            <!-- This \/ refuses to be applied to elements. idk why-->
+            <Setter Property="Background" Value="#1f2029"/>
+        </Style>
+        <Style x:Key="AddButtonStyle" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Margin" Value="10,0,0,0"/>
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="Height" Value="20"/>
+            <Setter Property="Width" Value="70"/>
+            <Setter Property="Content" Value="Add"/>
+            <!-- Same here. i really have no idea why-->
+            <Setter Property="Background" Value="#1f2029"/>
+        </Style>
+
+        <Style x:Key="MoreInfoRestockMessageStyle" TargetType="TextBlock">
+            <Setter Property="Text" Value="For more infomation refer to the Inventory panel"/>
+            <Setter Property="FontFamily" Value="{StaticResource Poppins}"/>
+            <Setter Property="FontWeight" Value="Regular"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Foreground" Value="LightGray"/>
+            <Setter Property="TextWrapping" Value="WrapWithOverflow"/>
+            <Style.Triggers>
+                <!-- when no items set to collapsed -->
+                <DataTrigger Binding="{Binding Text.Length, RelativeSource={RelativeSource Self}}" Value="0">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+    <GroupBox Grid.Column="1" Header="Add Book"
+              adonisExtensions:LayerExtension.Layer="3">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <StackPanel HorizontalAlignment="Left" Margin="10,0,0,0">
+
+                <TextBox adonisExtensions:WatermarkExtension.Watermark="Title"
+                         Style="{StaticResource TextBoxStyle}"
+                         Text="{Binding Title}"/>
+                <TextBox adonisExtensions:WatermarkExtension.Watermark="ISBN"
+                         Style="{StaticResource TextBoxStyle}"
+                         Text="{Binding ISBN, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox adonisExtensions:WatermarkExtension.Watermark="Publisher"
+                         Style="{StaticResource TextBoxStyle}"
+                         Text="{Binding Publisher}"/>
+                <DatePicker adonisExtensions:WatermarkExtension.Watermark="ReleaseDate"
+                            Width="675" Height="30" Margin="0,20,0,5"
+                            HorizontalAlignment="Left"
+                            SelectedDate="{Binding ReleaseDate, Mode=TwoWay}"/>
+                
+                <!-- Reduce repeat code here later -->
+                <DockPanel Margin="0,10,0,10">
+                    <TextBox adonisExtensions:WatermarkExtension.Watermark="Authors"
+                             Style="{StaticResource TextBoxStyle}"
+                             VerticalAlignment="Center"
+                             AcceptsReturn="true"
+                             Margin="0,0,0,0"
+                             Width="400"
+                             Text="{Binding AuthorFieldBox, UpdateSourceTrigger=PropertyChanged}">
+                        <TextBox.InputBindings>
+                            <KeyBinding Key="Return" Command="{Binding AddSearchListItem}" CommandParameter="Author"/>
+                        </TextBox.InputBindings>
+                    </TextBox>
+                    <Button Background="#1f2029"
+                            Style="{StaticResource AddButtonStyle}"
+                            Command="{Binding AddSearchListItem}"
+                            CommandParameter="Author"/>
+                    <Border Style="{StaticResource SeperatorStyle}"/>
+
+                    <ComboBox Width="90" Height="40" adonisExtensions:WatermarkExtension.Watermark="Author List"
+                              Margin="0,0,10,0"
+                              IsEditable="True"
+                              ItemsSource="{Binding SearchList[Author]}"
+                              SelectedItem="{Binding SelectedSearchListItem[Author]}">
+                    </ComboBox>
+                    <StackPanel VerticalAlignment="Center">
+                        <Button Content="Remove"
+                                Background="#1f2029"
+                                Style="{StaticResource DeleteButtonStyle}"
+                                Command="{Binding RemoveSearchListItem}"
+                                CommandParameter="Author,One"
+                                Margin="0,0,0,5"/>
+                        <Button Content="Remove All"
+                                Background="#1f2029"
+                                Style="{StaticResource DeleteButtonStyle}"
+                                Command="{Binding RemoveSearchListItem}"
+                                CommandParameter="Author,All"/>
+                    </StackPanel>
+                </DockPanel>
+                <DockPanel>
+                    <TextBox adonisExtensions:WatermarkExtension.Watermark="Genres"
+                             Style="{StaticResource TextBoxStyle}"
+                             VerticalAlignment="Center"
+                             Margin="0,0,0,0"
+                             Width="400"
+                             Text="{Binding GenreFieldBox, UpdateSourceTrigger=PropertyChanged}">
+                        <TextBox.InputBindings>
+                            <KeyBinding Key="Return" Command="{Binding AddSearchListItem}" CommandParameter="Genre"/>
+                        </TextBox.InputBindings>
+                    </TextBox>
+                    <Button Background="#1f2029"
+                            Style="{StaticResource AddButtonStyle}"
+                            Command="{Binding AddSearchListItem}"
+                            CommandParameter="Genre"/>
+                    <Border Style="{StaticResource SeperatorStyle}"/>
+
+                    <ComboBox Width="90" Height="40" adonisExtensions:WatermarkExtension.Watermark="Genre List"
+                              Margin="0,0,10,0"
+                              IsEditable="True"
+                              ItemsSource="{Binding SearchList[Genre]}"
+                              SelectedItem="{Binding SelectedSearchListItem[Genre]}">
+                    </ComboBox>
+                    <StackPanel VerticalAlignment="Center">
+                        <Button Content="Remove"
+                                Background="#1f2029"
+                                Style="{StaticResource DeleteButtonStyle}"
+                                Command="{Binding RemoveSearchListItem}"
+                                CommandParameter="Genre,One"
+                                Margin="0,0,0,5"/>
+                        <Button Content="Remove All"
+                                Background="#1f2029"
+                                Style="{StaticResource DeleteButtonStyle}"
+                                Command="{Binding RemoveSearchListItem}"
+                                CommandParameter="Genre,All"/>
+                    </StackPanel>
+                </DockPanel>
+
+                <TextBlock Style="{StaticResource MoreInfoRestockMessageStyle}"
+                           Text="{Binding AdditionNotifier}"
+                           Margin="0,10,0,0"
+                           FontSize="15"
+                           HorizontalAlignment="Center"
+                           x:Name="notifier"/>
+                
+                <TextBox adonisExtensions:WatermarkExtension.Watermark="Price"
+                         Style="{StaticResource TextBoxStyle}"
+                         Text="{Binding Price, Mode=TwoWay}"/>
+                <TextBox adonisExtensions:WatermarkExtension.Watermark="BookStock"
+                         Style="{StaticResource TextBoxStyle}"
+                         Text="{Binding BookStock, Mode=TwoWay}"/>
+                
+            </StackPanel>
+            <Border Style="{StaticResource SeperatorStyle}"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Height="600"
+                    Grid.RowSpan="2"
+                    Margin="0,0,-25,100"/>
+
+            <StackPanel Grid.Column="1">
+                <TextBlock Text="Book Cover" FontFamily="{StaticResource Poppins}"
+                           Foreground="White" FontWeight="Medium"
+                           TextAlignment="Center"
+                           FontSize="25"
+                           Margin="0,0,0,10"/>
+                <Border BorderThickness="3" Width="243" Height="388"
+                        Visibility="{Binding DragDropUIVisibility, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Border.BorderBrush>
+                        <DrawingBrush Viewport="0,0,8,8" ViewportUnits="Absolute" TileMode="Tile">
+                            <DrawingBrush.Drawing>
+                                <DrawingGroup>
+                                    <GeometryDrawing Brush="#323341">
+                                        <GeometryDrawing.Geometry>
+                                            <GeometryGroup>
+                                                <RectangleGeometry Rect="0,0,50,50" />
+                                                <RectangleGeometry Rect="50,50,50,50" />
+                                            </GeometryGroup>
+                                        </GeometryDrawing.Geometry>
+                                    </GeometryDrawing>
+                                </DrawingGroup>
+                            </DrawingBrush.Drawing>
+                        </DrawingBrush>
+                    </Border.BorderBrush>
+                    <Grid>
+                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Image Source="pack://application:,,,/Resources/AppImages/FileDragIcon2.png"
+                                   Width="80" Height="80" RenderOptions.BitmapScalingMode="HighQuality" Stretch="Uniform"/>
+                            <TextBlock Text="Drag and Drop" Foreground="#4a4b59"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+                <Grid>
+                    <Image Source="{Binding BookCover, Converter={StaticResource ByteArrayToImageSourceConverter}}"
+                                   Stretch="Uniform"
+                                   RenderOptions.BitmapScalingMode="NearestNeighbor"
+                                   Height="388" Width="243"
+                                   Margin="0,0,0,0"
+                                   AllowDrop="True"
+                                   Drop="Button_DropFile"
+                                   Visibility="{Binding ImageVisibility, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"/>
+                </Grid>
+                <DockPanel Margin="0,20,0,0" HorizontalAlignment="Center">
+                    <Button Width="200" Height="50" adonisExtensions:CornerRadiusExtension.CornerRadius="10"
+                            Command="{Binding SelectFileCommand}" AllowDrop="True"
+                            Drop="Button_DropFile">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="pack://application:,,,/Resources/AppImages/FileDragIcon.png"
+                                   Width="35" RenderOptions.BitmapScalingMode="HighQuality"/>
+                            <TextBlock Text="Add Book Cover"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       Margin="10,3,0,0"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Width="25" Height="25"
+                            adonisExtensions:CornerRadiusExtension.CornerRadius="25"
+                            Margin="10,0,0,0"
+                            Content="x" Padding="0,0,0.5,4"
+                            Command="{Binding RemoveBookCoverCommand}"/>
+                </DockPanel>
+            </StackPanel>
+            <Rectangle Grid.Column="1"
+                       Fill="Transparent"
+                       Height="388" Width="243"
+                       Margin="0,0,0,145"
+                       AllowDrop="True"
+                       Drop="Button_DropFile"/>
+            
+
+
+
+
+            <Button Content="Add Book" 
+                    Margin="0,500,0,0"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    Height="40"
+                    FontFamily="{StaticResource Poppins}"
+                    FontWeight="Regular"
+                    FontSize="20"
+                    IsEnabled="{Binding CanCreateBook}"
+                    Command="{Binding AddBookToDBCommand}"/>
+        </Grid>
+        
+    </GroupBox>
+</UserControl>

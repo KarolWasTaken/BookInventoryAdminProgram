@@ -11,11 +11,9 @@ namespace BookInventoryAdminProgram.Commands
     public class HomeNavigateCommand : CommandBase
     {
 
-        private readonly MainWindowViewModel _mainWindowViewModel;
         private readonly NavigateCommand _navigationCommand;
-        public HomeNavigateCommand(MainWindowViewModel mainWindowViewModel, NavigationStore navigationStore, Func<HomeViewModel> createHomeViewModel)
+        public HomeNavigateCommand(NavigationStore navigationStore, Func<HomeViewModel> createHomeViewModel)
         {
-            _mainWindowViewModel = mainWindowViewModel;
             _navigationCommand = new NavigateCommand(navigationStore, createHomeViewModel);
         }
         public override void Execute(object? parameter)

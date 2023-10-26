@@ -36,20 +36,22 @@ namespace BookInventoryAdminProgram.ViewModel
 
         public ICommand HomeNavigateCommand { get; }
         public ICommand InventoryNavigateCommand { get; }
+        public ICommand BookManagerPanelNavigateCommand { get; }
         //public ICommand SalesReporterNavigateCommand { get; }
         //public ICommand GraphViewerNavigateCommand { get; }
         public ICommand StaffViewerNavigateCommand { get; }
         public ICommand LogoutCommand { get; }
 
         public MainWindowViewModel(NavigationStore navigationStore, Func<HomeViewModel> createHomeViewModel, Func<InventoryPanelViewModel> createInventoryPanelViewModel,
-            Func<StaffViewerPanelViewModel> createStaffViewerPanelViewModel, Func<LoginWindowViewModel> createLoginWindowViewModel, Action openLoginWindow, UserInfoStore userInfoStore)
+            Func<StaffViewerPanelViewModel> createStaffViewerPanelViewModel, Func<LoginWindowViewModel> createLoginWindowViewModel, Func<BookManagerPanelViewModel> createBookManagerPanelViewModel, Action openLoginWindow, UserInfoStore userInfoStore)
         {
 
-            HomeNavigateCommand = new HomeNavigateCommand(this, navigationStore, createHomeViewModel);
-            InventoryNavigateCommand = new InventoryNavigateCommand(this, navigationStore, createInventoryPanelViewModel);
-            StaffViewerNavigateCommand = new StaffViewerNavigateCommand(this, navigationStore, createStaffViewerPanelViewModel);
+            HomeNavigateCommand = new HomeNavigateCommand(navigationStore, createHomeViewModel);
+            InventoryNavigateCommand = new InventoryNavigateCommand(navigationStore, createInventoryPanelViewModel);
+            StaffViewerNavigateCommand = new StaffViewerNavigateCommand(navigationStore, createStaffViewerPanelViewModel);
             LogoutCommand = new LogoutCommand(this, navigationStore, createLoginWindowViewModel, openLoginWindow);
-            
+            BookManagerPanelNavigateCommand = new BookManagerNavigateCommand(navigationStore, createBookManagerPanelViewModel);
+
             _navigationStore = navigationStore;
             _navigationStore.CurrentViewModelChanged += OnCurrentViewModelChanged;
             _userInfoStore = userInfoStore;
