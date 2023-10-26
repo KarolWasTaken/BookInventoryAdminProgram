@@ -4,9 +4,168 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BookInventoryAdminProgram.View.BookManagerSubViews"
+             xmlns:adonisExtensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"
+             xmlns:Converter="clr-namespace:BookInventoryAdminProgram.Converter"
              mc:Ignorable="d" 
-             d:DesignHeight="748" d:DesignWidth="1080">
-    <Grid Background="Yellow">
+             d:DesignHeight="748" d:DesignWidth="1080" PreviewKeyDown="CtrlV">
+    <UserControl.Resources>
+        <Converter:ListToStringConverter x:Key="ListToStringConverter"/>
+        <Converter:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSourceConverter"/>
+        <Converter:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <Style x:Key="TextBlockPropertyHeader" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+            <Setter Property="FontWeight" Value="Regular"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Foreground" Value="LightGray"/>
+            <Setter Property="Margin" Value="0,0,0,5"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+        </Style>
+        <Style x:Key="TextBlockProperty" TargetType="TextBlock" BasedOn="{StaticResource TextBlockPropertyHeader}">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="TextWrapping" Value="NoWrap"/>
+            <Setter Property="TextTrimming" Value="WordEllipsis"/>
+        </Style>
+    </UserControl.Resources>
+    <GroupBox Grid.Column="1" Header="Modify Book"
+              adonisExtensions:LayerExtension.Layer="3">
+
+        <Grid>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="1.75*"/>
+            </Grid.RowDefinitions>
+            <GroupBox Grid.Row="0" Margin="0,0,0,10" adonisExtensions:LayerExtension.Layer="4">
+                <ListView ItemsSource="{Binding MainDataset, Mode=TwoWay}" Grid.Row="0" Margin="10"
+                          ScrollViewer.CanContentScroll="False" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                          d:ItemsSource="{d:SampleData ItemCount=5}"
+                          SelectedItem="{Binding SelectedBook}"
+                          IsEnabled="{Binding ListBoxEnabled}">
+                    <ListView.View>
+                        <GridView ScrollViewer.CanContentScroll="False">
+                            <GridViewColumn Header="Book" Width="50">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Image Source="{Binding BookCover, Converter={StaticResource ByteArrayToImageSourceConverter}}"
+                                               Height="25" Width="25"
+                                               RenderOptions.BitmapScalingMode="HighQuality" Stretch="Uniform"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="Title" DisplayMemberBinding="{Binding Title}" />
+                            <GridViewColumn Header="Price" Width="50" DisplayMemberBinding="{Binding Price}" />
+                            <GridViewColumn Header="BookStock" Width="70"  DisplayMemberBinding="{Binding BookStock}" />
+                            <!-- Add more columns for other properties like ISBN, Price, etc. -->
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+                
+            </GroupBox>
+
+
+           
+                <Grid Grid.Row="1" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2.9*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                <StackPanel>
+                    <DockPanel Margin="0,0,0,10">
+                    
+                        <StackPanel HorizontalAlignment="Left">
+                            <TextBlock Text="Title: " Style="{StaticResource TextBlockPropertyHeader}"/>
+                            <TextBlock Text="Authors: " Style="{StaticResource TextBlockPropertyHeader}"/>
+                            <TextBlock Text="Genre: " Style="{StaticResource TextBlockPropertyHeader}"/>
+                        </StackPanel>
+
+                        <StackPanel>
+                            <TextBlock Text="{Binding SelectedBook.Title}"
+                                       Style="{StaticResource TextBlockProperty}"/>
+                            <TextBlock Text="{Binding SelectedBook.Authors, Converter={StaticResource ListToStringConverter}}"
+                                       Style="{StaticResource TextBlockProperty}"/>
+                            <TextBlock Text="{Binding SelectedBook.Genres, Converter={StaticResource ListToStringConverter}}"
+                                       Style="{StaticResource TextBlockProperty}"/>
+                        </StackPanel>
+                    </DockPanel>
+                    
+                    <TextBlock Text="Price"
+                               Style="{StaticResource TextBlockProperty}"/>
+                    <TextBox Text="{Binding Price, Mode=TwoWay}"
+                             IsEnabled="{Binding EnableTextBoxes}"
+                             Width="500"
+                             HorizontalAlignment="Left"
+                             KeyDown="KeyDownInTextBox"/>
+                    <TextBlock Text="BookStock"
+                               Style="{StaticResource TextBlockProperty}"/>
+                    <TextBox Text="{Binding BookStock, Mode=TwoWay}"
+                             IsEnabled="{Binding EnableTextBoxes}"
+                             Width="500"
+                             HorizontalAlignment="Left"
+                             KeyDown="KeyDownInTextBox"/>
+
+
+
+                    <Button Content="Commit all changes"
+                            Height="40" Width="250"
+                            Margin="0,150,0,0"
+                            adonisExtensions:CornerRadiusExtension.CornerRadius="10"
+                            IsEnabled="{Binding CanCommitChanges}"
+                            Command="{Binding CommitChangesCommand}"/>
+                </StackPanel>
+
+
+                    
+                <StackPanel Grid.Column="1" HorizontalAlignment="Right" Margin="0,0,30,0">
+                    <TextBlock Text="Book Cover" FontFamily="{StaticResource Poppins}"
+                           Foreground="White" FontWeight="Medium"
+                           TextAlignment="Center"
+                           FontSize="25"
+                           Margin="0,0,0,10"/>
+                    
+                    <Image Source="{Binding BookCover, Converter={StaticResource ByteArrayToImageSourceConverter}}"
+                           Stretch="Uniform"
+                           RenderOptions.BitmapScalingMode="HighQuality"
+                           Height="280" Width="243"
+                           Margin="0,0,0,0"
+                           AllowDrop="True"
+                           Drop="Button_DropFile"/>
+                    
+                    <DockPanel Margin="0,20,0,0" HorizontalAlignment="Center">
+                        <Button Width="150" Height="30" adonisExtensions:CornerRadiusExtension.CornerRadius="10"
+                            Command="{Binding SelectFileCommand}"
+                            CommandParameter="ModifyViewModel"
+                            AllowDrop="True"
+                            Drop="Button_DropFile">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="pack://application:,,,/Resources/AppImages/FileDragIcon.png"
+                                   Width="20" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                <TextBlock Text="Add Book Cover"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       Margin="5,3,0,0"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Width="25" Height="25"
+                            adonisExtensions:CornerRadiusExtension.CornerRadius="25"
+                            Margin="10,0,0,0"
+                            Content="x" Padding="0,0,0.5,4"
+                            Command="{Binding RemoveBookCoverCommand}"
+                            CommandParameter="ModifyViewModel"/>
+                    </DockPanel>
+                </StackPanel>
+                <Rectangle Grid.Column="1"
+                       Fill="Transparent"
+                       Height="388" Width="243"
+                       Margin="0,0,0,145"
+                       AllowDrop="True"
+                       Drop="Button_DropFile"/>
+            </Grid>
+                
             
-    </Grid>
+            
+            
+        </Grid>
+
+
+    </GroupBox>
 </UserControl>

@@ -313,13 +313,13 @@ namespace BookInventoryAdminProgram.ViewModel.BookManagerSubViewModels
             ErrorsChanged?.Invoke(this, e);
             OnPropertyChanged(nameof(CanCreateBook));
         }
-        public void NotifyAGUpdate()
-        {
-            OnPropertyChanged(nameof(CanCreateBook));
-        }
         public IEnumerable GetErrors(string? propertyName)
         {
             return _errorsViewModel.GetErrors(propertyName);
+        }
+        public void NotifyAGUpdate()
+        {
+            OnPropertyChanged(nameof(CanCreateBook));
         }
     }
 }

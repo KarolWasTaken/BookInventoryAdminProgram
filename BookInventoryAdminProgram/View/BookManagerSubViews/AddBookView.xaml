@@ -214,17 +214,19 @@
                 </Border>
                 <Grid>
                     <Image Source="{Binding BookCover, Converter={StaticResource ByteArrayToImageSourceConverter}}"
-                                   Stretch="Uniform"
-                                   RenderOptions.BitmapScalingMode="NearestNeighbor"
-                                   Height="388" Width="243"
-                                   Margin="0,0,0,0"
-                                   AllowDrop="True"
-                                   Drop="Button_DropFile"
-                                   Visibility="{Binding ImageVisibility, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"/>
+                           Stretch="Uniform"
+                           RenderOptions.BitmapScalingMode="HighQuality"
+                           Height="388" Width="243"
+                           Margin="0,0,0,0"
+                           AllowDrop="True"
+                           Drop="Button_DropFile"
+                           Visibility="{Binding ImageVisibility, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"/>
                 </Grid>
                 <DockPanel Margin="0,20,0,0" HorizontalAlignment="Center">
                     <Button Width="200" Height="50" adonisExtensions:CornerRadiusExtension.CornerRadius="10"
-                            Command="{Binding SelectFileCommand}" AllowDrop="True"
+                            Command="{Binding SelectFileCommand}"
+                            CommandParameter="AddViewModel"
+                            AllowDrop="True"
                             Drop="Button_DropFile">
                         <StackPanel Orientation="Horizontal">
                             <Image Source="pack://application:,,,/Resources/AppImages/FileDragIcon.png"
@@ -239,7 +241,8 @@
                             adonisExtensions:CornerRadiusExtension.CornerRadius="25"
                             Margin="10,0,0,0"
                             Content="x" Padding="0,0,0.5,4"
-                            Command="{Binding RemoveBookCoverCommand}"/>
+                            Command="{Binding RemoveBookCoverCommand}"
+                            CommandParameter="AddViewModel"/>
                 </DockPanel>
             </StackPanel>
             <Rectangle Grid.Column="1"

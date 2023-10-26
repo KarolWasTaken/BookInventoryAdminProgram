@@ -146,7 +146,7 @@
                 <StackPanel>
                     <Image     Source="{Binding PopularBookCover, Converter={StaticResource ByteArrayToImageSourceConverter}}"
                                Stretch="Uniform"
-                               RenderOptions.BitmapScalingMode="NearestNeighbor"
+                               RenderOptions.BitmapScalingMode="HighQuality"
                                Height="388" Width="243"/>
                     <TextBlock Text="{Binding PopularBookInfo[Title]}" FontFamily="{StaticResource Poppins}"
                                Foreground="White" FontWeight="Medium"

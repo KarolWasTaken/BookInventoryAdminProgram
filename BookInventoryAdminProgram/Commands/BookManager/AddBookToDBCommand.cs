@@ -23,18 +23,6 @@ namespace BookInventoryAdminProgram.Commands.BookManager
         {
             _addBookViewModel = addBookViewModel;
         }
-        private class BookData
-        {
-            public string Title { get; set; }
-            public string GenreNames { get; set; }
-            public string AuthorNames { get; set; }
-            public DateTime ReleaseDate { get; set; }
-            public string PublisherName { get; set; }
-            public string ISBN { get; set; }
-            public byte[] BookCover { get; set; }
-            public float Price { get; set; }
-            public int BookStock { get; set; }
-        }
         public override void Execute(object? parameter)
         {
             string GenreNames = GetAttributeNamesCommaseparated(_addBookViewModel.SearchList["Genre"]);
@@ -60,7 +48,7 @@ namespace BookInventoryAdminProgram.Commands.BookManager
                     BookStock = int.Parse(_addBookViewModel.BookStock)
 
                 };
-                connection.Query<BookData>("dbo.spAddBookWithEntities @Title, @GenreNames, @AuthorNames, @ReleaseDate, @PublisherName, @ISBN, @BookCover, @Price, @BookStock", parameters);
+                connection.Execute("dbo.spAddBookWithEntities @Title, @GenreNames, @AuthorNames, @ReleaseDate, @PublisherName, @ISBN, @BookCover, @Price, @BookStock", parameters);
                 var messageBox = new MessageBoxModel
                 {
                     Text = "Book added to database.",

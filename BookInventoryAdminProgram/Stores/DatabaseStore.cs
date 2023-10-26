@@ -54,7 +54,7 @@ namespace BookInventoryAdminProgram.Stores
             public string ISBN { get; set; }
             public int BookID { get; set; }
             public string Title { get; set; }
-            public double Price { get; set; }
+            public decimal Price { get; set; }
             public int BookStock { get; set; }
             public List<string> Authors { get; set; }
             public List<string> Genres { get; set; }

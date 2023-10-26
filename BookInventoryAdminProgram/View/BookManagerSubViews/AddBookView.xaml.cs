@@ -51,21 +51,13 @@ namespace BookInventoryAdminProgram.View.BookManagerSubViews
                     // Create a BitmapImage and set its source to the clipboard image
                     BitmapImage bitmapImage = new BitmapImage();
                     bitmapImage.BeginInit();
-                    bitmapImage.StreamSource = ConvertBitmapSourceToStream(clipboardImage);
+                    bitmapImage.StreamSource = BitmapSourceToStreamConverter.Convert(clipboardImage);
                     bitmapImage.EndInit();
                     
                     byte[] coverImage = BitmapImageToByteArrayConverter.Convert(bitmapImage);
-                    selectFileCommand.SetImage(coverImage);
+                    selectFileCommand.SetImage(coverImage, "AddViewModel");
                 }
             }
-        }
-        private Stream ConvertBitmapSourceToStream(BitmapSource bitmapSource)
-        {
-            MemoryStream stream = new MemoryStream();
-            BitmapEncoder encoder = new PngBitmapEncoder(); // You can choose an appropriate encoder for your needs
-            encoder.Frames.Add(BitmapFrame.Create(bitmapSource));
-            encoder.Save(stream);
-            return stream;
         }
 
         private void Button_DropFile(object sender, DragEventArgs e)
@@ -82,7 +74,7 @@ namespace BookInventoryAdminProgram.View.BookManagerSubViews
                     SelectFileCommand selectFileCommand = new SelectFileCommand(viewModel);
                     BitmapImage coverImageBitmap = new BitmapImage(new Uri(path, UriKind.RelativeOrAbsolute));
                     byte[] coverImage = BitmapImageToByteArrayConverter.Convert(coverImageBitmap);
-                    selectFileCommand.SetImage(coverImage);
+                    selectFileCommand.SetImage(coverImage, "AddViewModel");
                     notifier.Text = null;
                 }
                 else

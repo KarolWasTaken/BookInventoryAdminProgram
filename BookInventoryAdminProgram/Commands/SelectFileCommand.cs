@@ -15,14 +15,15 @@ namespace BookInventoryAdminProgram.Commands
     public class SelectFileCommand : CommandBase
     {
         private AddBookViewModel _addBookViewModel;
+        private ModifyBookViewModel _modifyBookViewModel;
 
         public SelectFileCommand(AddBookViewModel addBookViewModel)
         {
             _addBookViewModel = addBookViewModel;
         }
-        public SelectFileCommand()
+        public SelectFileCommand(ModifyBookViewModel modifyBookViewModel)
         {
-
+            _modifyBookViewModel = modifyBookViewModel;
         }
 
         public override void Execute(object? parameter)
@@ -34,14 +35,21 @@ namespace BookInventoryAdminProgram.Commands
                 string selectedFilePath = openFileDialog.FileName;
                 BitmapImage coverImageBitmap = new BitmapImage(new Uri(selectedFilePath, UriKind.RelativeOrAbsolute));
                 byte[] coverImage = BitmapImageToByteArrayConverter.Convert(coverImageBitmap);
-                SetImage(coverImage);
+                SetImage(coverImage, parameter.ToString());
             }
         }
-        public void SetImage(byte[] image)
+        public void SetImage(byte[] image, string viewModelType)
         {
-            _addBookViewModel.BookCover = image;
-            _addBookViewModel.DragDropUIVisibility = false;
-            _addBookViewModel.ImageVisibility = true;
+            if(viewModelType == "AddViewModel")
+            {
+                _addBookViewModel.BookCover = image;
+                _addBookViewModel.DragDropUIVisibility = false;
+                _addBookViewModel.ImageVisibility = true;
+            }
+            else if (viewModelType == "ModifyViewModel")
+            {
+                _modifyBookViewModel.BookCover = image;    
+            }
         }
     }
 }
