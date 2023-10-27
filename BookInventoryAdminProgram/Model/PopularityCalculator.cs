@@ -5,6 +5,9 @@ using System.Data;
 using System.Linq;
 using Dapper;
 using static BookInventoryAdminProgram.Stores.DatabaseStore;
+using static System.Reflection.Metadata.BlobBuilder;
+using AdonisUI.Controls;
+using System.Reflection;
 
 namespace BookInventoryAdminProgram.Model
 {
@@ -144,6 +147,39 @@ namespace BookInventoryAdminProgram.Model
                 return null;
             }
         }
+        public Dictionary<BookInfo, int> GetQuantitySoldLastMonth()
+        {
+            // Assuming MonthlySales contains the sales data for the last month.
+            var popularityDict = new Dictionary<BookInfo, int>();
+
+            for (int i = 0; i < _database.Count; i++)
+            {
+                // Get Last Month's sales
+                var lastMonthSales = _database[i].MonthlySales?.LastOrDefault();
+
+                // Calculate popularity based on total sales for the last month.
+                int popularity = lastMonthSales != null ? lastMonthSales.QuantitySold : 0;
+                popularityDict[_database[i]] = popularity;
+            }
+
+            // Sort the dictionary by popularity in numerical order.
+            var sortedDict = popularityDict.OrderByDescending(pair => pair.Value).ToDictionary(pair => pair.Key, pair => pair.Value);
+            return sortedDict;
+        }
+
+        public Dictionary<BookInfo, int> GetPopularityListLastMonth()
+        {
+            var sortedDict = GetQuantitySoldLastMonth();
+            // Creates final dict of the actual popularity list
+            var finalDict = new Dictionary<BookInfo, int>();
+            for (int i = 0; i <= sortedDict.Count - 1; i++)
+            {
+                finalDict[sortedDict.Keys.ElementAt(i)] = i + 1;
+            }
+
+            return finalDict;
+        }
+
 
     }
 }

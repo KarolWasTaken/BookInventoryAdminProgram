@@ -39,6 +39,7 @@ namespace BookInventoryAdminProgram
         protected override void OnStartup(StartupEventArgs e)
         {
             UserInfoStore userInfoStore = new UserInfoStore();
+
             OpenLoginWindow();
             //OpenMainWindow();
             

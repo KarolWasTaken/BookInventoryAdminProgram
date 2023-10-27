@@ -4,9 +4,124 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BookInventoryAdminProgram.View.BookManagerSubViews"
+             xmlns:adonisExtensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"
+             xmlns:Converter="clr-namespace:BookInventoryAdminProgram.Converter"
              mc:Ignorable="d" 
              d:DesignHeight="748" d:DesignWidth="1080">
-    <Grid Background="Blue">
-            
-    </Grid>
+    <UserControl.Resources>
+        <Converter:ListToStringConverter x:Key="ListToStringConverter"/>
+        <Converter:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSourceConverter"/>
+    </UserControl.Resources>
+    <GroupBox Header="Remove Book"
+              adonisExtensions:LayerExtension.Layer="3">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+
+
+            <GroupBox Header="Books"
+                      Grid.Row="0"
+                      Margin="0,0,0,10"
+                      adonisExtensions:LayerExtension.Layer="4"
+                      Panel.ZIndex="1">
+                <ListView ItemsSource="{Binding MainDataset, Mode=TwoWay}"
+                          Grid.Row="0" Margin="10"
+                          ScrollViewer.CanContentScroll="False"
+                          ScrollViewer.VerticalScrollBarVisibility="Auto"
+                          ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                          SelectedItem="{Binding SelectedBook}">
+                    <ListView.View>
+                        <GridView ScrollViewer.CanContentScroll="False">
+                            <GridViewColumn Header="Book" Width="50">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Image Source="{Binding BookCover, Converter={StaticResource ByteArrayToImageSourceConverter}}"
+                                               Height="25" Width="25"
+                                               RenderOptions.BitmapScalingMode="HighQuality" Stretch="Uniform"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="Title" Width="150">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Title}"
+                                                   TextWrapping="Wrap" TextTrimming="WordEllipsis"
+                                                   Width="150"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+
+                            <GridViewColumn Header="Author" Width="120">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Authors, Converter={StaticResource ListToStringConverter}}" TextWrapping="Wrap"
+                                                   TextTrimming="WordEllipsis" Width="100"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="Publisher" DisplayMemberBinding="{Binding PublisherName}" />
+                            <GridViewColumn Header="Price" Width="50" DisplayMemberBinding="{Binding Price}" />
+                            <GridViewColumn Header="BookStock" Width="70"  DisplayMemberBinding="{Binding BookStock}" />
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </GroupBox>
+
+
+
+            <StackPanel Grid.Column="1" HorizontalAlignment="Center">
+                <TextBlock Text="Book Cover" FontFamily="{StaticResource Poppins}"
+                           Foreground="White" FontWeight="Medium"
+                           TextAlignment="Center"
+                           FontSize="25"
+                           Margin="0,0,0,10"/>
+
+                <Image Source="{Binding BookCover, Converter={StaticResource ByteArrayToImageSourceConverter}}"
+                       Stretch="Uniform"
+                       RenderOptions.BitmapScalingMode="HighQuality"
+                       Height="280" Width="243"
+                       Margin="0,0,0,0"/>
+
+                <TextBlock Text="{Binding SelectedBook.Title}"
+                           TextAlignment="Center"
+                           FontSize="15"
+                           Height="50"
+                           Width="250"
+                           TextWrapping="Wrap"
+                           TextTrimming="WordEllipsis"
+                           FontFamily="{StaticResource Poppins}"
+                           FontWeight="Regular"
+                           Margin="0,10,0,0"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"/>
+                
+                <Button Content="Remove Book"
+                        Width="225"
+                        Height="40"
+                        adonisExtensions:CornerRadiusExtension.CornerRadius="20"
+                        FontFamily="{StaticResource Poppins}"
+                        IsEnabled="{Binding RemoveButtonEnabled}"
+                        Command="{Binding RemoveBookCommand}"
+                        CommandParameter="Complete"
+                        Margin="0,0,0,20"/>
+                <Button Content="Remove From Catalogue"
+                        Width="225"
+                        Height="40"
+                        adonisExtensions:CornerRadiusExtension.CornerRadius="20"
+                        FontFamily="{StaticResource Poppins}"
+                        IsEnabled="{Binding RemoveButtonEnabled}"
+                        Command="{Binding RemoveBookCommand}"
+                        CommandParameter="Catalogue"/>
+                
+            </StackPanel>
+
+
+
+
+        </Grid>
+
+    </GroupBox>
 </UserControl>

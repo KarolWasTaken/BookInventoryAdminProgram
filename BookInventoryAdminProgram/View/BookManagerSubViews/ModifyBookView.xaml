@@ -26,11 +26,11 @@
             <Setter Property="TextTrimming" Value="WordEllipsis"/>
         </Style>
     </UserControl.Resources>
-    <GroupBox Grid.Column="1" Header="Modify Book"
+    
+    
+    <GroupBox Header="Modify Book"
               adonisExtensions:LayerExtension.Layer="3">
-
         <Grid>
-
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="1.75*"/>
@@ -38,7 +38,6 @@
             <GroupBox Grid.Row="0" Margin="0,0,0,10" adonisExtensions:LayerExtension.Layer="4">
                 <ListView ItemsSource="{Binding MainDataset, Mode=TwoWay}" Grid.Row="0" Margin="10"
                           ScrollViewer.CanContentScroll="False" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                          d:ItemsSource="{d:SampleData ItemCount=5}"
                           SelectedItem="{Binding SelectedBook}"
                           IsEnabled="{Binding ListBoxEnabled}">
                     <ListView.View>
@@ -160,12 +159,6 @@
                        AllowDrop="True"
                        Drop="Button_DropFile"/>
             </Grid>
-                
-            
-            
-            
         </Grid>
-
-
     </GroupBox>
 </UserControl>

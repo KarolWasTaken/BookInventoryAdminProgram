@@ -9,6 +9,10 @@ using System.Threading.Tasks;
 using BookInventoryAdminProgram.Stores;
 using static BookInventoryAdminProgram.Stores.DatabaseStore;
 using static BookInventoryAdminProgram.Model.PopularityCalculator;
+using AdonisUI.Controls;
+using BookInventoryAdminProgram.ViewModel.BookManagerSubViewModels;
+using Accessibility;
+using System.Runtime.CompilerServices;
 
 namespace BookInventoryAdminProgram.Model
 {
@@ -18,6 +22,17 @@ namespace BookInventoryAdminProgram.Model
     /// </summary>
     public class DatabaseOperations
     {
+
+        /// <summary>
+        /// Dictates what kind of remove operation should be performed. See <see cref="RemoveBookByID(int, RemoveType)"/>.
+        /// </summary>
+        public enum RemoveType // I should probably utilise these more.
+        {
+            Catalogue,
+            Complete
+        }
+
+
         private List<BookInfo> _database;
         private Dictionary<string, List<CommonValues>> _junctionValuesDictionary;
         public DatabaseOperations()
@@ -88,6 +103,51 @@ namespace BookInventoryAdminProgram.Model
             return booksWithPropertyLowInStock;
         }
 
+        public bool RemoveBookByID(int bookID, RemoveType removeType)
+        {
+
+            BookInfo selectedBook = _database.Where(n => n.BookID == bookID).FirstOrDefault();
+            using (SqlConnection connection = new SqlConnection(Helper.ReturnSettings().ConnectionString))
+            {
+                try
+                {
+                    string messageText;
+                    if(removeType == RemoveType.Complete)
+                    {
+                        connection.Execute("dbo.spRemoveBookByID @BookID", new { BookID = bookID });
+                        messageText = $"{selectedBook.Title} has been removed.";
+                    }
+                    else if( removeType == RemoveType.Catalogue)
+                    {
+                        connection.Execute("dbo.spRemoveFromCatalogueByID @BookID", new {BookID = bookID});
+                        messageText = $"{selectedBook.Title} has been removed from catalogue.";
+                    }
+                    else { throw new Exception("unknown remove type"); }
+
+                    var messageBox = new MessageBoxModel
+                    {
+                        Text = messageText,
+                        Caption = "Info",
+                        Icon = AdonisUI.Controls.MessageBoxImage.Information,
+                        Buttons = new List<IMessageBoxButtonModel> { MessageBoxButtons.Ok() }
+                    };
+                    AdonisUI.Controls.MessageBox.Show(messageBox);
+                    return true; // Indicates success
+                }
+                catch (Exception ex)
+                {
+                    var messageBox = new MessageBoxModel
+                    {
+                        Text = $"An error occurred. No book was removed.",
+                        Caption = "Info",
+                        Icon = AdonisUI.Controls.MessageBoxImage.Error,
+                        Buttons = new List<IMessageBoxButtonModel> { MessageBoxButtons.Ok() }
+                    };
+                    AdonisUI.Controls.MessageBox.Show(messageBox);
+                    return false; // Indicates failure
+                }
+            }
+        }
 
 
 
