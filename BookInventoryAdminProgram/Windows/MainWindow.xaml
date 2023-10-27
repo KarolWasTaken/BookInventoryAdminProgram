@@ -30,6 +30,9 @@
             <DataTemplate DataType="{x:Type ViewModels:BookManagerPanelViewModel}">
                 <Views:BookManagerPanel/>
             </DataTemplate>
+            <DataTemplate DataType="{x:Type ViewModels:SettingsPanelViewModel}">
+                <Views:SettingsPanel/>
+            </DataTemplate>
         </Grid.Resources>
         
         <Grid>
@@ -65,8 +68,12 @@
                         <Button Content="Staff Viewer" Width="98" Margin="0,0,0,10" Command="{Binding StaffViewerNavigateCommand}"/>
                     </StackPanel>
 
-                    <Button Content="Logout" Width="98" Grid.Row="1" Margin="0,10,0,0"
-                            Command="{Binding LogoutCommand}"/>
+                    <StackPanel VerticalAlignment="Bottom">
+                        <Button Content="Settings" Width="98" Grid.Row="1"
+                                Command="{Binding SettingsPanelNavigateCommand}"/>
+                        <Button Content="Logout" Width="98" Grid.Row="1" Margin="0,10,0,0"
+                                Command="{Binding LogoutCommand}"/>
+                    </StackPanel>
                 </Grid>
 
             </GroupBox> 

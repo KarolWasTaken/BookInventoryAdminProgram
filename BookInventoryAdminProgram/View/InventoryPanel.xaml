@@ -161,10 +161,10 @@
                                         CommandParameter="Author"/>
 
                                 <Border Width="2"
-                                Background="LightGray"
-                                CornerRadius="2"
-                                Height="35"
-                                Margin="0,0,10,0"/>
+                                        Background="LightGray"
+                                        CornerRadius="2"
+                                        Height="35"
+                                        Margin="0,0,10,0"/>
 
                                 <ComboBox Width="90" Height="30" adonisExtensions:WatermarkExtension.Watermark="Search List"
                                           Margin="0,0,10,0"
@@ -462,8 +462,27 @@
 
                     </DataGrid>
                 </ScrollViewer-->
-
             </Grid>
         </GroupBox>
+        <!-- I dont know how to load async :) -->
+        <!-- Grid Background="Transparent" Grid.RowSpan="2"
+              Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Rectangle Fill="#1f2029" Opacity="1"/>
+            <Border Background="#323341"
+                    Width="400" Height="150"
+                    CornerRadius="20">
+                
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <TextBlock Text="Loading..." TextAlignment="Center"
+                               Foreground="white"
+                               Margin="0,0,0,10"
+                               FontSize="20"
+                               FontFamily="{StaticResource Poppins}"
+                               FontWeight="Medium"/>
+                    <ProgressBar IsIndeterminate="True" Width="350" Height="20" Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                </StackPanel>
+            </Border>
+
+        </Grid-->
     </Grid>
 </UserControl>

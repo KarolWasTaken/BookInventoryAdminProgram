@@ -1,4 +1,5 @@
 ﻿using BookInventoryAdminProgram.Commands;
+using BookInventoryAdminProgram.Commands.NavigateCommands;
 using BookInventoryAdminProgram.Model;
 using BookInventoryAdminProgram.Stores;
 using BookInventoryAdminProgram.View;
@@ -40,10 +41,11 @@ namespace BookInventoryAdminProgram.ViewModel
         //public ICommand SalesReporterNavigateCommand { get; }
         //public ICommand GraphViewerNavigateCommand { get; }
         public ICommand StaffViewerNavigateCommand { get; }
+        public ICommand SettingsPanelNavigateCommand { get; }
         public ICommand LogoutCommand { get; }
 
         public MainWindowViewModel(NavigationStore navigationStore, Func<HomeViewModel> createHomeViewModel, Func<InventoryPanelViewModel> createInventoryPanelViewModel,
-            Func<StaffViewerPanelViewModel> createStaffViewerPanelViewModel, Func<LoginWindowViewModel> createLoginWindowViewModel, Func<BookManagerPanelViewModel> createBookManagerPanelViewModel, Action openLoginWindow, UserInfoStore userInfoStore)
+            Func<StaffViewerPanelViewModel> createStaffViewerPanelViewModel, Func<LoginWindowViewModel> createLoginWindowViewModel, Func<BookManagerPanelViewModel> createBookManagerPanelViewModel, Func<SettingsPanelViewModel> createSettingsPanelViewModel, Action openLoginWindow, UserInfoStore userInfoStore)
         {
 
             HomeNavigateCommand = new HomeNavigateCommand(navigationStore, createHomeViewModel);
@@ -51,6 +53,8 @@ namespace BookInventoryAdminProgram.ViewModel
             StaffViewerNavigateCommand = new StaffViewerNavigateCommand(navigationStore, createStaffViewerPanelViewModel);
             LogoutCommand = new LogoutCommand(this, navigationStore, createLoginWindowViewModel, openLoginWindow);
             BookManagerPanelNavigateCommand = new BookManagerNavigateCommand(navigationStore, createBookManagerPanelViewModel);
+            SettingsPanelNavigateCommand = new SettingsPanelNavigateCommand(navigationStore, createSettingsPanelViewModel);
+
 
             _navigationStore = navigationStore;
             _navigationStore.CurrentViewModelChanged += OnCurrentViewModelChanged;

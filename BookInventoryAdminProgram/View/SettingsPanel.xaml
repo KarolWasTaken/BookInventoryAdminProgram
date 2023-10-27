@@ -1,0 +1,33 @@
+﻿<UserControl x:Class="BookInventoryAdminProgram.View.SettingsPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:BookInventoryAdminProgram.View"
+             xmlns:adonisExtensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"
+             xmlns:Converter="clr-namespace:BookInventoryAdminProgram.Converter"
+             mc:Ignorable="d" 
+             d:DesignHeight="818" d:DesignWidth="1080">
+    <GroupBox Header="Settings Panel"
+              adonisExtensions:LayerExtension.Layer="3">
+        <Grid>
+
+            <StackPanel Margin="20">
+                <TextBlock Text="Low BookStock Warning Count"
+                           FontFamily="{StaticResource Poppins}"
+                           FontWeight="Medium"
+                           FontSize="25"
+                           Margin="0,0,0,10"/>
+                <DockPanel>
+                    <TextBox Text="{Binding MinBookCountWarning, UpdateSourceTrigger=PropertyChanged}"
+                             Height="40"
+                             FontSize="20"
+                             Width="400"
+                             HorizontalAlignment="Left"/>
+                </DockPanel>
+            </StackPanel>
+            
+            
+        </Grid>
+    </GroupBox>
+</UserControl>

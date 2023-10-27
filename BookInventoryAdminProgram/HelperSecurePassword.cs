@@ -8,7 +8,7 @@ namespace BookInventoryAdminProgram
     // stolen from here: https://gigi.nullneuron.net/gigilabs/security-risk-in-binding-wpf-passwordbox-password/
 
     // you may be thinking, "Yo karol, why not just collect the password on click in the code-behind?"
-    // to which ill reply, "Oh my strickingly smart imaginary contrarian friend, that is actually not a bad shout." 
+    // to which ill reply, "Oh my strickingly smart imaginary contrarian friend, cuz i dont want to" 
     public class HelperSecurePassword
     {
         public static readonly DependencyProperty PasswordProperty =

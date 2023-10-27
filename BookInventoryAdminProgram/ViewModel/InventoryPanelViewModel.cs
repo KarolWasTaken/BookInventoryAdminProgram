@@ -122,9 +122,9 @@ namespace BookInventoryAdminProgram.ViewModel
         public List<string> PresentGenreList
         { get => _presentGenreList; set => _presentGenreList = value; }*/
 
-        private Dictionary<string,List<string>> _presentAGList = new Dictionary<string, List<string>>()
+        private Dictionary<string, List<string>> _presentAGList = new Dictionary<string, List<string>>()
         {
-            {"Author", 
+            {"Author",
              FilteringDatabase.MergeSort(mainDataBase
             .SelectMany(book => book.Authors)
             .Distinct()
@@ -137,7 +137,7 @@ namespace BookInventoryAdminProgram.ViewModel
             .ToList()
             )}
         };
-        public Dictionary<string,List<string>> PresentAGList
+        public Dictionary<string, List<string>> PresentAGList
         {
             get
             {
@@ -188,18 +188,18 @@ namespace BookInventoryAdminProgram.ViewModel
 
         // datagrid property
         private List<BookInfo> _inventoryDatagrid;
-		public List<BookInfo> InventoryDatagrid
-		{
-			get
-			{
-				return _inventoryDatagrid;
-			}
-			set
-			{
-				_inventoryDatagrid = value;
-				OnPropertyChanged(nameof(InventoryDatagrid));
-			}
-		}
+        public List<BookInfo> InventoryDatagrid
+        {
+            get
+            {
+                return _inventoryDatagrid;
+            }
+            set
+            {
+                _inventoryDatagrid = value;
+                OnPropertyChanged(nameof(InventoryDatagrid));
+            }
+        }
         // all the checkbuttons bind to this. When check/uncheck it reflects here
         private Dictionary<string, bool> _headerVisibility = new Dictionary<string, bool>
         {

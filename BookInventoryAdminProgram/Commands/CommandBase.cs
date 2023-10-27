@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.Pkcs;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -20,6 +21,8 @@ namespace BookInventoryAdminProgram.Commands
         }
 
         public abstract void Execute(object? parameter);
+        
+
 
         protected void OnCanExecutedChanged()
         { 

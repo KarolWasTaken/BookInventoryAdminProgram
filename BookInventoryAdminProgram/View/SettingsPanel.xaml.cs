@@ -1,10 +1,6 @@
-﻿using BookInventoryAdminProgram.ViewModel;
-using BookInventoryAdminProgram.ViewModel.BookManagerSubViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -20,11 +16,11 @@ using System.Windows.Shapes;
 namespace BookInventoryAdminProgram.View
 {
     /// <summary>
-    /// Interaction logic for InventoryPanel.xaml
+    /// Interaction logic for SettingsPanel.xaml
     /// </summary>
-    public partial class InventoryPanel : UserControl
+    public partial class SettingsPanel : UserControl
     {
-        public InventoryPanel()
+        public SettingsPanel()
         {
             InitializeComponent();
         }

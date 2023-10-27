@@ -7,8 +7,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
-using System.Windows.Xps.Serialization;
-using static BookInventoryAdminProgram.Model.BookCoverImageProcesses;
 
 namespace BookInventoryAdminProgram.ViewModel.BookManagerSubViewModels
 {
@@ -93,8 +91,14 @@ namespace BookInventoryAdminProgram.ViewModel.BookManagerSubViewModels
             { return releaseDate; }
             set
             {
+                _errorsViewModel.RemoveError(nameof(ReleaseDate));
                 releaseDate = value;
-                OnPropertyChanged(nameof(ReleaseDate));
+                if (releaseDate < new DateTime(1753, 1, 1))
+                    _errorsViewModel.AddError(nameof(ReleaseDate), "Date must be after 01/01/1753");
+                else
+                {
+                    OnPropertyChanged(nameof(ReleaseDate));
+                }    
                 OnPropertyChanged(nameof(CanCreateBook));
             }
         }
@@ -308,7 +312,7 @@ namespace BookInventoryAdminProgram.ViewModel.BookManagerSubViewModels
             _errorsViewModel.ErrorsChanged += _errorsViewModel_ErrorsChanged;
         }
 
-        private void _errorsViewModel_ErrorsChanged(object? sender, System.ComponentModel.DataErrorsChangedEventArgs e)
+        private void _errorsViewModel_ErrorsChanged(object? sender, DataErrorsChangedEventArgs e)
         {
             ErrorsChanged?.Invoke(this, e);
             OnPropertyChanged(nameof(CanCreateBook));

@@ -22,8 +22,7 @@
 
 
 
-            <GroupBox Header="Books"
-                      Grid.Row="0"
+            <GroupBox Grid.Row="0"
                       Margin="0,0,0,10"
                       adonisExtensions:LayerExtension.Layer="4"
                       Panel.ZIndex="1">

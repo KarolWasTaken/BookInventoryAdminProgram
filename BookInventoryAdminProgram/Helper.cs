@@ -44,12 +44,15 @@ namespace BookInventoryAdminProgram
 
         public static void UpdateMinBookStockNotificationJson(int minBookStockNotification)
         {
+            // if I use ReturnSettings(), the header visibility checkbox will need to be pressed twice for it to do anything.
+            // but when i do Config.GetRequiredSection("Settings").Get<Settings>().HeaderVisibilitiesSerialised everything works fine
+            // This upsets me.
             var updatedConfig = new
             {
                 Settings = new
                 {
                     ConnectionString = Config["Settings:ConnectionString"],
-                    HeaderVisibilitiesSerialised = Config["Settings:HeaderVisibilitiesSerialised"],
+                    HeaderVisibilitiesSerialised = Config.GetRequiredSection("Settings").Get<Settings>().HeaderVisibilitiesSerialised,
                     LowBookStockWarningCount = minBookStockNotification
                 }
             };
