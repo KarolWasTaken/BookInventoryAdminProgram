@@ -45,10 +45,11 @@ namespace BookInventoryAdminProgram.Commands.BookManager
                     ISBN = _addBookViewModel.ISBN,
                     BookCover = BookCover,
                     Price = decimal.Parse(_addBookViewModel.Price),
+                    PricePerUnit = decimal.Parse(_addBookViewModel.PricePerUnit),
                     BookStock = int.Parse(_addBookViewModel.BookStock)
 
                 };
-                connection.Execute("dbo.spAddBookWithEntities @Title, @GenreNames, @AuthorNames, @ReleaseDate, @PublisherName, @ISBN, @BookCover, @Price, @BookStock", parameters);
+                connection.Execute("dbo.spAddBookWithEntities @Title, @GenreNames, @AuthorNames, @ReleaseDate, @PublisherName, @ISBN, @BookCover, @Price, @PricePerUnit, @BookStock", parameters);
                 var messageBox = new MessageBoxModel
                 {
                     Text = "Book added to database.",
@@ -71,6 +72,7 @@ namespace BookInventoryAdminProgram.Commands.BookManager
             _addBookViewModel.ISBN = null;
             _addBookViewModel.BookCover = null;
             _addBookViewModel.Price = null;
+            _addBookViewModel.PricePerUnit = null;
             _addBookViewModel.BookStock = null;
             _addBookViewModel.BookCover = null;
             _addBookViewModel.DragDropUIVisibility = true;
@@ -83,7 +85,7 @@ namespace BookInventoryAdminProgram.Commands.BookManager
             {
                 names += $"{item},";
             }
-            names = names.Substring(0, names.Length - 2);
+            names = names.Substring(0, names.Length - 1);
             return names;
         }
     }

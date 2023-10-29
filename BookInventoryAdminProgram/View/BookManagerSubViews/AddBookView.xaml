@@ -168,6 +168,9 @@
                 <TextBox adonisExtensions:WatermarkExtension.Watermark="Price"
                          Style="{StaticResource TextBoxStyle}"
                          Text="{Binding Price, Mode=TwoWay}"/>
+                <TextBox adonisExtensions:WatermarkExtension.Watermark="PricePerUnit"
+                         Style="{StaticResource TextBoxStyle}"
+                         Text="{Binding PricePerUnit, Mode=TwoWay}"/>
                 <TextBox adonisExtensions:WatermarkExtension.Watermark="BookStock"
                          Style="{StaticResource TextBoxStyle}"
                          Text="{Binding BookStock, Mode=TwoWay}"/>

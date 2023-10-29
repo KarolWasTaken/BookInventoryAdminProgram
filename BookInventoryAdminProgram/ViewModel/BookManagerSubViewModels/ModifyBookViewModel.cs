@@ -45,6 +45,7 @@ namespace BookInventoryAdminProgram.ViewModel.BookManagerSubViewModels
 				OnPropertyChanged(nameof(SelectedBook));
                 OnPropertyChanged(nameof(BookCover));
                 OnPropertyChanged(nameof(Price));
+                OnPropertyChanged(nameof(PricePerUnit));
                 OnPropertyChanged(nameof(BookStock));
                 OnPropertyChanged(nameof(EnableTextBoxes));
             }
@@ -82,7 +83,7 @@ namespace BookInventoryAdminProgram.ViewModel.BookManagerSubViewModels
                             price += "0";
                         }
                     }
-                    SelectedBook.Price = decimal.Parse(price);
+                    SelectedBook.Price = double.Parse(price);
                     ListBoxEnabled = false; // disable listbox until edits are committed
                     EditMade = true;
                     OnPropertyChanged(nameof(selectedBook));
@@ -94,6 +95,51 @@ namespace BookInventoryAdminProgram.ViewModel.BookManagerSubViewModels
                 OnPropertyChanged(nameof(CanCommitChanges));
             }
 		}
+        private string pricePerUnit;
+        public string PricePerUnit
+        {
+            get
+            {
+                if (selectedBook == null)
+                {
+                    return pricePerUnit;
+                }
+                // return most recent Price Per Unit or empty string.
+                return selectedBook.PricePerUnit.OrderByDescending(ppu => ppu.SetDate).FirstOrDefault()?.PricePerUnit.ToString() ?? "";
+            }
+            set
+            {
+                OnPropertyChanged(nameof(PricePerUnit));
+                pricePerUnit = value;
+
+                if (selectedBook == null)
+                {
+                    return;
+                }
+                if (!pricePerUnit.Contains("."))
+                    pricePerUnit += ".";
+                if (double.TryParse(pricePerUnit, out double result))
+                {
+                    if (pricePerUnit.Length - pricePerUnit.IndexOf(".") - 1 < 2)
+                    {
+                        int decimalPlacesLeftToPopulate = 2 - (pricePerUnit.Length - pricePerUnit.IndexOf(".") - 1);
+                        for (int i = decimalPlacesLeftToPopulate - 1; i >= 0; i--)
+                        {
+                            pricePerUnit += "0";
+                        }
+                    }
+                    SelectedBook.PricePerUnit.OrderByDescending(ppu => ppu.SetDate).FirstOrDefault().PricePerUnit = double.Parse(pricePerUnit);
+                    ListBoxEnabled = false; // disable listbox until edits are committed
+                    EditMade = true;
+                    OnPropertyChanged(nameof(selectedBook));
+                    OnPropertyChanged(nameof(PricePerUnit));
+                    OnPropertyChanged(nameof(ListBoxEnabled));
+                }
+                else
+                    _errorsViewModel.AddError(nameof(PricePerUnit), "Invalid format for Price");
+                OnPropertyChanged(nameof(CanCommitChanges));
+            }
+        }
 
         private string bookStock;
         public string BookStock
@@ -200,6 +246,7 @@ namespace BookInventoryAdminProgram.ViewModel.BookManagerSubViewModels
         {
             OnPropertyChanged(nameof(selectedBook));
             OnPropertyChanged(nameof(Price));
+            OnPropertyChanged(nameof(PricePerUnit));
             OnPropertyChanged(nameof(BookStock));
             OnPropertyChanged(nameof(ListBoxEnabled));
             OnPropertyChanged(nameof(CanCommitChanges));

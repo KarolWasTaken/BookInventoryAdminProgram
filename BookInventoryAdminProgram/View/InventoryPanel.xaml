@@ -194,7 +194,7 @@
                             </WrapPanel>
                         </Expander>
                         <Expander Header="Genres" BorderThickness="2"
-                                  BorderBrush="White" Margin="0,0,15,10"
+                                  BorderBrush="White" Margin="0,0,10,10"
                                   IsExpanded="True">
                             <WrapPanel Orientation="Horizontal" Margin="0,10,0,0">
                                 <ComboBox Width="90" Height="30" adonisExtensions:WatermarkExtension.Watermark="Genre"
@@ -246,7 +246,7 @@
                             </WrapPanel>
                         </Expander>
                         <Expander Header="Options" BorderThickness="2"
-                                  BorderBrush="White" Margin="30,0,0,10"
+                                  BorderBrush="White" Margin="5,0,0,10"
                                   IsExpanded="True"
                                   HorizontalAlignment="Left">
                             <WrapPanel Margin="0,10,0,0">
@@ -261,15 +261,18 @@
                                         <CheckBox Content="Price" IsChecked="{Binding HeaderVisibility[Price]}"
                                                   Command="{Binding ToggleHeaderVisibilityCommand}"
                                                   CommandParameter="Price"/>
+                                        <CheckBox Content="PricePerUnit" IsChecked="{Binding HeaderVisibility[PricePerUnit]}"
+                                                  Command="{Binding ToggleHeaderVisibilityCommand}"
+                                                  CommandParameter="PricePerUnit"/>
                                         <CheckBox Content="Stock" IsChecked="{Binding HeaderVisibility[BookStock]}"
                                                   Command="{Binding ToggleHeaderVisibilityCommand}"
                                                   CommandParameter="BookStock"/>
-                                        <CheckBox Content="Author" IsChecked="{Binding HeaderVisibility[Author]}"
-                                                  Command="{Binding ToggleHeaderVisibilityCommand}"
-                                                  CommandParameter="Author"/>
 
                                     </StackPanel>
                                     <StackPanel Margin="0,0,10,0">
+                                        <CheckBox Content="Author" IsChecked="{Binding HeaderVisibility[Author]}"
+                                                  Command="{Binding ToggleHeaderVisibilityCommand}"
+                                                  CommandParameter="Author"/>
                                         <CheckBox Content="Genre" IsChecked="{Binding HeaderVisibility[Genre]}"
                                                   Command="{Binding ToggleHeaderVisibilityCommand}"
                                                   CommandParameter="Genre"/>
@@ -282,11 +285,11 @@
                                         <CheckBox Content="All-Time Sales" IsChecked="{Binding HeaderVisibility[AllTimeSales]}"
                                                   Command="{Binding ToggleHeaderVisibilityCommand}"
                                                   CommandParameter="AllTimeSales"/>
+                                    </StackPanel>
+                                    <StackPanel Margin="0,0,10,0">
                                         <CheckBox Content="Yearly Sales" IsChecked="{Binding HeaderVisibility[YearlySales]}"
                                                   Command="{Binding ToggleHeaderVisibilityCommand}"
                                                   CommandParameter="YearlySales"/>
-                                    </StackPanel>
-                                    <StackPanel Margin="0,0,10,0">
                                         <CheckBox Content="Monthly Sales" IsChecked="{Binding HeaderVisibility[MonthlySales]}"
                                                   Command="{Binding ToggleHeaderVisibilityCommand}"
                                                   CommandParameter="MonthlySales"/>
@@ -335,6 +338,36 @@
                                 Source={x:Reference dummyElement},
                                 Path=DataContext.HeaderVisibility[Price],
                                 Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                            
+                            <DataGridTemplateColumn Header="PricePerUnit (£)"
+                                                    Visibility="{Binding 
+                                Source={x:Reference dummyElement},
+                                Path=DataContext.HeaderVisibility[PricePerUnit],
+                                Converter={StaticResource BooleanToVisibilityConverter}}">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <!-- Bind to the properties of the current BookInfo item -->
+                                        <DataGrid ItemsSource="{Binding PricePerUnit}"
+                                                  Style="{StaticResource InnerDataGridStyle}"
+                                                  RowBackground="#262630"
+                                                  AlternatingRowBackground="#323341"
+                                                  AutoGenerateColumns="False">
+                                            <DataGrid.Columns>
+                                                <!--DataGridTemplateColumn Header="Release Date">
+                                                    <DataGridTemplateColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock Text="{Binding Path=SetDate, StringFormat=d}"/>
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellTemplate>
+                                                </DataGridTemplateColumn-->
+                                                <DataGridTextColumn Header="SetDate" Binding="{Binding SetDate, StringFormat=d}"/>
+                                                <DataGridTextColumn Header="PricePerUnit" Binding="{Binding PricePerUnit}"/>
+                                                <DataGridTextColumn Header="SalePrice" Binding="{Binding SalePrice}"/>
+                                            </DataGrid.Columns>
+                                        </DataGrid>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
                             <DataGridTextColumn Header="Stock" Binding="{Binding Path=BookStock}"
                                                 Visibility="{Binding 
                                 Source={x:Reference dummyElement},
@@ -429,7 +462,7 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTemplateColumn Header="Daily Sales" Visibility="{Binding 
+                            <!--DataGridTemplateColumn Header="Daily Sales" Visibility="{Binding 
                                 Source={x:Reference dummyElement},
                                 Path=DataContext.HeaderVisibility[DailySales],
                                 Converter={StaticResource BooleanToVisibilityConverter}}">
@@ -439,6 +472,33 @@
                                                   Style="{StaticResource InnerDataGridStyle}"
                                                   RowBackground="#262630"
                                                   AlternatingRowBackground="#323341"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn-->
+                            <DataGridTemplateColumn Header="Daily Sales" Visibility="{Binding 
+                                Source={x:Reference dummyElement},
+                                Path=DataContext.HeaderVisibility[DailySales],
+                                Converter={StaticResource BooleanToVisibilityConverter}}">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <DataGrid ItemsSource="{Binding DailySales}"
+                                                  Style="{StaticResource InnerDataGridStyle}"
+                                                  RowBackground="#262630"
+                                                  AlternatingRowBackground="#323341"
+                                                  AutoGenerateColumns="False">
+                                            <DataGrid.Columns>
+                                                <!--DataGridTemplateColumn Header="SalesDate">
+                                                    <DataGridTemplateColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock Text="{Binding Path=SalesDate, StringFormat=d}"/>
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellTemplate>
+                                                </DataGridTemplateColumn-->
+                                                <DataGridTextColumn Header="SalesDate" Binding="{Binding SalesDate, StringFormat=d}"/>
+                                                <DataGridTextColumn Header="QuantitySold" Binding="{Binding QuantitySold}"/>
+                                                <DataGridTextColumn Header="Revenue" Binding="{Binding Revenue}"/>
+                                            </DataGrid.Columns>
+                                        </DataGrid>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
@@ -464,8 +524,8 @@
                 </ScrollViewer-->
             </Grid>
         </GroupBox>
-        <!-- I dont know how to load async :) -->
-        <!-- Grid Background="Transparent" Grid.RowSpan="2"
+        <!-- loading screen -->
+        <Grid Background="Transparent" Grid.RowSpan="2"
               Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
             <Rectangle Fill="#1f2029" Opacity="1"/>
             <Border Background="#323341"
@@ -483,6 +543,6 @@
                 </StackPanel>
             </Border>
 
-        </Grid-->
+        </Grid>
     </Grid>
 </UserControl>

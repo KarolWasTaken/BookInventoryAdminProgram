@@ -12,6 +12,7 @@
         <Converter:ListToStringConverter x:Key="ListToStringConverter"/>
         <Converter:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSourceConverter"/>
         <Converter:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <Converter:MostRecentPricePerUnitConverter x:Key="MostRecentPricePerUnitConverter"/>
         <Style x:Key="TextBlockPropertyHeader" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
             <Setter Property="FontWeight" Value="Regular"/>
             <Setter Property="FontSize" Value="15"/>
@@ -51,8 +52,9 @@
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
-                            <GridViewColumn Header="Title" DisplayMemberBinding="{Binding Title}" />
+                            <GridViewColumn Header="Title" DisplayMemberBinding="{Binding Title}"/>
                             <GridViewColumn Header="Price" Width="50" DisplayMemberBinding="{Binding Price}" />
+                            <GridViewColumn Header="PricePerUnit" Width="50" DisplayMemberBinding="{Binding PricePerUnit, Converter={StaticResource MostRecentPricePerUnitConverter}}" />
                             <GridViewColumn Header="BookStock" Width="70"  DisplayMemberBinding="{Binding BookStock}" />
                             <!-- Add more columns for other properties like ISBN, Price, etc. -->
                         </GridView>
@@ -94,6 +96,13 @@
                              Width="500"
                              HorizontalAlignment="Left"
                              KeyDown="KeyDownInTextBox"/>
+                    <TextBlock Text="Price Per Unit"
+                               Style="{StaticResource TextBlockProperty}"/>
+                    <TextBox Text="{Binding PricePerUnit, Mode=TwoWay}"
+                             IsEnabled="{Binding EnableTextBoxes}"
+                             Width="500"
+                             HorizontalAlignment="Left"
+                             KeyDown="KeyDownInTextBox"/>
                     <TextBlock Text="BookStock"
                                Style="{StaticResource TextBlockProperty}"/>
                     <TextBox Text="{Binding BookStock, Mode=TwoWay}"
@@ -106,7 +115,7 @@
 
                     <Button Content="Commit all changes"
                             Height="40" Width="250"
-                            Margin="0,150,0,0"
+                            Margin="0,100,0,0"
                             adonisExtensions:CornerRadiusExtension.CornerRadius="10"
                             IsEnabled="{Binding CanCommitChanges}"
                             Command="{Binding CommitChangesCommand}"/>

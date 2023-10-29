@@ -28,10 +28,11 @@ namespace BookInventoryAdminProgram.Commands.BookManager
                 {
                     BookID = _modifyBookViewModel.SelectedBook.BookID,
                     Price = _modifyBookViewModel.SelectedBook.Price,
+                    PricePerUnit = _modifyBookViewModel.SelectedBook.PricePerUnit.OrderByDescending(ppu => ppu.SetDate).FirstOrDefault()?.PricePerUnit,
                     BookStock = _modifyBookViewModel.SelectedBook.BookStock,
                     BookCover = _modifyBookViewModel.SelectedBook.BookCover
                 };
-                connection.Execute("dbo.spUpdateBookProperties @BookID, @Price, @BookStock, @BookCover", parameters);
+                connection.Execute("dbo.spUpdateBookProperties @BookID, @Price, @PricePerUnit, @BookStock, @BookCover", parameters);
                 var messageBox = new MessageBoxModel
                 {
                     Text = $"{_modifyBookViewModel.SelectedBook.Title} has been updated.",
@@ -50,6 +51,7 @@ namespace BookInventoryAdminProgram.Commands.BookManager
             _modifyBookViewModel.EditMade = false;
             _modifyBookViewModel.SelectedBook = null;
             _modifyBookViewModel.Price = null;
+            _modifyBookViewModel.PricePerUnit = null;
             _modifyBookViewModel.BookStock = null;
             _modifyBookViewModel.UpdateProperties();
         }

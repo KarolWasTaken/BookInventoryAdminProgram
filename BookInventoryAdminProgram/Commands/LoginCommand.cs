@@ -19,6 +19,7 @@ namespace BookInventoryAdminProgram.Commands
     {
         private readonly LoginWindowViewModel _loginWindowViewModel;
         private readonly UserInfoStore _userInfoStore;
+        private readonly DatabaseHashStore _databaseHashStore;
         private readonly MainWindowViewModel _mainWindowViewModel;
         private readonly NavigateCommand _navigationCommand;
         public Action _openMainWindow;
@@ -29,12 +30,13 @@ namespace BookInventoryAdminProgram.Commands
         /// <param name="navigationStore">Need this to change viewmodels</param>
         /// <param name="createHomeViewModel">func that changes the viewmodel. Made in app.xaml.cs and passed over here to make _navigationCommand</param>
         /// <param name="mainWindowViewModel">needed to change Welcome <Firstname> msg after login</param>
-        public LoginCommand(LoginWindowViewModel loginWindowViewModel, NavigationStore navigationStore, Func<HomeViewModel> createHomeViewModel, MainWindowViewModel mainWindowViewModel, Action openMainWindow, UserInfoStore userInfoStore)
+        public LoginCommand(LoginWindowViewModel loginWindowViewModel, NavigationStore navigationStore, Func<HomeViewModel> createHomeViewModel, MainWindowViewModel mainWindowViewModel, Action openMainWindow, UserInfoStore userInfoStore, DatabaseHashStore databaseHashStore)
         {
             _loginWindowViewModel = loginWindowViewModel;
             _navigationCommand = new NavigateCommand(navigationStore, createHomeViewModel);
             _openMainWindow = openMainWindow;
             _userInfoStore = userInfoStore;
+            _databaseHashStore = databaseHashStore;
         }
 
         public override void Execute(object? parameter)
@@ -62,6 +64,7 @@ namespace BookInventoryAdminProgram.Commands
                 userNames = connection.QuerySingle<UserInfoStore>("dbo.spGetEmployeeName @EmployeeID", new { EmployeeID });
             }
             _userInfoStore.StoreUserName(userNames);
+            _databaseHashStore.UpdateHash(DataHasher.CalculateHash(DatabaseStore.MainDataset));
 
 
 

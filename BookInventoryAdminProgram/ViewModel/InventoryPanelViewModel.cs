@@ -23,7 +23,7 @@ namespace BookInventoryAdminProgram.ViewModel
 {
     public class InventoryPanelViewModel : ViewModelBase, INotifyDataErrorInfo
     {
-        private static List<BookInfo> mainDataBase = DatabaseStore.MainDataset;
+        private static List<BookInfo> mainDataBase;
         // combobox options
         private List<string> _salesComboBoxOptions = new List<string> { "Sales", "Revenue" };
         public List<string> SalesComboBoxOptions
@@ -122,21 +122,7 @@ namespace BookInventoryAdminProgram.ViewModel
         public List<string> PresentGenreList
         { get => _presentGenreList; set => _presentGenreList = value; }*/
 
-        private Dictionary<string, List<string>> _presentAGList = new Dictionary<string, List<string>>()
-        {
-            {"Author",
-             FilteringDatabase.MergeSort(mainDataBase
-            .SelectMany(book => book.Authors)
-            .Distinct()
-            .ToList()
-            )},
-            {"Genre",
-            FilteringDatabase.MergeSort(mainDataBase
-            .SelectMany(book => book.Genres)
-            .Distinct()
-            .ToList()
-            )}
-        };
+        private Dictionary<string, List<string>> _presentAGList;
         public Dictionary<string, List<string>> PresentAGList
         {
             get
@@ -203,7 +189,7 @@ namespace BookInventoryAdminProgram.ViewModel
         // all the checkbuttons bind to this. When check/uncheck it reflects here
         private Dictionary<string, bool> _headerVisibility = new Dictionary<string, bool>
         {
-            { "ISBN", true },{ "Title", true }, {"Price", true }, {"BookStock", true}, { "Author", true }, { "Genre", true }, { "ReleaseDate", true },
+            { "ISBN", true },{ "Title", true }, {"Price", true }, {"PricePerUnit", true }, {"BookStock", true}, { "Author", true }, { "Genre", true }, { "ReleaseDate", true },
             { "Publisher", true }, { "AllTimeSales", true }, { "YearlySales", true }, { "MonthlySales", true },
             { "DailySales", true }
         };
@@ -241,12 +227,80 @@ namespace BookInventoryAdminProgram.ViewModel
         public readonly ErrorsViewModel _errorsViewModel;
         public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
         public bool HasErrors => _errorsViewModel.HasErrors;
-        public InventoryPanelViewModel()
+        private bool isLoading;
+        public bool IsLoading
         {
+            get
+            {
+                return isLoading;
+            }
+            set
+            {
+                isLoading = value;
+                OnPropertyChanged(nameof(IsLoading));
+            }
+        }
+        public InventoryPanelViewModel(DatabaseHashStore databaseHashStore)
+        {
+            databaseHashStore.UpdateHash(DataHasher.CalculateHash(DatabaseStore.MainDataset));
+
             _headerVisibility = Helper.ReturnSettings().HeaderVisibilitiesSerialised;
             _errorsViewModel = new ErrorsViewModel();
             _errorsViewModel.ErrorsChanged += ErrorsViewModel_ErrorsChanged;
-            InventoryDatagrid = mainDataBase;
+
+            IsLoading = true;
+            if (mainDataBase == null || databaseHashStore.NewHash != databaseHashStore.OldHash)
+            {
+                // this needs optimisation because loading is too slow.
+                Task.Run(() =>
+                {
+                    mainDataBase = DatabaseStore.MainDataset;
+                    _presentAGList = new Dictionary<string, List<string>>()
+                    {
+                        {"Author",
+                            FilteringDatabase.MergeSort(mainDataBase
+                                .SelectMany(book => book.Authors)
+                                .Distinct()
+                                .ToList()
+                        )},
+                        {"Genre",
+                            FilteringDatabase.MergeSort(mainDataBase
+                                .SelectMany(book => book.Genres)
+                                .Distinct()
+                                .ToList()
+                        )}
+                    };
+
+                    System.Threading.Thread.Sleep(500);
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        InventoryDatagrid = mainDataBase; // i think this operation is slowing down the ui thread
+                        IsLoading = false;
+                    });
+                });
+
+            }
+            else
+            {
+                _presentAGList = new Dictionary<string, List<string>>()
+                {
+                    {"Author",
+                        FilteringDatabase.MergeSort(mainDataBase
+                            .SelectMany(book => book.Authors)
+                            .Distinct()
+                            .ToList()
+                    )},
+                    {"Genre",
+                        FilteringDatabase.MergeSort(mainDataBase
+                            .SelectMany(book => book.Genres)
+                            .Distinct()
+                            .ToList()
+                    )}
+                };
+                   
+                InventoryDatagrid = mainDataBase; // i think this operation is slowing down the ui thread
+                IsLoading = false;     
+            }    
 
             ToggleHeaderVisibilityCommand = new ToggleHeaderVisibilityCommand(HeaderVisibility, SetDictionary);
             InventorySearchButtonCommand = new InventorySearchButtonCommand(this, _errorsViewModel);

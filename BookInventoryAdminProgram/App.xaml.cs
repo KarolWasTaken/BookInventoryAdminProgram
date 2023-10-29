@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using System.Drawing.Printing;
 using System.Linq;
 using System.Net.NetworkInformation;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using System.Windows;
@@ -28,12 +29,14 @@ namespace BookInventoryAdminProgram
         private readonly NavigationStore _navigationStore;
         private readonly MainWindowViewModel _mainWindowViewModel;
         private readonly UserInfoStore _userInfoStore;
+        private readonly DatabaseHashStore _databaseHashStore;
         private LoginWindow loginWindow;
         private MainWindow mainWindow;
         public App()
         {
             _navigationStore = new NavigationStore();
             _userInfoStore = new UserInfoStore();
+            _databaseHashStore = new DatabaseHashStore();
         }
 
         protected override void OnStartup(StartupEventArgs e)
@@ -42,7 +45,7 @@ namespace BookInventoryAdminProgram
 
             OpenLoginWindow();
             //OpenMainWindow();
-            
+
 
             // check whether or not the server an be reached.
             try
@@ -74,7 +77,7 @@ namespace BookInventoryAdminProgram
         private void OpenLoginWindow()
         {
             loginWindow = new LoginWindow();
-            loginWindow.DataContext = new LoginWindowViewModel(_navigationStore, CreateHomeViewModel, _mainWindowViewModel, OpenMainWindow, _userInfoStore);
+            loginWindow.DataContext = new LoginWindowViewModel(_navigationStore, CreateHomeViewModel, _mainWindowViewModel, OpenMainWindow, _userInfoStore, _databaseHashStore);
 
             if (IsMainWindowOpen())
                 mainWindow.Close();
@@ -116,7 +119,7 @@ namespace BookInventoryAdminProgram
         }
         private InventoryPanelViewModel CreateInventoryPanelViewModel()
         {
-            return new InventoryPanelViewModel();
+            return new InventoryPanelViewModel(_databaseHashStore);
         }
         private StaffViewerPanelViewModel CreateStaffViewerViewModel()
         {
@@ -124,7 +127,7 @@ namespace BookInventoryAdminProgram
         }
         private LoginWindowViewModel CreateLoginWindowViewModel()
         {
-            return new LoginWindowViewModel(_navigationStore, CreateHomeViewModel, _mainWindowViewModel, OpenMainWindow, _userInfoStore);
+            return new LoginWindowViewModel(_navigationStore, CreateHomeViewModel, _mainWindowViewModel, OpenMainWindow, _userInfoStore, _databaseHashStore);
         }
         private BookManagerPanelViewModel CreateBookManagerPanelViewModel() 
         {

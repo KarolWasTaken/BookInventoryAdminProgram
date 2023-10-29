@@ -54,7 +54,8 @@ namespace BookInventoryAdminProgram.Stores
             public string ISBN { get; set; }
             public int BookID { get; set; }
             public string Title { get; set; }
-            public decimal Price { get; set; }
+            public double Price { get; set; }
+            public List<PricePerUnitCollection> PricePerUnit { get; set; }
             public int BookStock { get; set; }
             public List<string> Authors { get; set; }
             public List<string> Genres { get; set; }
@@ -65,6 +66,12 @@ namespace BookInventoryAdminProgram.Stores
             public List<YearlySales>? YearlySales { get; set; }
             public List<MonthlySales>? MonthlySales { get; set; }
             public List<DailySales>? DailySales { get; set; }
+        }
+        public class PricePerUnitCollection
+        {
+            public DateTime SetDate { get; set; }
+            public double PricePerUnit { get; set; }
+            public double SalePrice { get; set; }
         }
         public class SalesJunctionBase
         {
@@ -102,6 +109,15 @@ namespace BookInventoryAdminProgram.Stores
             public string GenreName { get; set; }
         }
 
+
+
+        public class PricePerUnitCollectionSQL
+        {
+            public int BookID { get; set; }
+            public DateTime SetDate { get; set; }
+            public double PricePerUnit { get; set; }
+            public double SalePrice { get; set; }
+        }
         public class SalesJunctionSQLBase
         {
             public int BookID { get; set; }
@@ -146,6 +162,7 @@ namespace BookInventoryAdminProgram.Stores
         {
             // ^^^ static so object doesnt need to be instantiated to be called.
             List<BookInfo> mainDataSet;
+            List<PricePerUnitCollectionSQL> pricePerUnitCollectionSQL;
             List<BookAuthor> authorList;
             List<BookGenre> genreList;
             Dictionary<string, List<CommonValues>> junctionValuesDictionary;
@@ -157,6 +174,7 @@ namespace BookInventoryAdminProgram.Stores
             using (IDbConnection dbConnection = new SqlConnection(Helper.ReturnSettings().ConnectionString))
             {
                 mainDataSet = dbConnection.Query<BookInfo>("spGetDatabaseTestProcedure").ToList();
+                pricePerUnitCollectionSQL = dbConnection.Query<PricePerUnitCollectionSQL>("spGetBookPPU").ToList();
                 authorList = dbConnection.Query<BookAuthor>("spGetBookAuthor").ToList();
                 genreList = dbConnection.Query<BookGenre>("spGetBookGenre").ToList();
 
@@ -193,6 +211,18 @@ namespace BookInventoryAdminProgram.Stores
                 group => group.Key,
                 group => group.Select(x => x.GenreName).ToList()
             );
+            // Create a dictionary to map BookID to a list of PricePerUnitCollection
+            Dictionary<int, List<PricePerUnitCollection>> pricePerUnitDictionary = pricePerUnitCollectionSQL
+            .GroupBy(ppu => ppu.BookID)
+            .ToDictionary(
+                group => group.Key,
+                group => group.Select(ppu => new PricePerUnitCollection
+                {
+                    SetDate = ppu.SetDate,
+                    PricePerUnit = ppu.PricePerUnit,
+                    SalePrice = ppu.SalePrice
+                }).ToList()
+            );
 
 
             // i wrote this ages ago i literally forgot how this works
@@ -200,6 +230,12 @@ namespace BookInventoryAdminProgram.Stores
             {
                 int bookID = bookInfo.BookID;
 
+                // Iterate through mainDataSet and assign the PricePerUnitCollection
+
+                if (pricePerUnitDictionary.TryGetValue(bookInfo.BookID, out List<PricePerUnitCollection> pricePerUnitList))
+                {
+                    bookInfo.PricePerUnit = pricePerUnitList;
+                }
 
                 var allTimeSales = allTimeSalesSQL.Where(s => s.BookID == bookID && s.QuantitySold > 0).ToList();
                 bookInfo.AllTimeSales = allTimeSales.Select(s => new AllTimeSales

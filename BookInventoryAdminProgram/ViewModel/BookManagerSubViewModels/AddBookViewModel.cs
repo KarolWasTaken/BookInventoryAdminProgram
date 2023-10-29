@@ -205,6 +205,44 @@ namespace BookInventoryAdminProgram.ViewModel.BookManagerSubViewModels
                 OnPropertyChanged(nameof(CanCreateBook));
             }
         }
+        private string pricePerUnit;
+        public string PricePerUnit
+        {
+            get
+            {
+                return pricePerUnit;
+            }
+            set
+            {
+                pricePerUnit = value;
+                OnPropertyChanged(nameof(PricePerUnit));
+
+                if (pricePerUnit == null || pricePerUnit == "")
+                {
+                    OnPropertyChanged(nameof(PricePerUnit));
+                    return;
+                }
+
+                if (!pricePerUnit.Contains("."))
+                    pricePerUnit += ".";
+                if (float.TryParse(pricePerUnit, out float result))
+                {
+                    if (pricePerUnit.Length - pricePerUnit.IndexOf(".") - 1 < 2)
+                    {
+                        int decimalPlacesLeftToPopulate = 2 - (pricePerUnit.Length - pricePerUnit.IndexOf(".") - 1);
+                        for (int i = decimalPlacesLeftToPopulate - 1; i >= 0; i--)
+                        {
+                            pricePerUnit += "0";
+                        }
+                    }
+                    OnPropertyChanged(nameof(PricePerUnit));
+                }
+                else
+                    _errorsViewModel.AddError(nameof(PricePerUnit), "Invalid format for Price");
+                OnPropertyChanged(nameof(CanCreateBook));
+            }
+        }
+
         private string bookStock;
         public string BookStock
         {
