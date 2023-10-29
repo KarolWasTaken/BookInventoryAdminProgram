@@ -274,7 +274,7 @@ namespace BookInventoryAdminProgram.ViewModel
                     System.Threading.Thread.Sleep(500);
                     Application.Current.Dispatcher.Invoke(() =>
                     {
-                        InventoryDatagrid = mainDataBase; // i think this operation is slowing down the ui thread
+                        InventoryDatagrid = mainDataBase; // i think this operation is slowing down the ui thread look below
                         IsLoading = false;
                     });
                 });
@@ -298,9 +298,11 @@ namespace BookInventoryAdminProgram.ViewModel
                     )}
                 };
                    
-                InventoryDatagrid = mainDataBase; // i think this operation is slowing down the ui thread
+                InventoryDatagrid = mainDataBase; // i think this operation is slowing down the ui thread look below
                 IsLoading = false;     
             }    
+            // when the inner datagrids are activated, they slow down the ui when being assigned to. (alltimessales, priceperunit, etc). This upsets me.
+            // i dont know how to fix that. This will have to remain for now. Hopefully, i will fix this before release
 
             ToggleHeaderVisibilityCommand = new ToggleHeaderVisibilityCommand(HeaderVisibility, SetDictionary);
             InventorySearchButtonCommand = new InventorySearchButtonCommand(this, _errorsViewModel);

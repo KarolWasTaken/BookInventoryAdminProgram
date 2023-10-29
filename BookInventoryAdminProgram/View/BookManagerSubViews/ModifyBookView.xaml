@@ -54,7 +54,7 @@
                             </GridViewColumn>
                             <GridViewColumn Header="Title" DisplayMemberBinding="{Binding Title}"/>
                             <GridViewColumn Header="Price" Width="50" DisplayMemberBinding="{Binding Price}" />
-                            <GridViewColumn Header="PricePerUnit" Width="50" DisplayMemberBinding="{Binding PricePerUnit, Converter={StaticResource MostRecentPricePerUnitConverter}}" />
+                            <GridViewColumn Header="PricePerUnit" DisplayMemberBinding="{Binding PricePerUnit, Converter={StaticResource MostRecentPricePerUnitConverter}}" />
                             <GridViewColumn Header="BookStock" Width="70"  DisplayMemberBinding="{Binding BookStock}" />
                             <!-- Add more columns for other properties like ISBN, Price, etc. -->
                         </GridView>
