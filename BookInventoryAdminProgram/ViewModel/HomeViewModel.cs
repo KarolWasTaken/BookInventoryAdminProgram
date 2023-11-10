@@ -115,10 +115,17 @@ namespace BookInventoryAdminProgram.ViewModel
 
             foreach (string key in listOfMostPopularProperties.Keys )
             {
-                if (listOfMostPopularProperties[key] != null && key != "Book")
-                    NotiflicationPanelMessage[key] = $"• {dbo.GetPropertyByID(key, listOfMostPopularProperties[key][0].ID)}\n• {dbo.GetPropertyByID(key, listOfMostPopularProperties[key][1].ID)}\n• {dbo.GetPropertyByID(key, listOfMostPopularProperties[key][2].ID)}";
+                if (listOfMostPopularProperties[key] != null && key != "Book") // && key != "Publisher"
+                    for (int i = 0; (i <= listOfMostPopularProperties[key].Count - 1 && i <= 2); i++)
+                    {
+                        NotiflicationPanelMessage[key] += $"• {dbo.GetPropertyByID(key, listOfMostPopularProperties[key][i].ID)}\n";
+                    }
+                    /*NotiflicationPanelMessage[key] = 
+                        $"• {dbo.GetPropertyByID(key, listOfMostPopularProperties[key][0].ID)}" +
+                        $"\n• {dbo.GetPropertyByID(key, listOfMostPopularProperties[key][1].ID)}" +
+                        $"\n• {dbo.GetPropertyByID(key, listOfMostPopularProperties[key][2].ID)}";*/
             }
-
+            
 
             var booksLowInStock = dbo.GetBooksLowInStock();
             if (booksLowInStock != null)

@@ -414,4 +414,4 @@ namespace BookInventoryAdminProgram.Model
             throw new Exception($"{attributeType} value doesnt exist at {dateWithoutTime.ToString("dd/MM/yyyy")}");
         }
     }
-}
+}   
