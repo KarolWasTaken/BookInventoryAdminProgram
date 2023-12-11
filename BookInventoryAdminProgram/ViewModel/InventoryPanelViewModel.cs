@@ -275,7 +275,7 @@ namespace BookInventoryAdminProgram.ViewModel
                     Application.Current.Dispatcher.Invoke(() =>
                     {
                         InventoryDatagrid = mainDataBase; // i think this operation is slowing down the ui thread look below
-                        IsLoading = false;
+                        IsLoading = false; 
                     });
                 });
 
@@ -300,9 +300,15 @@ namespace BookInventoryAdminProgram.ViewModel
                    
                 InventoryDatagrid = mainDataBase; // i think this operation is slowing down the ui thread look below
                 IsLoading = false;     
-            }    
+            }
+            // NOTE TO EXAMINER:
             // when the inner datagrids are activated, they slow down the ui when being assigned to. (alltimessales, priceperunit, etc). This upsets me.
-            // i dont know how to fix that. This will have to remain for now. Hopefully, i will fix this before release
+            // i dont know how to fix that. This will have to remain for now. The issue is that instead of loading 1 datagrid, I load > 10 in a short time.
+            // Pagination wont help because its all in 1 page. Maybe i can tell the ui to only load them in 1 by 1 with a 1/4 second pause in between each so the ui
+            // doesnt look like its crashing, but thats beyond the scope of this project.
+            // TLDR:
+            // WPF take long long time to load datagrids inside datagrid, therefore program will look like its crashing when loading columns like alltimessales.
+            // Not fixable because i'd have to interfere with how wpf renders elements. Too hard. Not worth the hassle for mininal mark potential.
 
             ToggleHeaderVisibilityCommand = new ToggleHeaderVisibilityCommand(HeaderVisibility, SetDictionary);
             InventorySearchButtonCommand = new InventorySearchButtonCommand(this, _errorsViewModel);

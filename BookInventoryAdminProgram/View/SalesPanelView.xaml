@@ -1,0 +1,178 @@
+﻿<UserControl x:Class="BookInventoryAdminProgram.View.SalesPanelView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:BookInventoryAdminProgram.View"
+             xmlns:Converter="clr-namespace:BookInventoryAdminProgram.Converter"
+             xmlns:adonisExtensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"
+             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
+             mc:Ignorable="d" 
+             d:DesignHeight="818" d:DesignWidth="1080">
+    <UserControl.Resources>
+        <Converter:InputTypeVisibilityConverter x:Key="InputTypeVisibilityConverter"/>
+    </UserControl.Resources>
+    <GroupBox Header="Sales Panel"
+              adonisExtensions:LayerExtension.Layer="3">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="2*"/>
+            </Grid.RowDefinitions>
+            <DockPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel>
+                        <Slider Minimum="0" Maximum="2" Value="{Binding SelectedInputType}" 
+                                Height="30"/>
+                        <Grid>
+                            <StackPanel Visibility="{Binding SelectedInputType,
+                                    Mode=OneWay,
+                                    Converter={StaticResource InputTypeVisibilityConverter},
+                                    ConverterParameter=0}">
+
+
+                                <TextBlock Text="Select Year" 
+                                          FontSize="20"
+                                          HorizontalAlignment="Center"
+                                          Margin="0,0,0,10"/>
+                                <ComboBox Width="150" Margin="0,0,10,0"
+                                              IsEditable="True"
+                                              adonisExtensions:WatermarkExtension.Watermark="Year"
+                                              ItemsSource="{Binding Years}"
+                                              SelectedItem="{Binding SelectedYear}"/>
+                            </StackPanel>
+                            <StackPanel Visibility="{Binding SelectedInputType,
+                                    Mode=OneWay,
+                                    Converter={StaticResource InputTypeVisibilityConverter},
+                                    ConverterParameter=1}">
+                                <TextBlock Text="Select Quarter" 
+                                           FontSize="20"
+                                           HorizontalAlignment="Center"
+                                           />
+                                <!--DatePicker Visibility="{Binding SelectedInputType, Mode=OneWay, Converter={StaticResource InputTypeVisibilityConverter}, ConverterParameter=1}"
+                                DisplayDateStart="{Binding MinimumDate}" DisplayDateEnd="{Binding MaximumDate}" /-->
+                                <DockPanel HorizontalAlignment="Center" Margin="0,10,0,0">
+                                    <ComboBox Width="150" Margin="0,0,10,0"
+                                              IsEditable="True"
+                                              adonisExtensions:WatermarkExtension.Watermark="Year"
+                                              ItemsSource="{Binding Years}"
+                                              SelectedItem="{Binding SelectedYear}"/>
+                                    <ComboBox Width="150"
+                                              IsEditable="True"
+                                              adonisExtensions:WatermarkExtension.Watermark="Quarter"
+                                              ItemsSource="{Binding SalesQuartersForSelectedYear}"
+                                              SelectedItem="{Binding SelectedSalesQuarter}"
+                                              Text="{Binding ComboBoxFieldResetter}"/>
+
+                                </DockPanel>
+                            </StackPanel>
+                            <StackPanel Visibility="{Binding SelectedInputType,
+                                    Mode=OneWay,
+                                    Converter={StaticResource InputTypeVisibilityConverter},
+                                    ConverterParameter=2}">
+                                <TextBlock Text="Select Date" 
+                                           FontSize="20"
+                                           HorizontalAlignment="Center"
+                                           />
+                                <Calendar DisplayDateStart="{Binding MinimumDate}"
+                                          DisplayDateEnd="{Binding MaximumDate}"
+                                          SelectedDate="{Binding SelectedDate}"/>
+
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center"
+                                   HorizontalAlignment="Center">
+                        <DockPanel Margin="0,0,0,10">
+                            <TextBox adonisExtensions:WatermarkExtension.Watermark="Expense Name"
+                                     Width="150"
+                                     Height="30"
+                                     Margin="0,0,10,0"
+                                     Text="{Binding ExpenseNameTextBoxField, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBox adonisExtensions:WatermarkExtension.Watermark="Expense Cost (£)"
+                                     Width="150"
+                                     Height="30"
+                                     Margin="0,0,10,0"
+                                     IsEnabled="{Binding CanAddExpenseCost}"
+                                     Text="{Binding ExpenseCostTextBoxField, UpdateSourceTrigger=PropertyChanged}"/>
+
+                            <Button Content="Add"
+                                    FontSize="10"
+                                    Height="20"
+                                    Width="70"
+                                    Background="#1f2029"
+                                    Command="{Binding AddExpensesToDictCommand}"/>
+                        </DockPanel>
+                        <DockPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <ComboBox Width="100" Height="30" adonisExtensions:WatermarkExtension.Watermark="Expense List"
+                                      Margin="0,0,10,0"
+                                      IsEditable="True"
+                                      ItemsSource="{Binding ListOfExpenses}"
+                                      SelectedItem="{Binding SelectedExpenseFromListOfExpenses}">
+                                <!--ComboBoxItem Content="Stock"></ComboBoxItem-->
+                            </ComboBox>
+                            <StackPanel>
+                                <Button Content="Remove"
+                                                FontSize="10"
+                                                Height="20"
+                                                Width="70"
+                                                Background="#1f2029"
+                                                Command="{Binding RemoveExpenseListItem}"
+                                                CommandParameter="One"
+                                                Margin="0,0,0,5"/>
+                                <Button Content="Remove All"
+                                                FontSize="10"
+                                                Height="20"
+                                                Width="70"
+                                                Background="#1f2029"
+                                                Command="{Binding RemoveExpenseListItem}"
+                                                CommandParameter="All"/>
+                            </StackPanel>
+
+                        </DockPanel>
+                    </StackPanel>
+                </Grid>
+            </DockPanel>
+            <StackPanel Grid.Column="1"
+                        VerticalAlignment="Center">
+                <Button Content="Select File Save Location"
+                        Width="200"
+                        Height="25"
+                        Margin="0,0,0,10"
+                        Command="{Binding SelectFileLocationCommand}"/>
+                <Button Content="Generate PDF"
+                        Width="200"
+                        Height="25"
+                        Command="{Binding GeneratePDFCommand}"
+                        IsEnabled="{Binding CanCreatePDF}"/>
+
+            </StackPanel>
+            <Grid Grid.Row="1" Grid.ColumnSpan="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <StackPanel>
+                    <Slider Minimum="0" Maximum="2" Value="{Binding SelectedInputGraph}" Width="600" Height="20"/>
+                    <TextBlock Text="{Binding GraphTitle}" FontSize="20"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center"
+                               Grid.Row="0"/>
+                </StackPanel>
+                <lvc:CartesianChart Series="{Binding Series}"
+                                    YAxes="{Binding YAxes}"
+                                    XAxes="{Binding XAxes}"
+                                    Grid.Row="1"
+                                    RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+            </Grid>
+        </Grid>
+    </GroupBox>
+</UserControl>

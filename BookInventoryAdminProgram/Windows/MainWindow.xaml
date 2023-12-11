@@ -33,6 +33,10 @@
             <DataTemplate DataType="{x:Type ViewModels:SettingsPanelViewModel}">
                 <Views:SettingsPanel/>
             </DataTemplate>
+            <DataTemplate DataType="{x:Type ViewModels:SalesPanelViewModel}">
+                <Views:SalesPanelView/>
+            </DataTemplate>
+            
         </Grid.Resources>
         
         <Grid>
@@ -64,7 +68,7 @@
                         <Button Content="Home" Width="98" Margin="0,0,0,10" Command="{Binding HomeNavigateCommand}"/>
                         <Button Content="Inventory" Width="98" Margin="0,0,0,10" Command="{Binding InventoryNavigateCommand}"/>
                         <Button Content="Book Manager" Width="98" Margin="0,0,0,10" Command="{Binding BookManagerPanelNavigateCommand}"/>
-                        <Button Content="Graph Viewer" Width="98" Margin="0,0,0,10"/>
+                        <Button Content="Sales Panel" Width="98" Margin="0,0,0,10" Command="{Binding SalesPanelNavigateCommand}"/>
                         <Button Content="Staff Viewer" Width="98" Margin="0,0,0,10" Command="{Binding StaffViewerNavigateCommand}"/>
                     </StackPanel>
 

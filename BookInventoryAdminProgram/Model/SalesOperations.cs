@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static BookInventoryAdminProgram.Stores.DatabaseStore;
 
 namespace BookInventoryAdminProgram.Model
@@ -21,11 +19,80 @@ namespace BookInventoryAdminProgram.Model
             PricePerUnit,
             SalePrice
         }
-        private enum Date
+        public enum Date
         {
             StartDate,
             EndDate
         }
+
+        // Function to get the date of the oldest sale from a list of BookInfo
+        public static DateTime GetOldestSaleDate(List<BookInfo> books)
+        {
+            // Extract all DailySales dates from each BookInfo
+            List<DateTime> allSalesDates = books
+                .SelectMany(book => book.DailySales?.Select(daily => daily.SalesDate) ?? Enumerable.Empty<DateTime>())
+                .ToList();
+
+            // Return the oldest sales date
+            return allSalesDates.Min();
+        }
+
+        // Function to get the date of the newest sale from a list of BookInfo
+        public static DateTime GetNewestSaleDate(List<BookInfo> books)
+        {
+            // Extract all DailySales dates from each BookInfo
+            List<DateTime> allSalesDates = books
+                .SelectMany(book => book.DailySales?.Select(daily => daily.SalesDate) ?? Enumerable.Empty<DateTime>())
+                .ToList();
+
+            // Return the newest sales date
+            return allSalesDates.Max();
+        }
+        public static List<int> GetAvailableSalesYears(DateTime startDate, DateTime endDate)
+        {
+            List<int> salesYears = new List<int>();
+            for (int year = endDate.Year; year <= startDate.Year; year++)
+            {
+                salesYears.Add(year);
+            }
+            return salesYears;
+        }
+        public static Dictionary<int, List<SalesQuarter>> GetAvailableSalesQuarters(DateTime startDate, DateTime endDate)
+        {
+            Dictionary<int, List<SalesQuarter>> salesQuarters = new Dictionary<int, List<SalesQuarter>>();
+
+            // Loop through each year between start and end dates
+            for (int year = endDate.Year; year <= startDate.Year; year++)
+            {
+                List<SalesQuarter> quartersForYear = new List<SalesQuarter>();
+
+                // Loop through each quarter and check if it falls within the start and end dates
+                foreach (SalesQuarter quarter in Enum.GetValues(typeof(SalesQuarter)))
+                {
+                    Dictionary<Date, DateTime> quarterDates = GetQuarterDates(year, quarter);
+
+                    // Check if the quarter's start date is within the specified range
+                    if (quarterDates[Date.StartDate] <= startDate && quarterDates[Date.EndDate] >= endDate)
+                    {
+                        quartersForYear.Add(quarter);
+                    }
+                }
+
+                // Add the list of quarters for the year to the dictionary
+                salesQuarters.Add(year, quartersForYear);
+            }
+
+            return salesQuarters;
+        }
+    
+
+
+
+
+
+
+
+
 
 
         /// <summary>
@@ -35,7 +102,7 @@ namespace BookInventoryAdminProgram.Model
         /// <param name="book"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        private static Dictionary<Date, DateTime> GetQuarterDates(int year, SalesQuarter salesQuarter)
+        public static Dictionary<Date, DateTime> GetQuarterDates(int year, SalesQuarter salesQuarter)
         {
             if (year.ToString().Length != 4)
                 throw new Exception("Year is invalid");

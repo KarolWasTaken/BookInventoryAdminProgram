@@ -183,7 +183,8 @@ namespace BookInventoryAdminProgram.Stores
                 {
                     {"Author", results2.Read<CommonValues>().ToList() },
                     {"Genre", results2.Read<CommonValues>().ToList() },
-                    {"Publisher", results2.Read<CommonValues>().ToList() }
+                    {"Publisher", results2.Read<CommonValues>().ToList() },
+                    {"Book", results2.Read<CommonValues>().ToList() }
                 };
 
                 var results = dbConnection.QueryMultiple("spGetSalesAggregates");

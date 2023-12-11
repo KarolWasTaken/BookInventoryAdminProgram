@@ -83,7 +83,7 @@ namespace BookInventoryAdminProgram.Model
                 if (popularity != null)
                     topThreePopularity.Add(popularity);
                 else
-                    localCurrentDayLastMonth = currentDay.AddMonths(-1); // If no elements was found, add 1 month back more to widen timespan
+                    localCurrentDayLastMonth = localCurrentDayLastMonth.AddMonths(-1); // If no elements was found, add 1 month back more to widen timespan
 
                 loopCount++;
             }

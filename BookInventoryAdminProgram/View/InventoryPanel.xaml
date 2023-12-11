@@ -526,7 +526,7 @@
         </GroupBox>
         <!-- loading screen -->
         <Grid Background="Transparent" Grid.RowSpan="2"
-              Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
+              Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}">
             <Rectangle Fill="#1f2029" Opacity="1"/>
             <Border Background="#323341"
                     Width="400" Height="150"

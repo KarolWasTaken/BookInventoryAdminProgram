@@ -38,18 +38,27 @@ namespace BookInventoryAdminProgram.ViewModel
         public ICommand HomeNavigateCommand { get; }
         public ICommand InventoryNavigateCommand { get; }
         public ICommand BookManagerPanelNavigateCommand { get; }
+        public ICommand SalesPanelNavigateCommand { get; }
         //public ICommand SalesReporterNavigateCommand { get; }
         //public ICommand GraphViewerNavigateCommand { get; }
         public ICommand StaffViewerNavigateCommand { get; }
         public ICommand SettingsPanelNavigateCommand { get; }
         public ICommand LogoutCommand { get; }
 
-        public MainWindowViewModel(NavigationStore navigationStore, Func<HomeViewModel> createHomeViewModel, Func<InventoryPanelViewModel> createInventoryPanelViewModel,
-            Func<StaffViewerPanelViewModel> createStaffViewerPanelViewModel, Func<LoginWindowViewModel> createLoginWindowViewModel, Func<BookManagerPanelViewModel> createBookManagerPanelViewModel, Func<SettingsPanelViewModel> createSettingsPanelViewModel, Action openLoginWindow, UserInfoStore userInfoStore)
+        public MainWindowViewModel(NavigationStore navigationStore,
+            Func<HomeViewModel> createHomeViewModel,
+            Func<InventoryPanelViewModel> createInventoryPanelViewModel,
+            Func<StaffViewerPanelViewModel> createStaffViewerPanelViewModel,
+            Func<LoginWindowViewModel> createLoginWindowViewModel,
+            Func<BookManagerPanelViewModel> createBookManagerPanelViewModel,
+            Func<SettingsPanelViewModel> createSettingsPanelViewModel,
+            Func<SalesPanelViewModel> createSalesPanelViewModel,
+            Action openLoginWindow, UserInfoStore userInfoStore)
         {
 
             HomeNavigateCommand = new HomeNavigateCommand(navigationStore, createHomeViewModel);
             InventoryNavigateCommand = new InventoryNavigateCommand(navigationStore, createInventoryPanelViewModel);
+            SalesPanelNavigateCommand = new SalesPanelNavigateCommand(navigationStore, createSalesPanelViewModel);
             StaffViewerNavigateCommand = new StaffViewerNavigateCommand(navigationStore, createStaffViewerPanelViewModel);
             LogoutCommand = new LogoutCommand(this, navigationStore, createLoginWindowViewModel, openLoginWindow);
             BookManagerPanelNavigateCommand = new BookManagerNavigateCommand(navigationStore, createBookManagerPanelViewModel);

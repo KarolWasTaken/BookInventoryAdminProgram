@@ -11,6 +11,7 @@ using System.Windows.Media.Imaging;
 using static BookInventoryAdminProgram.Model.PopularityCalculator;
 using static BookInventoryAdminProgram.Stores.DatabaseStore;
 using static BookInventoryAdminProgram.Model.BookCoverImageProcesses;
+using AdonisUI.Controls;
 
 namespace BookInventoryAdminProgram.ViewModel
 {
@@ -140,8 +141,8 @@ namespace BookInventoryAdminProgram.ViewModel
             }
             foreach (string property in new List<string>() {"Genre", "Author" })
             {
-                if(listOfMostPopularProperties[property] != null)
-                {
+                if(listOfMostPopularProperties[property].Count > 0)
+                {   
                     List<BookInfo> propertyWithBooksLowInStock = dbo.GetBooksLowInStock(property, new List<string>()
                     {
                         dbo.GetPropertyByID(property,listOfMostPopularProperties[property][0].ID),
