@@ -43,7 +43,6 @@ namespace BookInventoryAdminProgram.Model
                 genrePopularity = results.Read<SQLPopularity>().ToList();
                 publisherPopularity = results.Read<SQLPopularity>().ToList();
             }
-            authorPopularity = null;
             bool isDataInvalid = bookPopularity == null || authorPopularity == null || genrePopularity == null || publisherPopularity == null;
             if (isDataInvalid)
             {
@@ -55,6 +54,7 @@ namespace BookInventoryAdminProgram.Model
             List<SQLPopularity> authorPopularityWithMaxSalesLastMonth = GetPopularityWithMaxSalesLastMonthPlus(authorPopularity);
             List<SQLPopularity> genrePopularityWithMaxSalesLastMonth = GetPopularityWithMaxSalesLastMonthPlus(genrePopularity);
             List<SQLPopularity> publisherPopularityWithMaxSalesLastMonth = GetPopularityWithMaxSalesLastMonthPlus(publisherPopularity);
+
 
             return new Dictionary<string, List<SQLPopularity>>()
             {

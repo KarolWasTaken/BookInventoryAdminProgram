@@ -91,11 +91,9 @@ namespace BookInventoryAdminProgram.ViewModel
                 imageBytes = book.BookCover;
             }
             if (imageBytes == null)
-            {
-
                 PopularBookCover = GetNoCoverImage();
-            }
-            else { PopularBookCover = imageBytes; }
+            else 
+                PopularBookCover = imageBytes; 
             // Use the imageBytes to display the image or save it to a file.
         }
         private void InitialiseNotiflicationPanel(PopularityCalculator pc)
@@ -117,6 +115,7 @@ namespace BookInventoryAdminProgram.ViewModel
                     {
                         NotiflicationPanelMessage[key] += $"• {dbo.GetPropertyByID(key, listOfMostPopularProperties[key][i].ID)}\n";
                     }
+                
             }
             
 
@@ -133,7 +132,7 @@ namespace BookInventoryAdminProgram.ViewModel
             }
             foreach (string property in new List<string>() {"Genre", "Author" })
             {
-                if(listOfMostPopularProperties[property].Count > 0)
+                if(listOfMostPopularProperties[property] != null && listOfMostPopularProperties[property].Count > 0)
                 {   
                     List<BookInfo> propertyWithBooksLowInStock = dbo.GetBooksLowInStock(property, new List<string>()
                     {
