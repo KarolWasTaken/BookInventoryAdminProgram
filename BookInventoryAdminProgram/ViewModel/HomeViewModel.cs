@@ -32,16 +32,12 @@ namespace BookInventoryAdminProgram.ViewModel
         }
         public Dictionary<string, bool> MoreInfoRestock { get; set; }
         public Dictionary<string, object> PopularBookInfo { get; set; }
-
         public Dictionary<string, string> NotiflicationPanelMessage { get; set; }
-
         public string LowInStockMessage { get; set; }
         public Dictionary<string, string> PopularPropertyLowInStockMessage { get; set; }
-
-        public PopularityCalculator pc;
         public HomeViewModel()
         {
-            pc = new PopularityCalculator(DatabaseStore.MainDataset);
+            var pc = new PopularityCalculator(DatabaseStore.MainDataset);
             MoreInfoRestock = new Dictionary<string, bool>()
             {
                 { "Genre", false }, {"Author", false}, { "Stock", false}
@@ -52,11 +48,11 @@ namespace BookInventoryAdminProgram.ViewModel
             };
 
             // I could probabaly move this into a Model file. I potentially should. Ill do this later
-            InitiliseBestSellerPanel();
-            InitialiseNotiflicationPanel();
+            InitiliseBestSellerPanel(pc);
+            InitialiseNotiflicationPanel(pc);
         }
 
-        private void InitiliseBestSellerPanel()
+        private void InitiliseBestSellerPanel(PopularityCalculator pc)
         {
             // this prolly breaks mvvm principles but idc
             var bestSeller = pc.GetMostPopularBook(new DateTime(2023, 9, 12), new DateTime(2023, 10, 12));
@@ -102,7 +98,7 @@ namespace BookInventoryAdminProgram.ViewModel
             else { PopularBookCover = imageBytes; }
             // Use the imageBytes to display the image or save it to a file.
         }
-        private void InitialiseNotiflicationPanel()
+        private void InitialiseNotiflicationPanel(PopularityCalculator pc)
         {
             Dictionary<string, List<SQLPopularity>> listOfMostPopularProperties = pc.GetAllPopulatities();
             DatabaseOperations dbo = new DatabaseOperations();
@@ -121,10 +117,6 @@ namespace BookInventoryAdminProgram.ViewModel
                     {
                         NotiflicationPanelMessage[key] += $"• {dbo.GetPropertyByID(key, listOfMostPopularProperties[key][i].ID)}\n";
                     }
-                    /*NotiflicationPanelMessage[key] = 
-                        $"• {dbo.GetPropertyByID(key, listOfMostPopularProperties[key][0].ID)}" +
-                        $"\n• {dbo.GetPropertyByID(key, listOfMostPopularProperties[key][1].ID)}" +
-                        $"\n• {dbo.GetPropertyByID(key, listOfMostPopularProperties[key][2].ID)}";*/
             }
             
 

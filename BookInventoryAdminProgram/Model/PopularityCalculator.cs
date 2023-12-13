@@ -43,15 +43,18 @@ namespace BookInventoryAdminProgram.Model
                 genrePopularity = results.Read<SQLPopularity>().ToList();
                 publisherPopularity = results.Read<SQLPopularity>().ToList();
             }
-            
-            // Gets current day and current day last month. Datetime automatically solves issues like: March 30 --(minus 1 month)--> Feb 28
-            DateTime currentDay = DateTime.Now;
-            DateTime currentDayLastMonth = currentDay.AddMonths(-1);
+            authorPopularity = null;
+            bool isDataInvalid = bookPopularity == null || authorPopularity == null || genrePopularity == null || publisherPopularity == null;
+            if (isDataInvalid)
+            {
+                MessageBox.Show("Database returned null values.", "Fatal Error", MessageBoxButton.OK);
+                throw new Exception("Database returned null values. Fatal error.");
+            }
 
-            List<SQLPopularity> bookPopularityWithMaxSalesLastMonth = GetPopularityWithMaxSalesLastMonth(bookPopularity, currentDay, currentDayLastMonth);
-            List<SQLPopularity> authorPopularityWithMaxSalesLastMonth = GetPopularityWithMaxSalesLastMonth(authorPopularity, currentDay, currentDayLastMonth);
-            List<SQLPopularity> genrePopularityWithMaxSalesLastMonth = GetPopularityWithMaxSalesLastMonth(genrePopularity, currentDay, currentDayLastMonth);
-            List<SQLPopularity> publisherPopularityWithMaxSalesLastMonth = GetPopularityWithMaxSalesLastMonth(publisherPopularity, currentDay, currentDayLastMonth);
+            List<SQLPopularity> bookPopularityWithMaxSalesLastMonth = GetPopularityWithMaxSalesLastMonthPlus(bookPopularity);
+            List<SQLPopularity> authorPopularityWithMaxSalesLastMonth = GetPopularityWithMaxSalesLastMonthPlus(authorPopularity);
+            List<SQLPopularity> genrePopularityWithMaxSalesLastMonth = GetPopularityWithMaxSalesLastMonthPlus(genrePopularity);
+            List<SQLPopularity> publisherPopularityWithMaxSalesLastMonth = GetPopularityWithMaxSalesLastMonthPlus(publisherPopularity);
 
             return new Dictionary<string, List<SQLPopularity>>()
             {
@@ -62,16 +65,27 @@ namespace BookInventoryAdminProgram.Model
             };
         }
 
-        private List<SQLPopularity> GetPopularityWithMaxSalesLastMonth(List<SQLPopularity> popularityList, DateTime currentDay, DateTime currentDayLastMonth) 
+        /// <summary>
+        /// This method widens it's search area dynamically for up to a year.
+        /// </summary>
+        /// <param name="popularityList"></param>
+        /// <param name="currentDay"></param>
+        /// <param name="currentDayLastMonth"></param>
+        /// <returns></returns>
+        private List<SQLPopularity> GetPopularityWithMaxSalesLastMonthPlus(List<SQLPopularity> popularityList) 
         {
-            DateTime localCurrentDayLastMonth = currentDayLastMonth;
+            // Gets current day and current day last month. Datetime automatically solves issues like: March 30 --(minus 1 month)--> Feb 28
+            DateTime currentDay = DateTime.Now;
+            DateTime TrueCurrentDayLastMonth = currentDay.AddMonths(-1);
+            
+            DateTime localCurrentDayLastMonth = TrueCurrentDayLastMonth;
             int loopCount = 0;
             List<SQLPopularity> topThreePopularity = new List<SQLPopularity>();
 
             while (topThreePopularity.Count < 3)
             {
                 if (loopCount == 0)
-                    localCurrentDayLastMonth = currentDayLastMonth;
+                    localCurrentDayLastMonth = TrueCurrentDayLastMonth;
                 if (loopCount >= 13)
                     break;
                 var popularity = popularityList
@@ -102,10 +116,10 @@ namespace BookInventoryAdminProgram.Model
         /// <exception cref="Exception"></exception>
         public List<object>? GetMostPopularBook(DateTime startDate, DateTime endDate)
         {
-
             if(startDate > endDate)
             {
-                throw new Exception("startDate is larger than endDate");
+                MessageBox.Show("startDate is larger than endDate.", "Fatal Error", MessageBoxButton.OK);
+                throw new Exception("startDate is larger than endDate. Fatal Error.");
             }
 
             
