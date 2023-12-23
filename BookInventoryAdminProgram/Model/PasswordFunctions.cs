@@ -21,7 +21,7 @@ namespace BookInventoryAdminProgram.Model
         /// </summary>
         /// <param name="userID"></param>
         /// <returns></returns>
-        private static string returnSalt(int userID)
+        private static string ReturnSalt(int userID)
         {
             string PasswordSalt = string.Empty;
             using (SqlConnection connection = new SqlConnection(Helper.ReturnSettings().ConnectionString))
@@ -61,7 +61,7 @@ namespace BookInventoryAdminProgram.Model
         public bool VerifyPassword(int userID, string password)
         {
 
-            string passwordSalt = returnSalt(userID);
+            string passwordSalt = ReturnSalt(userID);
             if (userID == 0 || passwordSalt == "Employee doesnt exist")
             {
                 return false;
