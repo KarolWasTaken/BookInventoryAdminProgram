@@ -16,7 +16,6 @@ namespace BookInventoryAdminProgram.ViewModel
     {
 
         private readonly NavigationStore _navigationStore;
-        private readonly UserInfoStore _userInfoStore;
         public ViewModelBase CurrentViewModel => _navigationStore.CurrentViewModel;
 
 
