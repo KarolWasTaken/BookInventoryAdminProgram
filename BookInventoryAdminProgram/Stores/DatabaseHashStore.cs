@@ -20,11 +20,6 @@ namespace BookInventoryAdminProgram.Stores
         {
             get { return newHash; }
         }
-        public DatabaseHashStore()
-        {
-
-        }
-
         public void UpdateHash(string hash)
         {
             if (oldHash == null)

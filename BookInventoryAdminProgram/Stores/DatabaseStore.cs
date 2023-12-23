@@ -30,7 +30,6 @@ namespace BookInventoryAdminProgram.Stores
             set { junctionValuesDictionary = value; }
         }
 
-
         private static List<BookInfo>? mainDataset;
         /// <summary>
         /// Property that holds all <see cref="BookInfo"/> values for all books.
@@ -108,8 +107,6 @@ namespace BookInventoryAdminProgram.Stores
             public int BookID { get; set; }
             public string GenreName { get; set; }
         }
-
-
 
         public class PricePerUnitCollectionSQL
         {
@@ -226,7 +223,6 @@ namespace BookInventoryAdminProgram.Stores
             );
 
 
-            // i wrote this ages ago i literally forgot how this works
             foreach (var bookInfo in mainDataSet)
             {
                 int bookID = bookInfo.BookID;
