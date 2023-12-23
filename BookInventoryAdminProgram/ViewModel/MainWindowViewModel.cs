@@ -38,8 +38,6 @@ namespace BookInventoryAdminProgram.ViewModel
         public ICommand InventoryNavigateCommand { get; }
         public ICommand BookManagerPanelNavigateCommand { get; }
         public ICommand SalesPanelNavigateCommand { get; }
-        //public ICommand SalesReporterNavigateCommand { get; }
-        //public ICommand GraphViewerNavigateCommand { get; }
         public ICommand StaffViewerNavigateCommand { get; }
         public ICommand SettingsPanelNavigateCommand { get; }
         public ICommand LogoutCommand { get; }
