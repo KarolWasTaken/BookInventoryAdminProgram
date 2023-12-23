@@ -64,7 +64,6 @@ namespace BookInventoryAdminProgram.ViewModel
 
             _navigationStore = navigationStore;
             _navigationStore.CurrentViewModelChanged += OnCurrentViewModelChanged;
-            _userInfoStore = userInfoStore;
             EmployeeFirstnameWelcome = userInfoStore.FirstName;
         }
 
