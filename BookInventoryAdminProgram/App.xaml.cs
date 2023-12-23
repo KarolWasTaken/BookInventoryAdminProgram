@@ -77,7 +77,7 @@ namespace BookInventoryAdminProgram
         private void OpenLoginWindow()
         {
             loginWindow = new LoginWindow();
-            loginWindow.DataContext = new LoginWindowViewModel(_navigationStore, CreateHomeViewModel, _mainWindowViewModel, OpenMainWindow, _userInfoStore, _databaseHashStore);
+            loginWindow.DataContext = new LoginWindowViewModel(_navigationStore, CreateHomeViewModel, OpenMainWindow, _userInfoStore, _databaseHashStore);
 
             if (IsMainWindowOpen())
                 mainWindow.Close();
@@ -127,7 +127,7 @@ namespace BookInventoryAdminProgram
         }
         private LoginWindowViewModel CreateLoginWindowViewModel()
         {
-            return new LoginWindowViewModel(_navigationStore, CreateHomeViewModel, _mainWindowViewModel, OpenMainWindow, _userInfoStore, _databaseHashStore);
+            return new LoginWindowViewModel(_navigationStore, CreateHomeViewModel, OpenMainWindow, _userInfoStore, _databaseHashStore);
         }
         private BookManagerPanelViewModel CreateBookManagerPanelViewModel() 
         {
