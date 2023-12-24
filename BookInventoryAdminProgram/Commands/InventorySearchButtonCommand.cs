@@ -40,6 +40,9 @@ namespace BookInventoryAdminProgram.Commands
             bool isAuthorSearchListPopulated = authorSearchlist.Count > 0;
             bool isGenreSearchListPopulated = genreSearchlist.Count > 0;
 
+            if(database == null)
+                throw new Exception("Database is null critical error");
+
             IQueryable<BookInfo> query = database.AsQueryable();
             if (areComboBoxesPopulated)
             {
