@@ -14,11 +14,13 @@ namespace BookInventoryAdminProgram.Commands
     {
         private ErrorsViewModel _errorsViewModel;
         private InventoryPanelViewModel _inventoryPanelViewModel;
+        private List<BookInfo> _mainDatabase;
 
-        public InventorySearchButtonCommand(InventoryPanelViewModel inventoryPanelViewModel, ErrorsViewModel errorsViewModel)
+        public InventorySearchButtonCommand(InventoryPanelViewModel inventoryPanelViewModel, ErrorsViewModel errorsViewModel, List<BookInfo>? mainDataBase)
         {
             _inventoryPanelViewModel = inventoryPanelViewModel;
             _errorsViewModel = errorsViewModel;
+            _mainDatabase = mainDataBase;
         }
         
         public override void Execute(object? parameter)
@@ -32,9 +34,8 @@ namespace BookInventoryAdminProgram.Commands
             Dictionary<string, string> inputs = fd.GetInputsForFiltering(_inventoryPanelViewModel);
             List<string> authorSearchlist = _inventoryPanelViewModel.SearchList["Author"].ToList();
             List<string> genreSearchlist = _inventoryPanelViewModel.SearchList["Genre"].ToList();
-            // update here to ensure we are using most up to date version of db
-            List<BookInfo> database = DatabaseStore.MainDataset;
-
+            // grab db from the inventory panel
+            List<BookInfo> database = _mainDatabase;
             bool areComboBoxesPopulated = inputs["PropertyName"] != null && inputs["FieldName"] != null && inputs["Condition"] != null && inputs["FilterValue"] != null;
             bool isSearchFieldPopulated = inputs["FilterBookName"] != null;
             bool isAuthorSearchListPopulated = authorSearchlist.Count > 0;

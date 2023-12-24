@@ -44,9 +44,9 @@ namespace BookInventoryAdminProgram.Model
                 case null:
                     propertyName = null;
                     break;
-                default:
-                    //propertyName = "Invalid choice"; // Handle invalid input
-                    break;
+                default: // will never occur in runtime
+                    throw new Exception("Input not recognised");
+                    
             }
             string fieldName;
             switch (salesCriteria)
@@ -60,9 +60,8 @@ namespace BookInventoryAdminProgram.Model
                 case null: 
                     fieldName = null;
                     break;
-                default:
-                    throw new Exception("Input not recognised. Ill handle this later probably");
-                    break;
+                default: // will never occur in runtime
+                    throw new Exception("Input not recognised");
             }
             string condition;
             switch (modifierCriteria)
@@ -79,9 +78,9 @@ namespace BookInventoryAdminProgram.Model
                 case null:
                     condition = null;
                     break;
-                default:
+                default: // will never occur in runtime
                     throw new Exception("Input not recognised. Ill handle this later probably");
-                    break;
+                    
             }
             string filterValue = InvenPanelviewModel.ComboBoxQueryQuantity;
             string filterBookName = InvenPanelviewModel.SearchFieldValue;

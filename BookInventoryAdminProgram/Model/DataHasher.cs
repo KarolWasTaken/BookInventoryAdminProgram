@@ -26,6 +26,9 @@ namespace BookInventoryAdminProgram.Model
         /// <returns></returns>
         public static string CalculateHash(List<BookInfo> data)
         {
+            if (data == null)
+                throw new Exception("Null data sent to calcualte hash");
+
             using (SHA256 sha256 = SHA256.Create())
             {
                 List<byte> allBytes = new List<byte>();
@@ -46,6 +49,9 @@ namespace BookInventoryAdminProgram.Model
         /// <returns></returns>
         public static string CalculateHash(BookInfo data)
         {
+            if (data == null)
+                throw new Exception("Null data sent to calcualte hash");
+
             using (SHA256 sha256 = SHA256.Create())
             {
                 byte[] hashBytes = sha256.ComputeHash(returnBytesForBookObject(data).ToArray());
