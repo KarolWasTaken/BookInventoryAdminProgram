@@ -31,6 +31,7 @@ namespace BookInventoryAdminProgram.Commands
                 return;
 
 
+
             Dictionary<string, string> inputs = fd.GetInputsForFiltering(_inventoryPanelViewModel);
             List<string> authorSearchlist = _inventoryPanelViewModel.SearchList["Author"].ToList();
             List<string> genreSearchlist = _inventoryPanelViewModel.SearchList["Genre"].ToList();
