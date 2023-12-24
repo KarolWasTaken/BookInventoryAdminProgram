@@ -16,7 +16,7 @@ namespace BookInventoryAdminProgram.ViewModel
 {
     public class InventoryPanelViewModel : ViewModelBase, INotifyDataErrorInfo
     {
-        private static List<BookInfo> mainDataBase;
+        internal List<BookInfo> mainDataBase;
         // combobox options
         private List<string> _salesComboBoxOptions = new List<string> { "Sales", "Revenue" };
         public List<string> SalesComboBoxOptions
