@@ -145,7 +145,7 @@ namespace BookInventoryAdminProgram.Model
         /// <returns></returns>
         public static List<string> MergeSort(List<string> unsortedList)
         {
-            if (unsortedList.Count <= 1)
+            if (unsortedList == null || unsortedList.Count <= 1)
                 return unsortedList;
 
             // split the list up into 2

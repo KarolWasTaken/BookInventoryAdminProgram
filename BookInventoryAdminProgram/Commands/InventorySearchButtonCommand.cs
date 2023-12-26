@@ -56,7 +56,7 @@ namespace BookInventoryAdminProgram.Commands
 
             if (isSearchFieldPopulated)
             {
-                query = query.Where(n => n.Title.ToUpper().StartsWith(inputs["FilterBookName"].ToUpper()));
+                query = query.Where(n => n.Title.ToUpper().Contains(inputs["FilterBookName"].ToUpper()));
                 filterData = true;
             }
             
