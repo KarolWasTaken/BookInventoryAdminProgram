@@ -170,7 +170,7 @@ namespace BookInventoryAdminProgram.Model
         /// <param name="left"></param>
         /// <param name="right"></param>
         /// <returns></returns>
-        public static List<string> Merge(List<string> left, List<string> right)
+        private static List<string> Merge(List<string> left, List<string> right)
         {
             List<string> merged = new List<string>();
             int leftIndex = 0;
