@@ -17,6 +17,7 @@ using BookInventoryAdminProgram.ViewModel;
 using BookInventoryAdminProgram.Windows;
 using Dapper;
 using static BookInventoryAdminProgram.Stores.DatabaseStore;
+using MessageBox = AdonisUI.Controls.MessageBox;
 
 namespace BookInventoryAdminProgram
 {
@@ -43,8 +44,6 @@ namespace BookInventoryAdminProgram
         {
             UserInfoStore userInfoStore = new UserInfoStore();
 
-            OpenLoginWindow();
-            //OpenMainWindow();
 
 
             // check whether or not the server an be reached.
@@ -58,16 +57,18 @@ namespace BookInventoryAdminProgram
             catch (SqlException ex)
             {
                 // Handle connection failure
-                MessageBox.Show("Connection failed: " + ex.Message);
-                Application.Current.Shutdown();
+                MessageBox.Show("Connection failed: \n" + ex.Message, "ERROR", AdonisUI.Controls.MessageBoxButton.OK, AdonisUI.Controls.MessageBoxImage.Error);
+                Environment.Exit(-1);
             }
             catch (Exception ex)
             {
                 // Handle other exceptions
-                MessageBox.Show("An error occurred: " + ex.Message);
-                Application.Current.Shutdown();
+                MessageBox.Show("An error occurred: \n" + ex.Message, "ERROR", AdonisUI.Controls.MessageBoxButton.OK, AdonisUI.Controls.MessageBoxImage.Error);
+                Environment.Exit(-1);
             }
 
+            OpenLoginWindow();
+            //OpenMainWindow();
             base.OnStartup(e);
         }
 

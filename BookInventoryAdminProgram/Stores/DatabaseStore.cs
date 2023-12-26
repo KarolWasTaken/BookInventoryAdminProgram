@@ -7,6 +7,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Dapper;
 using System.Net;
+using AdonisUI.Controls;
+using System.Windows;
+using MessageBox = AdonisUI.Controls.MessageBox;
 
 namespace BookInventoryAdminProgram.Stores
 {
@@ -167,6 +170,27 @@ namespace BookInventoryAdminProgram.Stores
             List<MonthlySalesSQL> monthlySalesSQL;
             List<YearlySalesSQL> yearlySalesSQL;
             List<AllTimeSalesSQL> allTimeSalesSQL;
+            
+            // check whether or not the server an be reached.
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(Helper.ReturnSettings().ConnectionString))
+                {
+                    connection.Open(); // Try to open the connection
+                }
+            }
+            catch (SqlException ex)
+            {
+                // Handle connection failure
+                MessageBox.Show("Connection to database failed: \n" + ex.Message, "ERROR", AdonisUI.Controls.MessageBoxButton.OK, AdonisUI.Controls.MessageBoxImage.Error);
+                Environment.Exit(-1);
+            }
+            catch (Exception ex)
+            {
+                // Handle other exceptions
+                MessageBox.Show("An error occurred: \n" + ex.Message, "ERROR", AdonisUI.Controls.MessageBoxButton.OK, AdonisUI.Controls.MessageBoxImage.Error);
+                Environment.Exit(-1);
+            }
 
             using (IDbConnection dbConnection = new SqlConnection(Helper.ReturnSettings().ConnectionString))
             {
@@ -283,7 +307,6 @@ namespace BookInventoryAdminProgram.Stores
             }
             JunctionValuesDictionary = junctionValuesDictionary;
             MainDataset = mainDataSet;
-            //return mainDataSet; relic
         }
     }
 }
