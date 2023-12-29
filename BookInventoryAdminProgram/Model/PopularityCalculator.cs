@@ -118,7 +118,7 @@ namespace BookInventoryAdminProgram.Model
         {
             if(startDate > endDate)
             {
-                MessageBox.Show("startDate is larger than endDate.", "Fatal Error", MessageBoxButton.OK);
+                MessageBox.Show("startDate is larger than endDate.", "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
                 throw new Exception("startDate is larger than endDate. Fatal Error.");
             }
 
