@@ -70,7 +70,7 @@ namespace BookInventoryAdminProgram.Model
         /// </summary>
         /// <param name="genres"></param>
         /// <returns></returns>
-        public List<BookInfo> GetBooksLowInStock(string filterBy, List<string> source)
+        public List<BookInfo> GetBooksLowInStock(string filterBy, List<string> filterCriteria)
         {
             List<BookInfo> booksWithPropertyLowInStock = new List<BookInfo>();
             // Lambda function to choose the property to filter by - based on the filterBy parameter
@@ -88,7 +88,7 @@ namespace BookInventoryAdminProgram.Model
                 throw new ArgumentException("filterBy must be 'Genre' or 'Author'");
             }
 
-            foreach (string filterValue in source) 
+            foreach (string filterValue in filterCriteria) 
             {
                 var results = _database
                     .Where(n => filterPropertySelector(n).Contains(filterValue))

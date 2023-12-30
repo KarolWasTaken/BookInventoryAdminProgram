@@ -115,7 +115,6 @@ namespace BookInventoryAdminProgram.ViewModel
                     {
                         NotiflicationPanelMessage[key] += $"• {dbo.GetPropertyByID(key, listOfMostPopularProperties[key][i].ID)}\n";
                     }
-                
             }
             
 
