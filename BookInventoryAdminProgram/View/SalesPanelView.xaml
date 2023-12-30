@@ -109,7 +109,8 @@
                                     Height="20"
                                     Width="70"
                                     Background="#1f2029"
-                                    Command="{Binding AddExpensesToDictCommand}"/>
+                                    Command="{Binding AddExpensesToDictCommand}"
+                                    IsEnabled="{Binding CanAddExpenseToList}"/>
                         </DockPanel>
                         <DockPanel VerticalAlignment="Center" HorizontalAlignment="Center">
                             <ComboBox Width="100" Height="30" adonisExtensions:WatermarkExtension.Watermark="Expense List"

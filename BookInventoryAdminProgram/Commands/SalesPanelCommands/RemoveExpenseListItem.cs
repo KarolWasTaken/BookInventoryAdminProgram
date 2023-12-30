@@ -29,8 +29,7 @@ namespace BookInventoryAdminProgram.Commands
 
             if ((_salesPanelViewModel.SelectedExpenseFromListOfExpenses == null || _salesPanelViewModel.SelectedExpenseFromListOfExpenses == "") && !deleteAll)
                 return;
-            else
-                if (deleteAll)
+            else if (deleteAll)
                 { 
                     _salesPanelViewModel.ListOfExpenses.Clear();
                     _salesPanelViewModel.ExpensesDictionary.Clear();
@@ -49,8 +48,6 @@ namespace BookInventoryAdminProgram.Commands
                 {
                     throw new Exception("Literally impossible exception idk how you hit this");
                 }
-
-
             }
         }
     }

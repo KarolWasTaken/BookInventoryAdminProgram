@@ -125,6 +125,7 @@ namespace BookInventoryAdminProgram.ViewModel
                 _expenseNameTextBoxField = value;
                 OnPropertyChanged(nameof(ExpenseNameTextBoxField));
                 OnPropertyChanged(nameof(CanAddExpenseCost));
+                OnPropertyChanged(nameof(CanAddExpenseToList));
             }
         }
         private string _expenseCostTextBoxField;
@@ -143,6 +144,7 @@ namespace BookInventoryAdminProgram.ViewModel
                     _errorsViewModel.AddError(nameof(ExpenseCostTextBoxField), "expense cost must not contain characters");
                 }
                 OnPropertyChanged(nameof(ExpenseCostTextBoxField));
+                OnPropertyChanged(nameof(CanAddExpenseToList));
             }
         }
         
@@ -216,6 +218,9 @@ namespace BookInventoryAdminProgram.ViewModel
         public bool HasErrors => _errorsViewModel.HasErrors;
         public bool CanCreatePDF => !HasErrors && FileLocation != string.Empty;
         public bool CanAddExpenseCost => ExpenseNameTextBoxField != null && ExpenseNameTextBoxField != string.Empty;
+        public bool CanAddExpenseToList => !HasErrors
+            && CanAddExpenseCost
+            && (ExpenseCostTextBoxField != null && ExpenseCostTextBoxField != string.Empty);
         public ICommand SelectFileLocationCommand { get; }
         public ICommand GeneratePDFCommand { get; }
         public ICommand AddExpensesToDictCommand { get; }

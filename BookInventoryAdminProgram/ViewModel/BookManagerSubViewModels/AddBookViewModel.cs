@@ -21,8 +21,9 @@ namespace BookInventoryAdminProgram.ViewModel.BookManagerSubViewModels
             {
                 if (value == null || value == "")
                 {
-                    title = value;
+                    title = null;
                     OnPropertyChanged(nameof(Title));
+                    OnPropertyChanged(nameof(CanCreateBook));
                     return;
                 }
                 title = value.Trim();
@@ -45,8 +46,9 @@ namespace BookInventoryAdminProgram.ViewModel.BookManagerSubViewModels
                 _errorsViewModel.RemoveError(nameof(ISBN));
                 if(value == null || value == "")
                 {
-                    isbn = value;
+                    isbn = null;
                     OnPropertyChanged(nameof(ISBN));
+                    OnPropertyChanged(nameof(CanCreateBook));
                     return;
                 }
                 isbn = value.Trim();
@@ -72,7 +74,8 @@ namespace BookInventoryAdminProgram.ViewModel.BookManagerSubViewModels
                 _errorsViewModel.RemoveError(nameof(Publisher));
                 if (value == null || value == "")
                 {
-                    publisher = value;
+                    publisher = null;
+                    OnPropertyChanged(nameof(CanCreateBook));
                     OnPropertyChanged(nameof(Publisher));
                     return;
                 }
@@ -182,7 +185,9 @@ namespace BookInventoryAdminProgram.ViewModel.BookManagerSubViewModels
 
                 if(price == null || price == "")
                 {
+                    price = null;
                     OnPropertyChanged(nameof(Price));
+                    OnPropertyChanged(nameof(CanCreateBook));
                     return;
                 }
 
@@ -214,12 +219,15 @@ namespace BookInventoryAdminProgram.ViewModel.BookManagerSubViewModels
             }
             set
             {
+                _errorsViewModel.RemoveError(nameof(PricePerUnit));
                 pricePerUnit = value;
                 OnPropertyChanged(nameof(PricePerUnit));
 
                 if (pricePerUnit == null || pricePerUnit == "")
                 {
+                    pricePerUnit = null;
                     OnPropertyChanged(nameof(PricePerUnit));
+                    OnPropertyChanged(nameof(CanCreateBook));
                     return;
                 }
 
@@ -257,7 +265,9 @@ namespace BookInventoryAdminProgram.ViewModel.BookManagerSubViewModels
 
                 if (bookStock == null || bookStock == "")
                 {
+                    bookStock = null;
                     OnPropertyChanged(nameof(BookStock));
+                    OnPropertyChanged(nameof(CanCreateBook));
                     return;
                 }
                 if (int.TryParse(bookStock, out int result) && int.Parse(bookStock) >= -1)
@@ -329,7 +339,8 @@ namespace BookInventoryAdminProgram.ViewModel.BookManagerSubViewModels
         public bool HasErrors => _errorsViewModel.HasErrors;
         public bool CanCreateBook => !HasErrors 
             && Title != null 
-            && (Price != null || Price != "0.00")
+            && (Price != null && Price != "0.00")
+            && (PricePerUnit != null && PricePerUnit != "0.00")
             && bookStock != null 
             && ISBN != null 
             && publisher != null 
@@ -342,7 +353,7 @@ namespace BookInventoryAdminProgram.ViewModel.BookManagerSubViewModels
         public AddBookViewModel()
         {
             AddSearchListItem = new AddSearchListItem(ItemToAddAG, SearchList, true, this);
-            RemoveSearchListItem = new RemoveSearchListItem(SearchList, SelectedSearchListItem);
+            RemoveSearchListItem = new RemoveSearchListItem(SearchList, SelectedSearchListItem, true, this);
             SelectFileCommand = new SelectFileCommand(this);
             RemoveBookCoverCommand = new RemoveBookCoverCommand(this);
             AddBookToDBCommand = new AddBookToDBCommand(this);

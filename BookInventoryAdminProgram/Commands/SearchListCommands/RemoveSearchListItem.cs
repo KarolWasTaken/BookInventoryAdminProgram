@@ -1,4 +1,6 @@
-﻿using BookInventoryAdminProgram.ViewModel;
+﻿using BookInventoryAdminProgram.View.BookManagerSubViews;
+using BookInventoryAdminProgram.ViewModel;
+using BookInventoryAdminProgram.ViewModel.BookManagerSubViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -15,11 +17,20 @@ namespace BookInventoryAdminProgram.Commands
     {
         private Dictionary<string, ObservableCollection<string>> _searchList;
         private Dictionary<string, string> _selectedSearchListItem;
+        private bool _notifier;
+        private AddBookViewModel _addBookViewModel;
 
         public RemoveSearchListItem(Dictionary<string, ObservableCollection<string>> searchList, Dictionary<string, string> selectedSearchListItem)
         {
             _searchList = searchList;
             _selectedSearchListItem = selectedSearchListItem;
+        }
+        public RemoveSearchListItem(Dictionary<string, ObservableCollection<string>> searchList, Dictionary<string, string> selectedSearchListItem, bool notifier, AddBookViewModel addBookViewModel)
+        {
+            _searchList = searchList;
+            _selectedSearchListItem = selectedSearchListItem;
+            _notifier = notifier;
+            _addBookViewModel = addBookViewModel;
         }
 
         public override void Execute(object? parameter)
@@ -47,6 +58,8 @@ namespace BookInventoryAdminProgram.Commands
                     _searchList[key].Clear();
                 else
                     _searchList[key].Remove(_selectedSearchListItem[key]);
+            if (_notifier)
+                _addBookViewModel.NotifyAGUpdate();
         }
     }
 }
