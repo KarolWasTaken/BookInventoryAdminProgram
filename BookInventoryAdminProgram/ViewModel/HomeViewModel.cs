@@ -55,8 +55,10 @@ namespace BookInventoryAdminProgram.ViewModel
         private void InitiliseBestSellerPanel(PopularityCalculator pc)
         {
             // this prolly breaks mvvm principles but idc
-            var bestSeller = pc.GetMostPopularBook(new DateTime(2023, 9, 12), new DateTime(2023, 10, 12));
-            if(bestSeller == null)
+            DateTime currentDay = DateTime.Now;
+            DateTime currentDayLastMonth = currentDay.AddMonths(-1);
+            var bestSeller = pc.GetMostPopularBook(currentDayLastMonth, currentDay);
+            if (bestSeller == null)
             {
                 PopularBookCover = GetNoCoverImage();
                 PopularBookInfo = new Dictionary<string, object>()
