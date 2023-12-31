@@ -91,10 +91,10 @@ namespace BookInventoryAdminProgram.Model
                 var popularity = popularityList
                     .Where(p => ((dynamic)p).PopularityDate >= localCurrentDayLastMonth && ((dynamic)p).PopularityDate <= currentDay) // Applies timespan constraints
                     .OrderByDescending(p => ((dynamic)p).TotalSales)
-                    .Skip(topThreePopularity.Count) // Skip elements already added
+                    .Where(p => !topThreePopularity.Contains(p)) // Skip elements already added
                     .FirstOrDefault();
 
-                if (popularity != null)
+                if (popularity != null && !topThreePopularity.Contains(popularity))
                     topThreePopularity.Add(popularity);
                 else
                     localCurrentDayLastMonth = localCurrentDayLastMonth.AddMonths(-1); // If no elements was found, add 1 month back more to widen timespan
