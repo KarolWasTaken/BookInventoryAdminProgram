@@ -108,149 +108,160 @@ namespace BookInventoryAdminProgram.Model
 
             // Create a new PDF document
             //string fileLocation = @"C:\Users\User\source\repos\BookInventoryAdminProgram\BookInventoryAdminProgram"; debug
-            using (PdfDocument pdfDoc = new PdfDocument(new PdfWriter(@$"{reportFileLocation}/{filename}.pdf")))
+            try
             {
 
-                // Create a document
-                using (var document = new iText.Layout.Document(pdfDoc))
+                using (PdfDocument pdfDoc = new PdfDocument(new PdfWriter(@$"{reportFileLocation}/{filename}.pdf")))
                 {
-                    double totalRevenue = 0;
-                    double totalProfit = 0;
 
-                    // Add a header above the chart
-                    Paragraph header = new Paragraph($"Sales Report: [{reportTitle}]\n{GetMonthName(startDate.Month)} {startDate.Day}{GetNumberExtension(startDate.Day)} - {GetMonthName(endDate.Month)} {endDate.Day}{GetNumberExtension(endDate.Day)}"); // Replace "Sales Report" with your desired header text
-                    header.SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER);
-                    header.SetFontSize(25);
-                    document.Add(header);
-                    // Create a table
-                    iText.Layout.Element.Table table = new iText.Layout.Element.Table(9);
-
-                    List<string> headers = new List<string>()
-                    {"BookID", "Title", "Price (£)", "Latest PPU (£)", "Quantity Sold", "Revenue (£)", "COS (£)", "Gross Profit (£)", "CPU (£)"};
-
-
-                    Cell headerCell;
-                    foreach (string headerTitle in headers)
+                    // Create a document
+                    using (var document = new iText.Layout.Document(pdfDoc))
                     {
-                        headerCell = new Cell().SetBackgroundColor(iText.Kernel.Colors.ColorConstants.LIGHT_GRAY);
-                        //headerCell = new Cell().SetBackgroundColor(iText.Kernel.Colors.ColorConstants.LIGHT_GRAY);
-                        headerCell.Add(new Paragraph(headerTitle));
-                        table.AddHeaderCell(headerCell);
-                    }
+                        double totalRevenue = 0;
+                        double totalProfit = 0;
 
-                    // Add data rows
-                    foreach (var book in database)
-                    {
-                        if (SalesExists(startDate, endDate, book)) //book.MonthlySales.Count > 0
+                        // Add a header above the chart
+                        Paragraph header = new Paragraph($"Sales Report: [{reportTitle}]\n{GetMonthName(startDate.Month)} {startDate.Day}{GetNumberExtension(startDate.Day)} - {GetMonthName(endDate.Month)} {endDate.Day}{GetNumberExtension(endDate.Day)}"); // Replace "Sales Report" with your desired header text
+                        header.SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER);
+                        header.SetFontSize(25);
+                        document.Add(header);
+                        // Create a table
+                        iText.Layout.Element.Table table = new iText.Layout.Element.Table(9);
+
+                        List<string> headers = new List<string>()
+                        {"BookID", "Title", "Price (£)", "Latest PPU (£)", "Quantity Sold", "Revenue (£)", "COS (£)", "Gross Profit (£)", "CPU (£)"};
+
+
+                        Cell headerCell;
+                        foreach (string headerTitle in headers)
                         {
-                            table.AddCell(book.BookID.ToString());
-                            table.AddCell(book.Title);
-                            table.AddCell($"{GetPPUAttribute(endDate, BookPPU.SalePrice, book).ToFinancialNegative()}");
-                            table.AddCell($"{GetPPUAttribute(endDate, BookPPU.PricePerUnit, book).ToFinancialNegative()}");
-                            table.AddCell(GetQuantitySold(startDate, endDate, book).ToString());
-                            totalRevenue += GetRevenue(startDate, endDate, book);
-                            table.AddCell($"{GetRevenue(startDate, endDate, book).ToFinancialNegative()}");
-                            table.AddCell($"{GetPriceOnUnitsSpent(startDate, endDate, book)}");
-                            totalProfit += GetProfit(startDate, endDate, book);
-                            table.AddCell($"{GetProfit(startDate, endDate, book).ToFinancialNegative()}");
-                            table.AddCell($"{(GetPPUAttribute(endDate, BookPPU.SalePrice, book) - GetPPUAttribute(endDate, BookPPU.PricePerUnit, book)).ToFinancialNegative()}");
+                            headerCell = new Cell().SetBackgroundColor(iText.Kernel.Colors.ColorConstants.LIGHT_GRAY);
+                            //headerCell = new Cell().SetBackgroundColor(iText.Kernel.Colors.ColorConstants.LIGHT_GRAY);
+                            headerCell.Add(new Paragraph(headerTitle));
+                            table.AddHeaderCell(headerCell);
                         }
-                        else
-                        {
-                            if (showNulls)
-                            {
-                                //var errorCell = new Cell().SetFontColor(iText.Kernel.Colors.ColorConstants.RED).Add(new Paragraph("N/A"));
 
+                        // Add data rows
+                        foreach (var book in database)
+                        {
+                            if (SalesExists(startDate, endDate, book)) //book.MonthlySales.Count > 0
+                            {
                                 table.AddCell(book.BookID.ToString());
                                 table.AddCell(book.Title);
-                                table.AddCell($"{GetPPUAttribute(endDate, BookPPU.SalePrice, book)}");
-                                table.AddCell($"{GetPPUAttribute(endDate, BookPPU.PricePerUnit, book)}");
-                                Cell NullText;
-                                for (int i = 4; i >= 0; i--)
+                                table.AddCell($"{GetPPUAttribute(endDate, BookPPU.SalePrice, book).ToFinancialNegative()}");
+                                table.AddCell($"{GetPPUAttribute(endDate, BookPPU.PricePerUnit, book).ToFinancialNegative()}");
+                                table.AddCell(GetQuantitySold(startDate, endDate, book).ToString());
+                                totalRevenue += GetRevenue(startDate, endDate, book);
+                                table.AddCell($"{GetRevenue(startDate, endDate, book).ToFinancialNegative()}");
+                                table.AddCell($"{GetPriceOnUnitsSpent(startDate, endDate, book)}");
+                                totalProfit += GetProfit(startDate, endDate, book);
+                                table.AddCell($"{GetProfit(startDate, endDate, book).ToFinancialNegative()}");
+                                table.AddCell($"{(GetPPUAttribute(endDate, BookPPU.SalePrice, book) - GetPPUAttribute(endDate, BookPPU.PricePerUnit, book)).ToFinancialNegative()}");
+                            }
+                            else
+                            {
+                                if (showNulls)
                                 {
-                                    NullText = new Cell().SetFontColor(iText.Kernel.Colors.ColorConstants.RED).Add(new Paragraph("N/A"));
-                                    table.AddCell(NullText);
-                                }
+                                    //var errorCell = new Cell().SetFontColor(iText.Kernel.Colors.ColorConstants.RED).Add(new Paragraph("N/A"));
 
+                                    table.AddCell(book.BookID.ToString());
+                                    table.AddCell(book.Title);
+                                    table.AddCell($"{GetPPUAttribute(endDate, BookPPU.SalePrice, book)}");
+                                    table.AddCell($"{GetPPUAttribute(endDate, BookPPU.PricePerUnit, book)}");
+                                    Cell NullText;
+                                    for (int i = 4; i >= 0; i--)
+                                    {
+                                        NullText = new Cell().SetFontColor(iText.Kernel.Colors.ColorConstants.RED).Add(new Paragraph("N/A"));
+                                        table.AddCell(NullText);
+                                    }
+
+                                }
                             }
                         }
-                    }
-                    document.Add(table);
-                    Paragraph totalProfitText = CreateFormattedParagraph(
-                        $"Total Revenue: £{totalRevenue.ToFinancialNegative()}\n" +
-                        $"Total Profit: £{totalProfit.ToFinancialNegative()}",
-                        12,
-                        iText.Layout.Properties.TextAlignment.LEFT
-                    );
-                    document.Add(totalProfitText);
+                        document.Add(table);
+                        Paragraph totalProfitText = CreateFormattedParagraph(
+                            $"Total Revenue: £{totalRevenue.ToFinancialNegative()}\n" +
+                            $"Total Profit: £{totalProfit.ToFinancialNegative()}",
+                            12,
+                            iText.Layout.Properties.TextAlignment.LEFT
+                        );
+                        document.Add(totalProfitText);
 
 
 
-                    // add header for expenses section
-                    // Add a header above the chart
-                    Paragraph expensesSectionHeader = new Paragraph($"Expenses");
-                    expensesSectionHeader.SetTextAlignment(iText.Layout.Properties.TextAlignment.LEFT);
-                    expensesSectionHeader.SetFontSize(20);
-                    document.Add(expensesSectionHeader);
+                        // add header for expenses section
+                        // Add a header above the chart
+                        Paragraph expensesSectionHeader = new Paragraph($"Expenses");
+                        expensesSectionHeader.SetTextAlignment(iText.Layout.Properties.TextAlignment.LEFT);
+                        expensesSectionHeader.SetFontSize(20);
+                        document.Add(expensesSectionHeader);
 
-                    Table divider = new Table(2);
-                    Cell leftSide = new Cell();
-                    Cell rightSide = new Cell();
+                        Table divider = new Table(2);
+                        Cell leftSide = new Cell();
+                        Cell rightSide = new Cell();
 
-                    // Create a table with two columns
-                    Table expensesTable = new Table(new float[] { 1, 3 }); // Adjust the column widths as needed
+                        // Create a table with two columns
+                        Table expensesTable = new Table(new float[] { 1, 3 }); // Adjust the column widths as needed
 
 
-                    List<string> expensesHeaders = _expensesDictionary.Keys.ToList();
-                    expensesHeaders.Add("Total Expenses");
+                        List<string> expensesHeaders = _expensesDictionary.Keys.ToList();
+                        expensesHeaders.Add("Total Expenses");
 
-                    var test = _expensesDictionary;
-                    Dictionary<string, double> expensesDictionary = test;
-                    double totalExpenses = 0.0;
-                    foreach (var values in _expensesDictionary.Values)
-                    {
-                        totalExpenses += values;
-                    }
-                    if (expensesDictionary.ContainsKey("Total Expenses"))
-                        expensesDictionary.Remove("Total Expenses");
+                        var test = _expensesDictionary;
+                        Dictionary<string, double> expensesDictionary = test;
+                        double totalExpenses = 0.0;
+                        foreach (var values in _expensesDictionary.Values)
+                        {
+                            totalExpenses += values;
+                        }
+                        if (expensesDictionary.ContainsKey("Total Expenses"))
+                            expensesDictionary.Remove("Total Expenses");
                     
-                    expensesDictionary.Add("Total Expenses", totalExpenses);
+                        expensesDictionary.Add("Total Expenses", totalExpenses);
 
-                    foreach (string expheader in expensesHeaders)
-                    {
-                        Cell expensesHeader = new Cell().SetBackgroundColor(iText.Kernel.Colors.ColorConstants.LIGHT_GRAY)
-                            .Add(new Paragraph(expheader + " (£)"));
-                        expensesTable.AddCell(expensesHeader);
-                        expensesTable.AddCell(new Paragraph(expensesDictionary[expheader].ToFinancialNegative()));
+                        foreach (string expheader in expensesHeaders)
+                        {
+                            Cell expensesHeader = new Cell().SetBackgroundColor(iText.Kernel.Colors.ColorConstants.LIGHT_GRAY)
+                                .Add(new Paragraph(expheader + " (£)"));
+                            expensesTable.AddCell(expensesHeader);
+                            expensesTable.AddCell(new Paragraph(expensesDictionary[expheader].ToFinancialNegative()));
+                        }
+                        leftSide.Add(expensesTable);
+                        //div.Add(expensesTable);
+                        //document.Add(expensesTable);
+                        // Create a Div element to hold the label and the original table
+
+
+                        Paragraph totalExpensesText = CreateFormattedParagraph(
+                            $"Total expenses: £{expensesDictionary["Total Expenses"].ToFinancialNegative()}\n" +
+                            $"Profit (before tax) after expenses: £{(totalProfit - expensesDictionary["Total Expenses"]).ToFinancialNegative()}",
+                            15,
+                            iText.Layout.Properties.TextAlignment.LEFT
+                        );
+                        rightSide.Add(totalExpensesText);
+
+                        leftSide.SetBorder(Border.NO_BORDER);
+                        leftSide.SetWidth(155);
+                        rightSide.SetBorder(Border.NO_BORDER);
+
+                        divider.AddCell(leftSide);
+                        divider.AddCell(rightSide);
+                        document.Add(divider);
+
+
+
+
                     }
-                    leftSide.Add(expensesTable);
-                    //div.Add(expensesTable);
-                    //document.Add(expensesTable);
-                    // Create a Div element to hold the label and the original table
-
-
-                    Paragraph totalExpensesText = CreateFormattedParagraph(
-                        $"Total expenses: £{expensesDictionary["Total Expenses"].ToFinancialNegative()}\n" +
-                        $"Profit (before tax) after expenses: £{(totalProfit - expensesDictionary["Total Expenses"]).ToFinancialNegative()}",
-                        15,
-                        iText.Layout.Properties.TextAlignment.LEFT
-                    );
-                    rightSide.Add(totalExpensesText);
-
-                    leftSide.SetBorder(Border.NO_BORDER);
-                    leftSide.SetWidth(155);
-                    rightSide.SetBorder(Border.NO_BORDER);
-
-                    divider.AddCell(leftSide);
-                    divider.AddCell(rightSide);
-                    document.Add(divider);
-
-
-
-
                 }
+                MessageBox.Show($"Generates Sales report successfully!\nFileLocation: {@$"{reportFileLocation}\{filename}.pdf"}",
+                "SUCCESS",
+                MessageBoxButton.OK,
+                MessageBoxImage.Information);
             }
-            Console.WriteLine("PDF report generated successfully.");
+            catch (UnauthorizedAccessException ex)
+            {
+                MessageBox.Show("PDF generator failed: \n" + ex.Message, "ERROR", AdonisUI.Controls.MessageBoxButton.OK, AdonisUI.Controls.MessageBoxImage.Error);
+            }
         }
         private static Paragraph CreateFormattedParagraph(string text, float fontSize, iText.Layout.Properties.TextAlignment alignment)
         {

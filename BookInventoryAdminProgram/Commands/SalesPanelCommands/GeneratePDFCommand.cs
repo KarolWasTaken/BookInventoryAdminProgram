@@ -72,11 +72,6 @@ namespace BookInventoryAdminProgram.Commands
                 default:
                     throw new Exception("Unknown SelectedInputType");
             }
-            MessageBox.Show($"Generates Sales report successfully!\nFileLocation: {_salesPanelViewModel.FileLocation}",
-                "SUCCESS",
-                MessageBoxButton.OK,
-                MessageBoxImage.Information);
-
         }
 
         private static void ThrowError(string ErrorMessage)
