@@ -8,7 +8,7 @@
         xmlns:Views="clr-namespace:BookInventoryAdminProgram.View"
         xmlns:ViewModels="clr-namespace:BookInventoryAdminProgram.ViewModel" 
         mc:Ignorable="d"
-        Title="BookstoreInventoryPanel" Height="850" Width="1200"
+        Title="BookInventoryAdminProgram" Height="850" Width="1200"
         ResizeMode="CanMinimize">
     <Window.Style>
         <Style TargetType="Window" BasedOn="{StaticResource {x:Type Window}}"/>
