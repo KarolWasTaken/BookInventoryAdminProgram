@@ -62,13 +62,13 @@ namespace BookInventoryAdminProgram.Model
         private static List<byte> returnBytesForBookObject(BookInfo book)
         {
             List<byte> bytes = new List<byte>();
-            bytes.AddRange(Encoding.UTF8.GetBytes(book.ISBN));
-            bytes.AddRange(Encoding.UTF8.GetBytes(book.BookID.ToString()));
-            bytes.AddRange(Encoding.UTF8.GetBytes(book.Title));
-            bytes.AddRange(Encoding.UTF8.GetBytes(book.Price.ToString()));
+            bytes.AddRange(Encoding.UTF8.GetBytes(book.ISBN ?? "0"));
+            bytes.AddRange(Encoding.UTF8.GetBytes(book.BookID.ToString() ?? "0"));
+            bytes.AddRange(Encoding.UTF8.GetBytes(book.Title ?? "0"));
+            bytes.AddRange(Encoding.UTF8.GetBytes(book.Price.ToString() ?? "0"));
             bytes.AddRange(Encoding.UTF8.GetBytes(CollectionToString(book.PricePerUnit, CollectionType.PricePerUnit)));
             bytes.AddRange(Encoding.UTF8.GetBytes(book.BookStock.ToString()));
-            bytes.AddRange(Encoding.UTF8.GetBytes(book.PublisherName.ToString()));
+            bytes.AddRange(Encoding.UTF8.GetBytes(book.PublisherName ?? "0"));
             if (book.BookCover != null)
                 bytes.AddRange(book.BookCover);
             bytes.AddRange(Encoding.UTF8.GetBytes(CollectionToString(book.AllTimeSales, CollectionType.AllTimeSales)));
