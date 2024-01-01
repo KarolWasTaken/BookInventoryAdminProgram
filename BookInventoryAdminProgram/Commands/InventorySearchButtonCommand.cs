@@ -36,7 +36,7 @@ namespace BookInventoryAdminProgram.Commands
             // grab db from the inventory panel
             List<BookInfo> database = _inventoryPanelViewModel.mainDataBase;
             bool areComboBoxesPopulated = inputs["PropertyName"] != null && inputs["FieldName"] != null && inputs["Condition"] != null && inputs["FilterValue"] != null;
-            bool isSearchFieldPopulated = inputs["FilterBookName"] != null;
+            bool isSearchFieldPopulated = inputs["FilterBookName"] != null && inputs["FilterBookName"] != "";
             bool isAuthorSearchListPopulated = authorSearchlist.Count > 0;
             bool isGenreSearchListPopulated = genreSearchlist.Count > 0;
 
